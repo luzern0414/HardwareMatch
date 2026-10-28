@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate a Luz Design session workspace without third-party dependencies."""
+"""Validate a Luz System session workspace without third-party dependencies."""
 from __future__ import annotations
 
 import argparse
@@ -105,7 +105,7 @@ RESEARCH_FIELDS = {
     "snapshot path": "Snapshot path",
     "snapshot sha256": "Snapshot sha256",
 }
-# Luz Design researches only the frontend: what pages look like, how users move through them, and how
+# Luz System researches only the frontend: what pages look like, how users move through them, and how
 # components show their states. Business rules, regulations and backend behavior belong to Luz Dev.
 EVIDENCE_CATEGORIES = {
     "页面结构": "page_structure",
@@ -533,7 +533,7 @@ def validate_light_html(path: Path, errors: list[str], min_px: float = 14.0) -> 
             opening = style.rfind("{", 0, match.start())
             selector = style[style.rfind("}", 0, opening) + 1:opening].split("@media")[-1] if opening >= 0 else ""
             selector = selector.strip().casefold()
-            # Solid colour is allowed on elements smaller than a line of text (design-standards.html, 配色): marks, icons,
+            # Solid colour is allowed on elements smaller than a line of text (Luz-Design visual-design.html, 配色): marks, icons,
             # avatars, badges, chips, tags, logos, corner labels, step pills, coins, pseudo-element bars and controls.
             small_control = any(token in selector for token in SMALL_ELEMENT_TOKENS)
             if not small_control:
@@ -836,7 +836,7 @@ def parse_research(path: Path) -> list[dict[str, str]]:
 
 
 def fetch_source_status(url: str) -> int:
-    request = urllib.request.Request(url, headers={"User-Agent": "LuzDesignValidator/1.0"})
+    request = urllib.request.Request(url, headers={"User-Agent": "LuzSystemValidator/1.0"})
     with urllib.request.urlopen(request, timeout=12) as response:
         return int(response.status)
 
@@ -1013,7 +1013,7 @@ def validate_research(
         raw_category = record.get("evidence category", "").strip().casefold()
         category = EVIDENCE_CATEGORIES.get(raw_category)
         if raw_category in BACKEND_CATEGORIES:
-            errors.append(f"research {ref} is backend or regulatory evidence; it belongs to Luz Dev, not Luz Design")
+            errors.append(f"research {ref} is backend or regulatory evidence; it belongs to Luz Dev, not Luz System")
         elif category is None:
             errors.append(f"research {ref} evidence category must be 页面结构, 交互流程, or 组件状态")
         else:
@@ -1211,17 +1211,211 @@ def validate_visual(
                 errors.append(f"visual board references unapproved {attr}: {value}")
 
 
+# Interface detail rules (references/ui-standards.html and admin-design.html): a page title must not repeat the
+# highlighted navigation item, a navigation group must not repeat its only item, a table column that is empty in the
+# current data is hidden, and interface body text is at least 14px. 12–13px is allowed only on elements whose selector
+# or class marks them as auxiliary; this is the naming convention prototypes follow.
+AUXILIARY_TEXT_RE = re.compile(
+    r"(?:^|[-_.#\s])(meta|hint|time|date|unit|badge|tag|chip|pill|axis|legend|tick|caption|aux|corner|dot|count|kbd)(?:$|[-_\s:.\[>+~)])",
+    re.I,
+)
+# Selectors whose text is read as content. A bare element selector (table cells, paragraphs, form labels and
+# controls, list items, body) below 14px is an error; any other non-auxiliary selector below 14px is a warning.
+BODY_TEXT_TAG_RE = re.compile(r"^(?:td|th|p|label|li|body|html|table|input|textarea|select|dd|dt)(?![\w-])", re.I)
+ACTIVE_CLASS_RE = re.compile(r"(?:^|[-_\s])(active|current|selected|is-active|on)(?:$|[-_\s])", re.I)
+GROUP_CLASS_RE = re.compile(r"group", re.I)
+GROUP_LABEL_CLASS_RE = re.compile(r"title|label|head|name", re.I)
+EMPTY_CELL_VALUES = {"", "—", "–", "-", "--", "——", "/"}
+SNAKE_OR_LATIN_HEADER_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$|[a-z0-9]+_[a-z0-9_]+")
+
+
+def _is_inside(node: Node, tags: set[str]) -> bool:
+    return any(parent.tag in tags or parent.get("role") == "navigation" for parent in ancestors(node))
+
+
+def _classes(node: Node) -> str:
+    return node.get("class")
+
+
+def _label_text(node: Node) -> str:
+    # Navigation and title comparison ignores whitespace and trailing counts ("订单 12").
+    return re.sub(r"\d+$", "", re.sub(r"\s+", "", normalized_visible_text(node)))
+
+
+def _css_rules(style: str) -> list[tuple[str, str, bool]]:
+    """Innermost (selector, declarations, inside an at-rule such as @media) triples."""
+    rules = []
+    clean = re.sub(r"/\*.*?\*/", "", style, flags=re.S)
+    for match in re.finditer(r"([^{}]+)\{([^{}]*)\}", clean):
+        selector = match.group(1).strip()
+        if selector.startswith("@"):
+            continue
+        before = clean[:match.start()]
+        rules.append((selector, match.group(2), before.count("{") > before.count("}")))
+    return rules
+
+
+def _font_px(declarations: str, variables: dict[str, str]) -> float | None:
+    size = None
+    for match in re.finditer(r"(font-size|font)\s*:\s*([^;}{]+)", declarations, re.I):
+        value = resolve_css_value(match.group(2), variables)
+        if match.group(1).lower() == "font":
+            value = value.split("/", 1)[0]
+        number = re.search(r"(\d+(?:\.\d+)?)\s*(px|rem)\b", value, re.I)
+        if number:
+            size = float(number.group(1)) * (16 if number.group(2).lower() == "rem" else 1)
+    return size
+
+
+def _horizontal_padding_px(declarations: str, variables: dict[str, str]) -> float | None:
+    """Smallest left/right padding in px; values in other units are not judged."""
+    def px(token: str) -> float | None:
+        if token == "0":
+            return 0.0
+        return float(token[:-2]) if re.fullmatch(r"\d+(?:\.\d+)?px", token) else None
+
+    smallest = None
+    for match in re.finditer(r"padding(-left|-right|-inline)?\s*:\s*([^;}{]+)", declarations, re.I):
+        parts = resolve_css_value(match.group(2), variables).replace("!important", "").split()
+        if not parts:
+            continue
+        if match.group(1) in {"-left", "-right"}:
+            horizontal = parts[:1]
+        elif match.group(1) == "-inline":
+            horizontal = parts[:2]
+        else:
+            horizontal = [parts[0]] if len(parts) == 1 else [parts[1]] if len(parts) < 4 else [parts[1], parts[3]]
+        for value in (px(token) for token in horizontal):
+            if value is not None:
+                smallest = value if smallest is None else min(smallest, value)
+    return smallest
+
+
+def prototype_ui_findings(root: Node) -> tuple[list[str], list[str]]:
+    """Interface detail checks on a prototype; returns (errors, warnings)."""
+    errors: list[str] = []
+    warnings: list[str] = []
+    body = first(root, "body") or root
+    nodes = list(iter_nodes(body))
+
+    # 1. Page title repeats the highlighted navigation item.
+    nav_items = [
+        node for node in nodes
+        if node.tag in {"a", "button", "li"} and _is_inside(node, {"nav", "aside"}) and _label_text(node)
+    ]
+    headings = [
+        node for node in nodes
+        if (node.tag in {"h1", "h2"} or re.search(r"page-title", _classes(node)))
+        and not _is_inside(node, {"nav", "aside"})
+    ]
+    for item in nav_items:
+        text = _label_text(item)
+        active = (item.get("aria-current") not in {"", "false"}) or bool(ACTIVE_CLASS_RE.search(_classes(item)))
+        target = item.get("data-page-id").strip() or item.get("href").lstrip("#")
+        repeated = None
+        if target:
+            for container in nodes:
+                if container.tag in {"a", "button"} or _is_inside(container, {"nav", "aside"}):
+                    continue
+                if target not in {container.get("data-page-id"), container.get("id")}:
+                    continue
+                inner = next((n for n in iter_nodes(container)
+                              if n.tag in {"h1", "h2", "h3"} or re.search(r"page-title", _classes(n))), None)
+                if inner is not None and _label_text(inner) == text:
+                    repeated = text
+                    break
+        if active and repeated is None:
+            repeated = next((text for heading in headings if _label_text(heading) == text), None)
+        if repeated:
+            errors.append(f"interactive-prototype page title repeats the highlighted navigation item: {repeated}")
+
+    # 2. A navigation group named the same as its only item.
+    for group in nodes:
+        if not _is_inside(group, {"nav", "aside"}):
+            continue
+        if not (group.get("role") == "group" or GROUP_CLASS_RE.search(_classes(group)) or group.tag == "details"):
+            continue
+        label_node = next((n for n in iter_nodes(group)
+                           if n.tag in {"h3", "h4", "h5", "h6", "dt", "summary", "strong"}
+                           or (GROUP_LABEL_CLASS_RE.search(_classes(n)) and n.tag not in {"a", "button"})), None)
+        label = re.sub(r"\s+", "", group.get("aria-label")) or (_label_text(label_node) if label_node is not None else "")
+        items = [n for n in iter_nodes(group) if n.tag in {"a", "button"}
+                 and (label_node is None or n is not label_node and label_node not in ancestors(n))]
+        if label and len(items) == 1 and _label_text(items[0]) == label:
+            errors.append(f"interactive-prototype navigation group repeats its only item: {label}")
+
+    # 3. Table columns: all empty is an error, all identical (5+ rows) is a warning.
+    for table in (n for n in nodes if n.tag == "table"):
+        if any(p.get("data-state-kind") or re.search(r"skeleton|loading", _classes(p)) for p in [table, *ancestors(table)]):
+            continue
+        headers = [normalized_visible_text(th) for th in iter_nodes(table) if th.tag == "th"]
+        rows = []
+        for tr in (n for n in iter_nodes(table) if n.tag == "tr"):
+            cells = [c for c in tr.children if isinstance(c, Node) and c.tag == "td"]
+            if cells and not any(c.get("colspan") for c in cells):
+                rows.append(cells)
+        if not rows:
+            continue
+        width = max(len(r) for r in rows)
+        rows = [r for r in rows if len(r) == width]
+        for col in range(width):
+            cells = [r[col] for r in rows]
+            values = [normalized_visible_text(c) for c in cells]
+            rich = any(any(d.tag in {"img", "svg", "input", "button", "select", "a", "textarea"} for d in iter_nodes(c)) for c in cells)
+            name = headers[col] if col < len(headers) else str(col + 1)
+            if len(rows) >= 2 and not rich and all(v in EMPTY_CELL_VALUES for v in values):
+                errors.append(f"interactive-prototype table column is empty in every row (hide it in column settings): {name}")
+            elif len(rows) >= 5 and not rich and "操作" not in name and len(set(values)) == 1 and values[0] not in EMPTY_CELL_VALUES:
+                warnings.append(f"interactive-prototype table column has the same value in every row (state it once in the filter summary): {name}")
+        # Export previews show cleaned Chinese headers, never field names.
+        if any("data-export-preview" in p.attrs or re.search(r"export", _classes(p)) for p in [table, *ancestors(table)]):
+            for header in headers:
+                if SNAKE_OR_LATIN_HEADER_RE.search(header):
+                    errors.append(f"interactive-prototype export preview header is a field name, not Chinese business wording: {header}")
+
+    # 4. Interface text below 14px outside auxiliary elements; 5. table cell side padding below 16px.
+    style = css_text(root)
+    variables = css_variables(style)
+    for selector, declarations, in_at_rule in _css_rules(style):
+        size = _font_px(declarations, variables)
+        for part in (s.strip() for s in selector.split(",")):
+            if not part:
+                continue
+            last = re.split(r"\s*[>+~]\s*|\s+", part)[-1]
+            # Pseudo-elements (mobile card column names, markers) and chart/SVG text follow their own rules.
+            decorative = "::" in last or any(token in part.lower() for token in ("svg", "chart"))
+            if size is not None and 12 <= size < 14 and not decorative and not AUXILIARY_TEXT_RE.search(part):
+                message = f"interactive-prototype interface text {size:g}px below 14px on a non-auxiliary selector: {part}"
+                (errors if BODY_TEXT_TAG_RE.match(last) else warnings).append(message)
+            selection_cell = re.search(r"\.(?:ck|chk|check|sel|select)", last, re.I)
+            # Responsive overrides (narrow-screen card rows) are not judged for cell padding.
+            if re.match(r"(?:td|th)(?![\w-])", last, re.I) and "::" not in last and not selection_cell and not in_at_rule:
+                padding = _horizontal_padding_px(declarations, variables)
+                if padding is not None and padding < 16:
+                    warnings.append(f"interactive-prototype table cell side padding {padding:g}px below 16px: {part}")
+    for node in nodes:
+        inline = node.get("style")
+        if not inline:
+            continue
+        size = _font_px(inline, variables)
+        if size is not None and 12 <= size < 14 and not AUXILIARY_TEXT_RE.search(" " + _classes(node)):
+            message = f"interactive-prototype inline text {size:g}px below 14px on <{node.tag}> without an auxiliary class"
+            (errors if node.tag in {"td", "th", "p", "label", "li"} else warnings).append(message)
+    return list(dict.fromkeys(errors)), list(dict.fromkeys(warnings))
+
+
 def validate_prototype(
     session: Path,
     modules: list[str],
     approved_ids: dict[str, set[str]],
     architecture_hash: str | None,
     errors: list[str],
+    warnings: list[str] | None = None,
 ) -> None:
     path = session / PROTOTYPE_PATH
     if not path.is_file():
         return
-    # Prototypes render real interfaces; nothing below 12px (design-standards.html 字体与字号).
+    # Prototypes render real interfaces; nothing below 12px (Luz-Design visual-design.html 字体与字号).
     root = validate_light_html(path, errors, min_px=12.0)
     if root is None:
         return
@@ -1262,6 +1456,10 @@ def validate_prototype(
     svg_nodes = [node for node in iter_nodes(root) if node.tag == "svg"]
     if not any(node.get("fill").lower() == "none" or any(desc.get("fill").lower() == "none" for desc in iter_nodes(node)) for node in svg_nodes):
         errors.append("interactive-prototype needs a linear SVG icon")
+    ui_errors, ui_warnings = prototype_ui_findings(root)
+    errors.extend(ui_errors)
+    if warnings is not None:
+        warnings.extend(ui_warnings)
 
 def validate(
     session: Path,
@@ -1270,7 +1468,9 @@ def validate(
     source_checker: Callable[[str], int] | None = None,
     checked_on: date | None = None,
     allow_live_crawl_offline: bool = False,
+    warnings: list[str] | None = None,
 ) -> list[str]:
+    """Return blocking errors; non-blocking findings are appended to ``warnings`` when a list is given."""
     errors: list[str] = []
     if not session.is_dir():
         return [f"session folder does not exist: {session}"]
@@ -1534,7 +1734,7 @@ def validate(
             validate_visual(session / VISUAL_PATH, selected, approved_ids, errors)
         if (session / PROTOTYPE_PATH).is_file():
             architecture_hash = approvals.get("architecture", {}).get("artifact_sha256") if approvals else None
-            validate_prototype(session, selected, approved_ids, architecture_hash, errors)
+            validate_prototype(session, selected, approved_ids, architecture_hash, errors, warnings)
 
         if (session / "02-visual").exists() and not poster_session:
             if not architecture_approved or not system_approved:
@@ -1596,7 +1796,7 @@ def validate(
     return list(dict.fromkeys(errors))
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Validate a Luz Design session.")
+    parser = argparse.ArgumentParser(description="Validate a Luz System session.")
     parser.add_argument("session", help="Path to the numbered session folder")
     parser.add_argument("--strict", action="store_true")
     parser.add_argument("--check-sources", action="store_true", help="Fetch every recorded research URL")
@@ -1605,7 +1805,10 @@ def main(argv: list[str] | None = None) -> int:
     strict = args.strict or args.strict_production
     live_sources = args.check_sources or args.strict_production
     session = Path(args.session).resolve()
-    errors = validate(session, strict=strict, live_sources=live_sources)
+    warnings: list[str] = []
+    errors = validate(session, strict=strict, live_sources=live_sources, warnings=warnings)
+    for warning in dict.fromkeys(warnings):
+        print("WARN", warning)
     if errors:
         print(f"FAIL: {len(errors)} issue(s)")
         for error in errors:

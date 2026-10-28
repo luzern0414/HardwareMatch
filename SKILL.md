@@ -16,7 +16,7 @@ Luz System turns a scoped request into an auditable system design: what the syst
 | Articles, copy, agreements, privacy policies and other prose | **Luz-Writing** (`D:\Codes\Luz-Writing`) |
 | Browser search and capture | **Luz-Crawl** (`D:\Codes\Luz-Crawl`), called from here for research |
 
-`new_session.py` refuses document and poster modes and names Luz-Design. Older notes that place system design, prototypes or hardware in Luz-Design or HardwareMatch are out of date; this skill replaces both.
+`new_session.py` refuses document and poster modes and names Luz-Design. Older notes that place system design, prototypes or hardware selection in any other skill are out of date.
 
 ## Layout
 
@@ -73,14 +73,16 @@ The UI rules are layered: ui-standards.html holds what every surface shares; eac
 - No explanatory text in interfaces: no help lines under inputs, footnotes, rule explanations or consequence paragraphs in confirmations. Field labels, placeholders, status tags, counts and error messages are the only words.
 - Use the real brand and scope: the brand appears in the browser title, login page and top bar; a single-store business never shows store switchers or multi-store wording.
 - Manual money operations use a free amount input with two decimals, not preset tiers, unless asked.
-- Common controls follow the mainstream pattern (research with LuzCrawl first): password eye button inside the field, icon-only buttons with tooltip and accessible name, account menu under the avatar, search with magnifier that filters while typing.
+- Common controls follow the mainstream pattern in ui-standards.html (常用控件做法); research with LuzCrawl first.
+- Required for every product UI: before designing, use Luz-Crawl to open the relevant specification and component pages of the libraries in ui-standards.html (参考组件库: Ant Design / ProComponents, TDesign, Arco, Semi, Element Plus, Vant, NutUI, WeChat mini-program guide, Carbon, Atlassian, Polaris, NN/g, Material 3, Fluent 2, shadcn/ui, Primer), and record in the design notes which library's component each main component follows; borrow behaviour, not visual style.
+- Show what matters first and drop what carries no information (ui-standards.html, 设计原则): every list states its default view (filter, time range, sort, reason) and opens on the subset that needs handling — never “全部”; status tabs follow handling order with zero counts muted; no page title repeating the highlighted nav item, no nav group named like its only item; columns empty in the current data are hidden; dashboards show computed results (change, rate, rank, alerts) and fold long-zero metrics into one status line; exports are cleaned Chinese data (business headers, translated enums, no internal IDs or empty columns).
 - Every chart has an immediate custom hover tooltip with a crosshair or highlighted segment; native SVG titles do not count.
 - Login pages use a real photo or a flat line illustration of the business beside the form; never a blank panel.
-- Every admin list with a time field has a date-range filter (今日 / 近 7 天 / 近 30 天 / 全部 plus custom dates) and statistic cards above the table summarising the whole filtered set.
+- Every admin list with a time field has one date-range control (今日 / 近 7 天 / 近 30 天 / 全部 and custom dates in one popover); counts summarise the whole filtered set, shown either as status tabs with counts or as clickable statistic cards, never both; at most 4 filters are exposed.
 - A delivered real system shows only live backend data; dashboards show only metrics the backend returns or the user requests.
 - Classify every function before placing it (ui-standards.html, 入口与内容分层): core, information, marketing, auxiliary; one destination has one entry per page; one fact is said once per card and page.
 - Mini-programs (miniprogram-design.html): core tasks own the tabs; home is store or brand → live information → marketing; only the tab bar switches tabs; each tab keeps its own stack; secondary pages return to their opener; only information and marketing modules can be hidden.
-- Admin consoles (admin-design.html): the data cockpit is the first menu, ordered by value — business results, growth, activity, then efficiency, risk and negative data; long-flat metrics go last; rankings sort descending; menu items carry line icons; short cells centred; centred floating panels, never right drawers; inline switches, search while typing, header filters, confirmation only for important changes; every operating content item shown in the mini-program has full maintenance in the admin and one copy of the data.
+- Admin consoles (admin-design.html): the data cockpit is the first menu, ordered by value — business results, growth, activity, then efficiency, risk and negative data; long-flat metrics go last; rankings sort descending; menu items carry line icons; tables: headers centred, long text left-aligned with at least 16px cell padding and fitted column width, short values centred, amounts right-aligned with tabular numbers and units in the header; body and table text 14px, rows 44–48px, at least 10 rows above the fold at 1440×900; lists open on the default view in admin-design.html (orders 已支付, leads 待跟进, tickets 待处理, members 有效, reviews 待回复); centred floating panels, never right drawers; inline switches, search while typing, header filters, confirmation only for important changes; every operating content item shown in the mini-program has full maintenance in the admin and one copy of the data.
 - Agent UIs (agent-design.html): task goal, tools and stop conditions first; tools tiered by impact with approval cards for irreversible, money-moving or outbound actions; collapsible tool-call cards; stoppable streaming; failures never hidden; no model names or internal reasoning.
 - Websites (website-design.html): one main action per page; first screen says who, what and next step with a real photo and no auto carousel; 5–7 item top navigation; breakpoints 600 / 840 / 1200 / 1600; page titles and descriptions for search.
 - Avatars: the uploaded photo, otherwise a default cartoon animal fixed by a hash of the user id; a line icon for logged-out or system users; never initials or other text.
@@ -90,16 +92,16 @@ The UI rules are layered: ui-standards.html holds what every surface shares; eac
 
 ## Common control patterns
 
-Researched across Ant Design, Arco, TDesign, Element Plus, Semi, Material 3, Apple HIG, Atlassian, Carbon, GOV.UK, Nielsen Norman Group and Baymard.
+Login, password field, inputs, pickers, dates, money, search, admin lists, switches, dialogs, toasts, icon buttons, account menu, sidebar, avatars and badges: see ui-standards.html, 五、组件 → 常用控件做法.
 
-- Login: centred card, or image left and form right (image as top banner on phones). A failed login says 账号或密码错误 without naming the field; submitting shows loading and ignores repeat clicks.
-- Inputs: persistent labels; placeholders only show examples; red asterisk for required; clear button only with content; length counter; validate on blur, then on every keystroke once an error shows; errors under the field with how to fix; focus the first error on submit.
-- Lists: title → toolbar (search and filters left, primary button right) → table → pager. Row actions in the last column, two as text and the rest under 更多; batch selection with a 已选 N 项 bar; skeleton rows on first load; sticky headers; truncated cells with tooltips.
-- Switches only for settings that apply immediately, with loading and rollback. One primary button per area; danger actions confirm in a centred dialog whose button names the action.
-- Dialogs: centred, mask, close and Esc; form dialogs don't close on mask click; focus trapped and returned; fixed title and footer.
-- Feedback toasts at top centre for about 3 seconds. Pickers with more than ten options get search; dates YYYY-MM-DD with quick ranges; money inputs with ¥ prefix and two decimals.
-- Sidebar collapses to icons on narrow screens; breadcrumbs only deeper than one level.
-- Avatars are round for people (cartoon default) and square for stores. Status tags pair colour with short text. Badges show 99+ or a dot.
+## 每次调用后沉淀
+
+Mandatory on every call, not only at delivery.
+
+- **Start**: run `py -X utf8 scripts/experience.py search --text "<关键词>"` (preferences, lessons and facts are listed first) and apply what matches; hardware calls also run `hw_experience.py search / compat / queries`.
+- **Before finishing**, record with `experience.py note --kind preference|lesson|fact --key <主题> --text "<一句话原则>" [--why "<依据>"]`: (a) any preference the user stated or corrected; (b) any route, source or parameter that worked or failed; (c) any rule correction. Record the general principle, not task trivia.
+- **Replace, not append**: one key per topic. Writing an existing key replaces its text in place (the old text is kept once as `previous`); a contradicting rule replaces the old one. Caps: preferences 60, lessons 120, facts 120; `prune` drops the oldest, least-used entries; `check` fails on duplicate keys, near-duplicate texts and overflow. Hardware products merge by brand and model, keep the latest 5 price samples, and queries merge by platform and text.
+- **Privacy**: the repository is public — no personal names, phone numbers, WeChat IDs, client or company names, private paths or credentials in notes. Personal contacts go only to `experience/hardware/contacts.local.json`.
 
 ## Session sequence
 
@@ -111,7 +113,7 @@ Researched across Ant Design, Arco, TDesign, Element Plus, Semi, Material 3, App
 5. System design, then product visual board, then interactive prototype, each with its own human approval; exercise the prototype in a real browser.
 6. Hardware: storyboard the whole lifecycle, map every step to devices, fill `raw/04-hardware/plan.json`, then `hw_build.py` (validates, renders `hardware-plan.html`, runs Luz-Design's document check).
 7. Publish the final HTML with `publish.py <session> <system_design | visual | prototype | hardware>`.
-8. Sediment: `experience.py harvest` and `experience.py add` for software; `hw_experience.py add experience\hardware\inbox\<file>.json` for hardware. A session is not delivered until its experience is recorded.
+8. Sediment: `experience.py harvest` and `experience.py add` for software; `hw_experience.py add experience\hardware\inbox\<file>.json` for hardware; `experience.py note` for preferences, lessons and facts (每次调用后沉淀). A session is not delivered until its experience is recorded.
 
 ~~~powershell
 py -X utf8 scripts/new_session.py --name "<名称>" --modes system --system-name "<系统名>" --modules "<模块1>,<模块2>"

@@ -135,8 +135,9 @@ th { color: var(--ink); background: var(--surface-soft); font-weight: 700; }
 .status { flex: 0 0 auto; padding: 4px 9px; border: 1px solid #bcd9c9; border-radius: 999px; background: #e8f5ee; color: var(--success); font-size: 14px; font-weight: 700; }
 .source-meta { color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
 .source-card p { margin: 0; }
-code, pre { font-family: "Cascadia Mono", "Consolas", monospace; }
+code, pre, kbd { font-family: "Cascadia Mono", "Consolas", monospace; }
 code { padding: 2px 5px; border-radius: 5px; background: var(--surface-soft); font-size: 14px; }
+kbd { padding: 1px 6px; border: 1px solid var(--line, #d9dde3); border-radius: 5px; background: #fff; font-size: 14px; }
 pre { overflow: auto; padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); font-size: 14px; white-space: pre-wrap; }
 .steps { counter-reset: step; display: grid; gap: 12px; padding: 0; list-style: none; }
 .steps li { position: relative; padding: 16px 16px 16px 56px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); counter-increment: step; }

@@ -6,6 +6,15 @@ Sessions live in `D:\Codes\skill输出\Luz-System\NNN-名称\`: the single final
 
 Read `experience/catalog.md` and search it with `scripts/experience.py search`; for hardware, run `scripts/hw_experience.py stats`, `search`, `compat`, `suppliers` and `queries`. Reuse matching functions, interaction flows, components, palettes, type scales, rules, and research lessons; record in BRIEF which ones the session builds on.
 
+## 每次调用后沉淀
+
+Every call, including short questions and fixes that create no session:
+
+1. At the start, run `py -X utf8 scripts/experience.py search --text "<关键词>"` and apply the matching preferences, lessons and facts.
+2. Before finishing, record what was learned with `py -X utf8 scripts/experience.py note --kind preference|lesson|fact --key <主题> --text "<一句话原则>" [--why "<依据>"]`: preferences the user stated or corrected, routes, sources or parameters that worked or failed, and rule corrections. Write the general principle, not task details.
+3. One key per topic: a note on an existing key replaces its text (one `previous` is kept for audit), never adds a second entry. Caps are 60 preferences, 120 lessons and 120 facts; `experience.py prune` removes the oldest, least-used entries and `experience.py check` fails on duplicate keys, near-duplicate texts and overflow. Hardware products merge by brand and model, keep the latest 5 price samples, and queries merge by platform and text.
+4. No personal names, phone numbers, WeChat IDs, client or company names, private paths or credentials in notes; personal contacts stay in the git-ignored `experience/hardware/contacts.local.json`.
+
 ## 1 Requirement ledger
 
 Capture only facts supplied by the user. Translate each request into a stable REQ-ID with the verbatim request, exact module, and acceptance signal. Missing scope or ambiguous modules stop the session before research or design.
@@ -17,6 +26,8 @@ Create one numbered session with `scripts/new_session.py`. A system session (`--
 ## 3 Frontend research with LuzCrawl
 
 Reuse fresh experience sources first with `experience.py reuse` (snapshots copied into `raw/`, valid for 180 days), then crawl only what the library does not cover. Research is mandatory before any design writing: run LuzCrawl from `D:\Codes\Luz-Crawl` with one `begin "<主题>" --new` task folder per request, `batch` for known specification pages and `search web` (or the site's own search) for business analyses. Cover both how products in the industry choose their core tasks and home-page entries, and the specifications for typography, tables, navigation, and layout of every surface in scope. Research only what users see and do: page structure, navigation, interaction flows, component states, and visual treatment. Require at least 12 unique URLs across 5 registrable domains: at least 3 page-structure, 3 interaction-flow, and 2 component-state sources. Business rules, regulations, payment callbacks, and other backend sources are rejected by the validator.
+
+Product UI work also requires component-library research: with LuzCrawl open the specification and component pages listed in `references/ui-standards.html` (参考组件库) for every component type in scope (tables, filters, forms, dashboards, mini-program lists), record the library and component each main component follows in the system design, and borrow behaviour and defaults, not visual style.
 
 LuzCrawl link collections do not record a task ID or HTTP status per page: use the browser session ID of each capture as the task ID, measure the HTTP status live on the access date, and copy the capture's `content.json` into `raw/01-system/crawl-snapshots/`. Hash-routed documentation pages (`#/route`) count as separate URLs. Batch at most four links per collection run; when a search engine rate-limits, wait for its cooldown instead of switching entrances.
 

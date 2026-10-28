@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Safely activate another mode in an existing Luz Design session."""
+"""Safely activate another mode in an existing Luz System session."""
 from __future__ import annotations
 
 import argparse
@@ -133,7 +133,7 @@ def add_mode(root: Path, session: Path, mode: str, *, standalone_poster: bool = 
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Activate a Luz Design mode after its approval gate.")
+    parser = argparse.ArgumentParser(description="Activate a Luz System mode after its approval gate.")
     parser.add_argument("session", help="Numbered session folder")
     parser.add_argument("mode", choices=["visual", "prototype", "document"])
     parser.add_argument("--standalone-poster", action="store_true")

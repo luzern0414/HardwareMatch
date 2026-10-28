@@ -3111,6 +3111,173 @@
       "first_seen": "2026-10-28",
       "last_used": "2026-10-28",
       "uses": 1
+    },
+    {
+      "kind": "色彩",
+      "title": "B2B获客·商机雷达获客系统前端重设计配色",
+      "industries": [
+        "B2B获客"
+      ],
+      "surfaces": [
+        "后台",
+        "通用"
+      ],
+      "summary": "企业服务气质“信赖、专业、探索”：主色 Ant Design 极客蓝一列，品牌阶 #2f54eb（白字 5.85:1）、悬停 #597ef7、按下 #1d39c4、浅底 #f0f5ff；信号辅色金盏花 #874d00 配 #fffbe6，只用于“正在招标”等浅底标签；页面底 #f5f6f8，卡片白。用户在三个候选（极客蓝、TDesign 蓝、Ant 青）中选定。",
+      "details": {
+        "令牌": {
+          "brand": "#2f54eb",
+          "hover": "#597ef7",
+          "press": "#1d39c4",
+          "tint": "#f0f5ff",
+          "signal": "#874d00",
+          "signal-tint": "#fffbe6",
+          "page": "#f5f6f8"
+        },
+        "对比度": {
+          "brand-白字": "5.85:1",
+          "press-于-tint": "7.89:1",
+          "signal-于-tint": "10.10:1"
+        }
+      },
+      "sources": [],
+      "id": "PAT-157",
+      "sessions": [
+        "005-商机雷达获客系统前端重设计"
+      ],
+      "first_seen": "2026-10-28",
+      "last_used": "2026-10-28",
+      "uses": 1
+    },
+    {
+      "kind": "调研经验",
+      "title": "系统设计网页的模块内容只能是短标签",
+      "surfaces": [
+        "后台",
+        "通用"
+      ],
+      "industries": [
+        "B2B获客"
+      ],
+      "summary": "validate_session 要求模块内容区每个文字元素带 label/value 类（类名以 - 或 _ 连接，如 cell-value），不超过 32 字、不含句末标点，且不含“说明、详情、流程、原因、提示”等词；长内容按标点拆成短语行，页面名避免“详情”（改用“主页”）。模块名不能含“数据来源”，可用“数据源”。",
+      "id": "PAT-158",
+      "sessions": [
+        "005-商机雷达获客系统前端重设计"
+      ],
+      "first_seen": "2026-10-28",
+      "last_used": "2026-10-28",
+      "uses": 1
+    },
+    {
+      "kind": "调研经验",
+      "title": "研究来源要通过验证器的实时访问检查",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "B2B获客"
+      ],
+      "summary": "验证器用非浏览器 UA 实时请求每个来源 URL，状态码与访问日期都要与记录一致；help.openai.com 这类站点返回 403，会被判失败，调研时先用 validate_session.fetch_source_status 预检。LuzCrawl 状态写“成功”或“部分”（部分需要 content.json 的 valid_content 为 true）。",
+      "id": "PAT-159",
+      "sessions": [
+        "005-商机雷达获客系统前端重设计"
+      ],
+      "first_seen": "2026-10-28",
+      "last_used": "2026-10-28",
+      "uses": 1
+    },
+    {
+      "kind": "前端规则",
+      "title": "智能体工作台的研究过程卡",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "B2B获客"
+      ],
+      "summary": "回答上方一张过程卡：阶段名 + 本地每秒计时（后端只在保存点更新耗时）+ 待读数量；每次工具调用一行可折叠，失败默认展开；需要登录、验证或选择企业时在过程卡下方出现交接卡（我已处理，继续 / 跳过该网站 / 选择这家企业）；完成后过程卡收为一行汇总。",
+      "id": "PAT-160",
+      "sessions": [
+        "005-商机雷达获客系统前端重设计"
+      ],
+      "first_seen": "2026-10-28",
+      "last_used": "2026-10-28",
+      "uses": 1
+    },
+    {
+      "kind": "设计理念",
+      "title": "智能体产品的驾驶舱可以只汇总智能体产出",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "B2B获客"
+      ],
+      "summary": "获客智能体的概览按价值排列：新增线索、高分线索、已成交 → 新增企业、已读公告 → 研究任务；等待处理与失败任务、站点成功率放在风险与异常，等待处理大于 0 时顶部出现可关闭预警。",
+      "id": "PAT-161",
+      "sessions": [
+        "005-商机雷达获客系统前端重设计"
+      ],
+      "first_seen": "2026-10-28",
+      "last_used": "2026-10-28",
+      "uses": 1
+    },
+    {
+      "kind": "调研经验",
+      "title": "设计前先查开源与大厂组件库",
+      "surfaces": [
+        "后台",
+        "小程序",
+        "网站"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "summary": "设计后台、小程序、网站界面前，用 LuzCrawl 打开对应组件库的规范页与组件页，记录参考了哪一家的哪个组件，只借鉴做法不照搬风格。中后台：Ant Design（含 ProComponents 高级表格）、TDesign、Arco Design、Semi Design、Element Plus；移动与小程序：Vant、NutUI、TDesign 小程序、微信小程序设计指南；数据表格与密度：IBM Carbon、Atlassian、Shopify Polaris；可用性研究：NN/g；通用网页：Material 3、Fluent 2、shadcn/ui、GitHub Primer。清单在 references/ui-standards.html“参考组件库”。",
+      "id": "PAT-162",
+      "sessions": [
+        "manual"
+      ],
+      "first_seen": "2026-10-28",
+      "last_used": "2026-10-28",
+      "uses": 1
+    },
+    {
+      "kind": "前端规则",
+      "title": "表格对齐与缩进",
+      "surfaces": [
+        "后台",
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "summary": "表头居中；数据单元格左右内边距不小于 16 像素；长文本左对齐并按内容收紧列宽，使文字块落在表头下方；状态、日期、负责人、操作等短值居中；金额右对齐、等宽数字、单位写在表头；表头行与数据行同高（Carbon、Ant Design、NN/g）。",
+      "id": "PAT-163",
+      "sessions": [
+        "manual"
+      ],
+      "first_seen": "2026-10-28",
+      "last_used": "2026-10-28",
+      "uses": 1
+    },
+    {
+      "kind": "前端规则",
+      "title": "列表默认视图先显示要处理的",
+      "surfaces": [
+        "后台",
+        "小程序"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "summary": "订单默认已支付、线索默认待跟进、工单默认待处理、会员默认有效、评价默认待回复；状态标签顺序等于处理顺序，0 数量弱化，终态排后或收进更多；状态标签与统计卡二选一；小程序“我的订单”默认进行中。",
+      "id": "PAT-164",
+      "sessions": [
+        "manual"
+      ],
+      "first_seen": "2026-10-28",
+      "last_used": "2026-10-28",
+      "uses": 1
     }
   ]
 }

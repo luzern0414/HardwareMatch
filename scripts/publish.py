@@ -36,7 +36,7 @@ def publish(folder: Path, stage: str) -> Path:
     if not source.is_file():
         raise FileNotFoundError(f"missing stage artifact: raw/{STAGE_PATHS[stage]}")
     errors: list[str] = []
-    # Prototypes render real interfaces with a 12px floor (design-standards.html 字体与字号); reading pages keep 14px.
+    # Prototypes render real interfaces with a 12px floor (Luz-Design visual-design.html 字体与字号); reading pages keep 14px.
     validate_light_html(source, errors, min_px=12.0 if stage == "prototype" else 14.0)
     if errors:
         raise ValueError("stage artifact fails the HTML contract: " + "; ".join(errors))

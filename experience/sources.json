@@ -91,30 +91,30 @@
     {
       "id": "SRC-004",
       "url": "https://element-plus.org/zh-CN/component/table.html",
-      "title": "桌面表格组件",
+      "title": "Element Plus 表格",
       "page_title": "Table 表格 | Element Plus",
       "domain": "element-plus.org",
-      "category": "页面结构",
-      "evidence": "用于展示多条结构类似的数据，可对数据进行排序、筛选、对比",
-      "borrowable": "表格列支持排序与筛选，日期与金额列独立",
+      "category": "组件状态",
+      "evidence": "表格支持固定表头、排序、表头筛选、多选、空数据、加载状态",
+      "borrowable": "表头筛选、固定表头、加载与空状态",
       "not_copyable": "示例数据",
-      "supports": "后台各类列表",
+      "supports": "F-301，F-201",
       "surfaces": [
         "后台"
       ],
       "industries": [
         "通用"
       ],
-      "captured_at": "2026-10-26",
+      "captured_at": "2026-10-28",
       "http_status": "200",
-      "luzcrawl_task": "luzcrawl-be9092f6-f120-4e5c-974f-51c272ff9f96",
+      "luzcrawl_task": "luzcrawl-8e1bcd5d-0477-4301-a3a7-cd5f67f763fc",
       "luzcrawl_status": "部分",
       "method": "LuzCrawl",
       "snapshot": {
-        "session": "001-健身房小程序和后台系统",
-        "ref": "REF-004",
-        "path": "01-system/crawl-snapshots/REF-004.json",
-        "sha256": "5da0a1246264aad55e61b587691ed2a5db023e7590225a2ee96bd09b71713fe1"
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-008",
+        "path": "01-system/crawl-snapshots/luzcrawl-8e1bcd5d-0477-4301-a3a7-cd5f67f763fc.json",
+        "sha256": "853e1c159abedcc40bc9466ead852b6bc91cf48a6115d4a361842604e7c64720"
       }
     },
     {
@@ -1324,6 +1324,710 @@
         "path": "01-system/crawl-snapshots/REF-067.json",
         "sha256": "a565e6d2ba7c52d40a7b006d728276face4e48a36d99bbcfa8b6954fa2a3059e"
       }
+    },
+    {
+      "id": "SRC-080",
+      "url": "https://www.xiaoshouyi.com/",
+      "title": "销售易首页",
+      "page_title": "Neocrm销售易(仁科互动)-CRM领导品牌-更多500强企业信赖的CRM",
+      "domain": "xiaoshouyi.com",
+      "category": "页面结构",
+      "evidence": "首页按“营销获客、销售管理、客户服务”业务域组织功能，每个业务域下并列智能体与客户360、线索到回款等功能入口",
+      "borrowable": "按业务域组织导航；智能体与业务模块并列而非替代",
+      "not_copyable": "品牌名、宣传文案、插图、配色",
+      "supports": "F-101，F-301",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-8cb33186-18f7-4df0-94e1-d210d8869de4",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-001",
+        "path": "01-system/crawl-snapshots/luzcrawl-8cb33186-18f7-4df0-94e1-d210d8869de4.json",
+        "sha256": "ec94711d58ade71847d72b79ac918a80cd48f88ddec258eadc60dd2867567b01"
+      }
+    },
+    {
+      "id": "SRC-081",
+      "url": "https://www.apollo.io/",
+      "title": "Apollo 首页",
+      "page_title": "The AI GTM System for Go-to-Market Teams | Apollo",
+      "domain": "apollo.io",
+      "category": "页面结构",
+      "evidence": "“single, complete view of every prospect and account”；Buying signals 与 Agents research, build lists 并列为产品层",
+      "borrowable": "企业统一视图：基本信息、采购信号、关系集中在一页",
+      "not_copyable": "品牌、英文文案、版式与插图",
+      "supports": "F-202，F-204",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-0cf490d0-21ad-4c7a-86a8-8ba5ba845c4c",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-002",
+        "path": "01-system/crawl-snapshots/luzcrawl-0cf490d0-21ad-4c7a-86a8-8ba5ba845c4c.json",
+        "sha256": "003ebd0b358347deac794eed2d1b9e77b44e52becc298698c1250ef0484e80f4"
+      }
+    },
+    {
+      "id": "SRC-082",
+      "url": "https://www.zoominfo.com/products/sales",
+      "title": "ZoomInfo Sales 产品页",
+      "page_title": "ZoomInfo Sales - B2B Sales Prospecting Software",
+      "domain": "zoominfo.com",
+      "category": "页面结构",
+      "evidence": "Prospecting 按属性筛选目标市场；Buyer intent 按购买信号排序优先级；CRM integration 一键导出",
+      "borrowable": "线索按采购信号评分排序；列表支持一键导出",
+      "not_copyable": "品牌、数据规模宣传、页面版式",
+      "supports": "F-301，F-307",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-104eda55-d47f-4d7a-b14c-2aed75438fee",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-003",
+        "path": "01-system/crawl-snapshots/luzcrawl-104eda55-d47f-4d7a-b14c-2aed75438fee.json",
+        "sha256": "dbf79121f4131b6fddccb1c008789772442dad83b238793365126821b09a714c"
+      }
+    },
+    {
+      "id": "SRC-083",
+      "url": "https://x.ant.design/docs/spec/introduce-cn",
+      "title": "Ant Design X RICH 设计范式",
+      "page_title": "RICH 设计范式简介 - Ant Design X",
+      "domain": "ant.design",
+      "category": "交互流程",
+      "evidence": "提出 RICH 范式：意图、角色、对话、混合界面四要素，讨论会话交互与图形界面融合",
+      "borrowable": "对话负责发起与追问，结构化结果以产物面板和档案页的图形界面呈现",
+      "not_copyable": "范式命名与配图",
+      "supports": "F-101，F-107",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-8b1a8918-d49b-4878-ab88-8dcf362d5a73",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-004",
+        "path": "01-system/crawl-snapshots/luzcrawl-8b1a8918-d49b-4878-ab88-8dcf362d5a73.json",
+        "sha256": "d04c7818d4c65bc88e1fce785c434581301ba61c64a583839df5290db4334cc7"
+      }
+    },
+    {
+      "id": "SRC-084",
+      "url": "https://x.ant.design/components/thought-chain-cn",
+      "title": "Ant Design X 思维链组件",
+      "page_title": "思维链 ThoughtChain - Ant Design X",
+      "domain": "ant.design",
+      "category": "组件状态",
+      "evidence": "思维链节点 status 支持 loading、success、error、abort；节点可折叠、可点击打开网页",
+      "borrowable": "工具调用卡的执行中、完成、失败、中止四态与折叠交互",
+      "not_copyable": "组件源码与示例文案",
+      "supports": "F-103",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-f74fdf7c-f617-48e1-a79c-6af01f803595",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-005",
+        "path": "01-system/crawl-snapshots/luzcrawl-f74fdf7c-f617-48e1-a79c-6af01f803595.json",
+        "sha256": "d87c6bf831618e12724a9172189cfa2f3c05202d9a792965c91890825b206484"
+      }
+    },
+    {
+      "id": "SRC-085",
+      "url": "https://x.ant.design/components/sender-cn",
+      "title": "Ant Design X 输入框组件",
+      "page_title": "输入框 Sender - Ant Design X",
+      "domain": "ant.design",
+      "category": "组件状态",
+      "evidence": "输入框支持默认、禁用、加载状态；submitType 区分 Enter 与 Shift+Enter；header 展开面板做文件上传",
+      "borrowable": "发送按钮在生成中变为停止；附件区在输入框上方展开",
+      "not_copyable": "组件源码与示例文案",
+      "supports": "F-101，F-102，F-104",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-2a4e0a94-54ba-4ee2-8d52-a5448929d79b",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-006",
+        "path": "01-system/crawl-snapshots/luzcrawl-2a4e0a94-54ba-4ee2-8d52-a5448929d79b.json",
+        "sha256": "902e02e5dd88abce685f6a1132365e22ed99987c353c6e8a87bc79e77aa6c76f"
+      }
+    },
+    {
+      "id": "SRC-086",
+      "url": "https://ant.design/docs/spec/colors-cn",
+      "title": "Ant Design 色彩",
+      "page_title": "色彩 - Ant Design",
+      "domain": "ant.design",
+      "category": "组件状态",
+      "evidence": "基础色板 12 色每色 10 阶（如 red-0 至 red-9），系统级与产品级两层色彩体系",
+      "borrowable": "主色取官方色板一列：品牌阶、悬停、按下、浅底四种状态色",
+      "not_copyable": "色板命名与插件推广",
+      "supports": "F-301，F-401",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-03331d39-3caf-497e-8d99-787fa316a00a",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-007",
+        "path": "01-system/crawl-snapshots/luzcrawl-03331d39-3caf-497e-8d99-787fa316a00a.json",
+        "sha256": "a8e984cb02ab70c7eeee43dd35c4f9017dbdc83d233dea3391ea4f981fb47571"
+      }
+    },
+    {
+      "id": "SRC-087",
+      "url": "https://tdesign.tencent.com/design/color",
+      "title": "TDesign 色彩",
+      "page_title": "Color 色彩 - TDesign",
+      "domain": "tencent.com",
+      "category": "组件状态",
+      "evidence": "品牌色 Blue7 #0052d9 对白对比度 6.54:1；功能色成功、错误、告警各 10 阶",
+      "borrowable": "品牌阶以白字对比达标为准；状态色独立成列",
+      "not_copyable": "腾讯蓝品牌名",
+      "supports": "F-301，F-402",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-92c12f14-4bc1-4ea0-8e7f-b08505f66867",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-009",
+        "path": "01-system/crawl-snapshots/luzcrawl-92c12f14-4bc1-4ea0-8e7f-b08505f66867.json",
+        "sha256": "fb29632530ae09f11a20ac60fa2e94be90188889298e552883a7c344e4ddd2c9"
+      }
+    },
+    {
+      "id": "SRC-088",
+      "url": "https://element-plus.org/zh-CN/component/tag.html",
+      "title": "Element Plus 标签",
+      "page_title": "Tag 标签 | Element Plus",
+      "domain": "element-plus.org",
+      "category": "组件状态",
+      "evidence": "标签提供 primary、success、info、warning、danger 类型与 light 浅色效果",
+      "borrowable": "状态标签采用浅底深字的 light 效果",
+      "not_copyable": "示例文案",
+      "supports": "F-301，F-402",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-05a4cc39-ff7f-430a-bf1a-9b3f9ca42315",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-010",
+        "path": "01-system/crawl-snapshots/luzcrawl-05a4cc39-ff7f-430a-bf1a-9b3f9ca42315.json",
+        "sha256": "2ad80c2b4997204bae985c86dfde42372c7c58528916fadcdd773924a82dc16c"
+      }
+    },
+    {
+      "id": "SRC-089",
+      "url": "https://www.hubspot.com/products/sales",
+      "title": "HubSpot Sales Hub",
+      "page_title": "AI Sales Software for Pipeline & Closed Deals | HubSpot",
+      "domain": "hubspot.com",
+      "category": "页面结构",
+      "evidence": "销售软件首页以“More selling. Less everything else.”为主张，产品导航分 Products、Solutions、Pricing",
+      "borrowable": "线索跟进与销售动作集中在同一记录页",
+      "not_copyable": "品牌、文案、配色",
+      "supports": "F-301，F-303",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-4e2f8e2b-7bc4-44b1-a06e-702fbf10bf55",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-011",
+        "path": "01-system/crawl-snapshots/luzcrawl-4e2f8e2b-7bc4-44b1-a06e-702fbf10bf55.json",
+        "sha256": "743b86bc124a1e83fd0de9520b5b0e834599a42b658e68a0c65bc7bf49f82ca3"
+      }
+    },
+    {
+      "id": "SRC-090",
+      "url": "https://x.ant.design/components/conversations-cn",
+      "title": "Ant Design X 管理对话",
+      "page_title": "管理对话 Conversations - Ant Design X",
+      "domain": "ant.design",
+      "category": "交互流程",
+      "evidence": "会话列表用于切换历史对话、受控选中当前会话，支持新建与分组",
+      "borrowable": "左侧历史对话列表，顶部新建，当前会话高亮",
+      "not_copyable": "组件源码与示例文案",
+      "supports": "F-108",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-ec2a7b78-6eff-45ec-a8ef-683a80eba998",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-012",
+        "path": "01-system/crawl-snapshots/luzcrawl-ec2a7b78-6eff-45ec-a8ef-683a80eba998.json",
+        "sha256": "b1fa70b88fb554fdcfc9f31c2004ad41e5b3a4bf16e5fa7b89a5d6e704d11f73"
+      }
+    },
+    {
+      "id": "SRC-091",
+      "url": "https://www.salesforce.com/sales/",
+      "title": "Salesforce Sales Cloud",
+      "page_title": "Sales Software & Solutions Powered by AI | Salesforce",
+      "domain": "salesforce.com",
+      "category": "页面结构",
+      "evidence": "Sales Cloud 主张“每一次客户互动转化为收入”，客户上下文与智能体行动在一条销售流程中",
+      "borrowable": "线索详情汇集需求、联系人、跟进记录",
+      "not_copyable": "品牌、数据宣传、文案",
+      "supports": "F-302，F-304",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-25d9c59f-2cf1-4c01-9284-a327989bb832",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-013",
+        "path": "01-system/crawl-snapshots/luzcrawl-25d9c59f-2cf1-4c01-9284-a327989bb832.json",
+        "sha256": "69c83c198034076a2d5afb87806adb2520ae4ebb8430bbe011e3642f210d9b93"
+      }
+    },
+    {
+      "id": "SRC-092",
+      "url": "https://element-plus.org/zh-CN/component/empty.html",
+      "title": "Element Plus 空状态",
+      "page_title": "Empty 空状态 | Element Plus",
+      "domain": "element-plus.org",
+      "category": "组件状态",
+      "evidence": "空状态组件由图片、描述与可选操作按钮组成",
+      "borrowable": "空状态：一句话写对象 + 一个行动",
+      "not_copyable": "默认插图",
+      "supports": "F-201，F-301",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-d28f1d84-5938-45a3-bed6-a419d706b3c7",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-014",
+        "path": "01-system/crawl-snapshots/luzcrawl-d28f1d84-5938-45a3-bed6-a419d706b3c7.json",
+        "sha256": "dbb38fd12517893126d5647e5249864e56a818763997ab1d956887fdea8dee8a"
+      }
+    },
+    {
+      "id": "SRC-093",
+      "url": "https://x.ant.design/docs/spec/confirm-cn",
+      "title": "Ant Design X 确认",
+      "page_title": "确认 - Ant Design X",
+      "domain": "ant.design",
+      "category": "交互流程",
+      "evidence": "显性确认在错误成本高的操作前暂停，等用户明确回应；隐性确认在回复中复述识别到的关键信息",
+      "borrowable": "需要选择企业或登录时停在交接卡片等用户处理；开始研究时复述识别出的产品与关键词",
+      "not_copyable": "文案与配图",
+      "supports": "F-105，F-101",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-59dc1ffc-d793-450e-bad4-be1b58924480",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-015",
+        "path": "01-system/crawl-snapshots/luzcrawl-59dc1ffc-d793-450e-bad4-be1b58924480.json",
+        "sha256": "6d5b6890e43d5ae3c7d6cf1cae761ea469146bcd9a3335f405e54fe69866f7b6"
+      }
+    },
+    {
+      "id": "SRC-094",
+      "url": "https://ant.design/docs/spec/feedback-cn",
+      "title": "Ant Design 反馈",
+      "page_title": "反馈 - Ant Design",
+      "domain": "ant.design",
+      "category": "交互流程",
+      "evidence": "警告提示不打断操作、停留顶部可关闭；通知用于系统主动推送；徽标数用于聚合提示",
+      "borrowable": "采集工具未就绪时页面顶部常驻提示；任务等待处理时在会话列表加标记",
+      "not_copyable": "文案",
+      "supports": "F-104，F-401",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-fa63eb3c-f6eb-4306-b36c-450b09ba5da4",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-016",
+        "path": "01-system/crawl-snapshots/luzcrawl-fa63eb3c-f6eb-4306-b36c-450b09ba5da4.json",
+        "sha256": "6464329adba3fdd1ecaf16f9c25f923d0f3caf79f307e80574a8e0520bb08db7"
+      }
+    },
+    {
+      "id": "SRC-095",
+      "url": "https://www.nngroup.com/articles/progress-indicators/",
+      "title": "NN/g 进度指示",
+      "page_title": "Progress Indicators Make a Slow System Less Insufferable - NN/G",
+      "domain": "nngroup.com",
+      "category": "交互流程",
+      "evidence": "动态进度指示（完成比例、旋转等待）降低不确定感，用户愿意等待更久；系统状态可见是首要可用性原则",
+      "borrowable": "长时间研究显示当前阶段与已完成步骤、已读公告数",
+      "not_copyable": "文章文字与配图",
+      "supports": "F-103",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-f2fc5de5-3250-4f7d-8b23-82dc81431191",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "005-商机雷达获客系统前端重设计",
+        "ref": "REF-017",
+        "path": "01-system/crawl-snapshots/luzcrawl-f2fc5de5-3250-4f7d-8b23-82dc81431191.json",
+        "sha256": "262869dbf9ce3da84e7a460d228c4a6a8aab66655cad78fa5f83851cf290f7ab"
+      }
+    },
+    {
+      "url": "https://ant.design/docs/spec/font-cn",
+      "title": "Ant Design 字体规范",
+      "domain": "ant.design",
+      "category": "前端规则",
+      "evidence": "后台基准字号 14、行高 22，一个系统字号控制在 3–5 种，字重以 400 与 500/600 区分层级",
+      "borrowable": "后台正文与表格 14 像素、行高 22 的密度底线",
+      "not_copyable": "文档文字、示例图与组件库的视觉风格",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_task": "batch-f38ef88f-24ad-43e0-9ac2-4550f5182afc",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "id": "SRC-096"
+    },
+    {
+      "url": "https://ant.design/docs/spec/data-format-cn",
+      "title": "Ant Design 数据格式规范",
+      "domain": "ant.design",
+      "category": "前端规则",
+      "evidence": "数字、金额、日期、时间的展示格式：金额两位小数与千分位、日期统一格式、单位与数值分开",
+      "borrowable": "导出与表格的数字、金额、日期格式",
+      "not_copyable": "文档文字、示例图与组件库的视觉风格",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_task": "batch-f38ef88f-24ad-43e0-9ac2-4550f5182afc",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "id": "SRC-097"
+    },
+    {
+      "url": "https://arco.design/react/components/table",
+      "title": "Arco Design 表格",
+      "domain": "arco.design",
+      "category": "组件状态",
+      "evidence": "表格支持列对齐、固定列、列设置、筛选与排序、空状态与加载状态",
+      "borrowable": "列设置隐藏空列、表头筛选",
+      "not_copyable": "文档文字、示例图与组件库的视觉风格",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_task": "batch-f38ef88f-24ad-43e0-9ac2-4550f5182afc",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "id": "SRC-098"
+    },
+    {
+      "url": "https://tdesign.tencent.com/design/fonts",
+      "title": "TDesign 字体规范",
+      "domain": "tdesign.tencent.com",
+      "category": "前端规则",
+      "evidence": "腾讯后台字阶以 14 为正文基准，按用途规定标题、正文、辅助文字的字号与行高",
+      "borrowable": "后台字阶与辅助文字只用于次要信息",
+      "not_copyable": "文档文字、示例图与组件库的视觉风格",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_task": "batch-f38ef88f-24ad-43e0-9ac2-4550f5182afc",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "id": "SRC-099"
+    },
+    {
+      "url": "https://tdesign.tencent.com/vue-next/components/table",
+      "title": "TDesign 表格",
+      "domain": "tdesign.tencent.com",
+      "category": "组件状态",
+      "evidence": "表格的对齐方式、行高尺寸档位、筛选与排序、列配置、空与加载状态",
+      "borrowable": "表格行高档位与列配置",
+      "not_copyable": "文档文字、示例图与组件库的视觉风格",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_task": "batch-f38ef88f-24ad-43e0-9ac2-4550f5182afc",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "id": "SRC-100"
+    },
+    {
+      "url": "https://semi.design/zh-CN/show/table",
+      "title": "Semi Design 表格",
+      "domain": "semi.design",
+      "category": "组件状态",
+      "evidence": "表格尺寸（默认、中、小）、列对齐、筛选、排序与分页的组合方式",
+      "borrowable": "紧凑模式行高",
+      "not_copyable": "文档文字、示例图与组件库的视觉风格",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_task": "batch-f38ef88f-24ad-43e0-9ac2-4550f5182afc",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "id": "SRC-101"
+    },
+    {
+      "url": "https://carbondesignsystem.com/components/data-table/usage/",
+      "title": "IBM Carbon 数据表格用法",
+      "domain": "carbondesignsystem.com",
+      "category": "组件状态",
+      "evidence": "数据表格行高分多档（紧凑到宽松），表头行与数据行同高，工具栏高度与行高匹配；文字左对齐、数字右对齐",
+      "borrowable": "行高档位、工具栏与行高匹配、金额右对齐",
+      "not_copyable": "文档文字、示例图与组件库的视觉风格",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_task": "batch-f38ef88f-24ad-43e0-9ac2-4550f5182afc",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "id": "SRC-102"
+    },
+    {
+      "url": "https://polaris.shopify.com/components/tables/index-table",
+      "title": "Shopify Polaris 索引表格",
+      "domain": "polaris.shopify.com",
+      "category": "页面结构",
+      "evidence": "商家后台列表用状态标签页加筛选加批量操作，数字列右对齐，第一列是可识别的对象名",
+      "borrowable": "状态标签页、第一列放可识别标识",
+      "not_copyable": "文档文字、示例图与组件库的视觉风格",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_task": "batch-f38ef88f-24ad-43e0-9ac2-4550f5182afc",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "id": "SRC-103"
+    },
+    {
+      "url": "https://atlassian.design/components/dynamic-table/usage",
+      "title": "Atlassian 动态表格",
+      "domain": "atlassian.design",
+      "category": "组件状态",
+      "evidence": "表格排序、分页、空状态与加载状态的用法与禁止事项",
+      "borrowable": "空状态与加载状态",
+      "not_copyable": "文档文字、示例图与组件库的视觉风格",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_task": "batch-f38ef88f-24ad-43e0-9ac2-4550f5182afc",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "id": "SRC-104"
+    },
+    {
+      "url": "https://www.nngroup.com/articles/data-tables/",
+      "title": "NN/g 数据表格",
+      "domain": "nngroup.com",
+      "category": "交互流程",
+      "evidence": "数据表格服务四类任务：查找记录、比较数据、查看或编辑单行、对多行操作；文字左对齐、数字右对齐便于比较",
+      "borrowable": "按任务设计表格列、对齐与批量操作",
+      "not_copyable": "文档文字、示例图与组件库的视觉风格",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_task": "batch-f38ef88f-24ad-43e0-9ac2-4550f5182afc",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "id": "SRC-105"
+    },
+    {
+      "url": "https://www.nngroup.com/articles/dashboards-preattentive/",
+      "title": "NN/g 驾驶舱与前注意特征",
+      "domain": "nngroup.com",
+      "category": "页面结构",
+      "evidence": "驾驶舱要让人一眼看出异常与变化：用位置、长度、颜色突出重点，避免仪表盘指针图等占空间又难读的图形",
+      "borrowable": "驾驶舱只突出计算后的变化与异常",
+      "not_copyable": "文档文字、示例图与组件库的视觉风格",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_task": "batch-f38ef88f-24ad-43e0-9ac2-4550f5182afc",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "id": "SRC-106"
+    },
+    {
+      "url": "https://www.nngroup.com/articles/filters-vs-facets/",
+      "title": "NN/g 筛选与分面",
+      "domain": "nngroup.com",
+      "category": "交互流程",
+      "evidence": "筛选与分面的区别；已生效的筛选要可见、可单独移除，提供清空；选项显示结果数量，避免选出空结果",
+      "borrowable": "已生效筛选标签与清空、0 数量选项处理",
+      "not_copyable": "文档文字、示例图与组件库的视觉风格",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_task": "batch-f38ef88f-24ad-43e0-9ac2-4550f5182afc",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "id": "SRC-107"
     }
   ]
 }

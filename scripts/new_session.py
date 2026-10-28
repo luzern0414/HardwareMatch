@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create the next immutable-numbered Luz Design session workspace."""
+"""Create the next immutable-numbered Luz System session workspace."""
 from __future__ import annotations
 
 import argparse
@@ -292,7 +292,7 @@ def create_session(
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Create the next Luz Design session folder.")
+    parser = argparse.ArgumentParser(description="Create the next Luz System session folder.")
     parser.add_argument("--name", required=True, help="Readable session title")
     parser.add_argument("--modes", default="", help="system, hardware (system,hardware for both), or none; visual and prototype are added later with add_mode.py")
     parser.add_argument("--session-kind", choices=SESSION_KINDS, default="general")

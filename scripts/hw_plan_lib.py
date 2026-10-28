@@ -1,6 +1,6 @@
 """硬件选型方案（plan.json）的读取、计算与校验。hw_render_plan.py 与 hw_build.py 共用。
 
-plan.json 结构见 references/plan-schema.md。
+plan.json 结构见 references/hardware/plan-schema.md。
 """
 from __future__ import annotations
 

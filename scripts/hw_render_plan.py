@@ -3,7 +3,7 @@
 用法：
   py -X utf8 scripts/hw_render_plan.py <plan.json> <out.html> [--force]
 
-先运行 plan_lib.validate；有错误时停止（--force 仅用于调试，交付前必须零错误）。
+先运行 hw_plan_lib.validate；有错误时停止（--force 仅用于调试，交付前必须零错误）。
 版式遵循 Luz-Design references/file-design.html 的网页文件规则：
 唯一 h1、各节以 h2 开头、字号只用 32/24/20/16/14、字重 400/600、单字体族、浅色、一个主色。
 """

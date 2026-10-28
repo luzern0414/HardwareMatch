@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the flattened Luz Design skill package and root-level sessions."""
+"""Validate the flattened Luz System skill package and root-level sessions."""
 from __future__ import annotations
 
 import argparse
@@ -41,8 +41,10 @@ REQUIRED = [
     "scripts/publish.py",
     "scripts/experience.py",
     "scripts/test_session_flow.py",
+    "scripts/test_experience.py",
     "experience/sources.json",
     "experience/patterns.json",
+    "experience/notes.json",
     "experience/catalog.md",
     "references/ui-standards.html",
     "references/system-design.html",
@@ -77,7 +79,7 @@ RULE_PAGES = [
 ]
 TEMPLATE_NAMES = ("brief.md", "research.md", "module-intake.html", "system-architecture.html", "system-design.html", "visual-board.html", "interactive-prototype.html", "approvals.json", "manifest.json",)
 REFERENCE_SUBDIRS = {"hardware"}
-# The skill keeps four folders (agents, references, scripts, experience); sessions are outputs and live in OUTPUT_ROOT.
+# The skill keeps five folders (agents, references, scripts, experience, examples); sessions are outputs and live in OUTPUT_ROOT.
 ALLOWED_TOP_LEVEL = {".git", ".gitignore", "LICENSE", "NOTICE", "README.md", "SKILL.md", "WORKFLOW.md", "agents", "references", "scripts", "experience", "examples"}
 RULE_TITLES = {f: t for f, _, t in RULE_PAGES}
 TITLE_SEPARATOR_RE = re.compile(r"[,，:：;；|｜/／·・、\\\-–—]")
@@ -137,6 +139,22 @@ def is_linear_icon(icon) -> bool:
     )
 
 
+TOKEN_TAGS = {"code", "kbd"}
+
+
+def prose_text(node) -> str:
+    """Visible text with <code>/<kbd> tokens, scripts and styles removed."""
+    parts = []
+    for child in node.children:
+        if isinstance(child, str):
+            parts.append(child)
+        elif child.tag in TOKEN_TAGS:
+            parts.append(" ")
+        elif child.tag not in {"script", "style"}:
+            parts.append(prose_text(child))
+    return re.sub(r"\s+", " ", "".join(parts)).strip()
+
+
 def local_targets(text: str) -> list[str]:
     targets = []
     for raw in LINK_RE.findall(text) + HTML_LINK_RE.findall(text):
@@ -177,12 +195,13 @@ def validate_rule_page(
     if body is None:
         errors.append(f"{rel} is missing body")
         return
-    visible = normalized_visible_text(body)
+    # Prose stays Chinese; technical tokens (99+, Esc, YYYY-MM-DD, API names) are allowed only inside <code> or <kbd>.
+    visible = prose_text(body)
     latin = re.search(r"[A-Za-z]", visible)
     if latin:
         start = max(0, latin.start() - 18)
         end = min(len(visible), latin.end() + 34)
-        errors.append(f"visible Latin letters are not allowed in {rel}: {visible[start:end]!r}")
+        errors.append(f"visible Latin letters outside <code>/<kbd> are not allowed in {rel}: {visible[start:end]!r}")
 
     for node in iter_nodes(body):
         for attr in HUMAN_TEXT_ATTRIBUTES:
@@ -279,7 +298,7 @@ def validate_rule_page(
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Validate the flattened Luz Design skill and root-level sessions.")
+    parser = argparse.ArgumentParser(description="Validate the flattened Luz System skill and root-level sessions.")
     parser.add_argument("--strict-production", action="store_true", help="Require strict session structure and live source verification")
     args = parser.parse_args(argv)
     errors: list[str] = []
@@ -288,7 +307,7 @@ def main(argv: list[str] | None = None) -> int:
             errors.append(f"missing required file: {rel}")
     for item in ROOT.iterdir():
         if item.name not in ALLOWED_TOP_LEVEL and item.name not in {"__pycache__", ".pytest_cache"}:
-            errors.append(f"unexpected top-level item in the skill: {item.name} (the skill keeps only LICENSE, NOTICE, README.md, SKILL.md, WORKFLOW.md, agents, references, scripts, experience)")
+            errors.append(f"unexpected top-level item in the skill: {item.name} (the skill keeps only LICENSE, NOTICE, README.md, SKILL.md, WORKFLOW.md, agents, references, scripts, experience, examples)")
     for item in (ROOT / "references").iterdir() if (ROOT / "references").is_dir() else []:
         if item.is_dir() and item.name not in REFERENCE_SUBDIRS:
             errors.append(f"references must stay flat: {item.name}/")
@@ -372,11 +391,16 @@ def main(argv: list[str] | None = None) -> int:
             errors.append(f"possible API key in {path.relative_to(ROOT)}")
 
     sessions = [path for path in OUTPUT_ROOT.iterdir() if path.is_dir() and SESSION_RE.match(path.name)] if OUTPUT_ROOT.is_dir() else []
+    warnings: list[str] = []
     for session in sorted(sessions):
+        session_warnings: list[str] = []
         errors.extend(
             f"{session.name}: {error}"
-            for error in validate_session(session, strict=args.strict_production, live_sources=args.strict_production)
+            for error in validate_session(
+                session, strict=args.strict_production, live_sources=args.strict_production, warnings=session_warnings
+            )
         )
+        warnings.extend(f"{session.name}: {warning}" for warning in dict.fromkeys(session_warnings))
 
     from new_session import read_template
     templates: dict[str, str] = {}
@@ -403,6 +427,8 @@ def main(argv: list[str] | None = None) -> int:
     from experience import check as check_experience
     errors.extend(f"experience: {e}" for e in check_experience())
 
+    for warning in warnings:
+        print("WARN", warning)
     if errors:
         print(f"FAIL: {len(errors)} issue(s)")
         for error in errors:

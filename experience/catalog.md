@@ -1,6 +1,36 @@
-# Luz Design 经验库
+# Luz System 经验库
 
-新项目开始前先读本页并运行 `py -X utf8 scripts/experience.py search`；能复用的来源用 `reuse` 复制进会话，只为缺口做新的调研。交付后运行 `harvest` 与 `add` 沉淀新经验。本页由 `scripts/experience.py` 生成，修改请改 JSON。
+每次调用开始先读本页并运行 `py -X utf8 scripts/experience.py search`；能复用的来源用 `reuse` 复制进会话，只为缺口做新的调研。每次调用结束用 `note` 记下偏好、教训与有效信息（同一主题替换原条），交付后运行 `harvest` 与 `add` 沉淀新经验。本页由 `scripts/experience.py` 生成，修改请改 JSON。
+
+## 偏好（19/60）
+
+- **admin-density-14px**：后台正文与表格 14 像素、行高 22，辅助说明 12 像素只给时间、单位等次要信息；表格行高 44–48，1440×900 首屏至少 10 行，统计卡不高于 112（用户 2026-10-28 反馈字太小、留白多、密度低；参考 Ant Design、TDesign、Carbon）　确认 1 次，最近 2026-10-28
+- **dashboard-computed-metrics**：驾驶舱先分运营型与分析型，指标给计算后的变化、比率、排名与异常，长期为 0 的指标合并为一行状态，数据少于 3 个点不画折线、1 类不画环图，卡片时间范围服从页面（用户 2026-10-28 要求）　确认 1 次，最近 2026-10-28
+- **default-view-important-first**：每个列表写明默认视图并先显示最需要处理或最有价值的子集（订单已支付、线索待跟进、工单待处理、会员有效、评价待回复），“全部”作可选项；状态标签按处理顺序排列，0 数量弱化，终态排后（用户 2026-10-28 要求，商机雷达后台实测）　确认 1 次，最近 2026-10-28
+- **drop-empty-columns**：当前数据下整列为空的列默认隐藏到列设置，每行相同的列改为在筛选摘要写一次，不放“—”占位副标题；没有信息量的元素删除或收起（用户 2026-10-28 要求）　确认 1 次，最近 2026-10-28
+- **export-cleaned-chinese**：导出的是清洗归类后的中文数据：中文业务表头、枚举翻译、统一日期与金额格式、去掉内部编号与空列，范围等于当前筛选，文件名写中文标题与范围，版式按表格文件规范（用户 2026-10-28 要求）　确认 1 次，最近 2026-10-28
+- **no-title-repeat-nav**：页面顶部不放与导航高亮项同名的标题，顶部留给操作与筛选；导航分组不与唯一子项同名；卡片不复述页面标题与时间范围（用户 2026-10-28 要求）　确认 1 次，最近 2026-10-28
+- **research-component-libraries**：设计后台、小程序、网站界面前用 Luz-Crawl 查开源与大厂组件库（Ant Design、TDesign、Arco、Semi、Element Plus、Vant、NutUI、Carbon、Polaris、NN/g 等）的规范页与组件页，写明参考了哪家的哪个组件（用户 2026-10-28 要求）　确认 1 次，最近 2026-10-28
+- **一个入口**：同一页面通向同一目的地只放一个入口；功能分核心、信息、营销、辅助四层；同一事实在卡片与页面内只说一次（用户纠正）　确认 1 次，最近 2026-10-28
+- **一物一图**：不同对象不共用同一个图标，同一对象在全系统用同一个图标；菜单与功能按钮配线性图标（用户纠正）　确认 1 次，最近 2026-10-28
+- **低操作成本**：降低操作成本：行内开关、即输即查、表头筛选；只有影响用户、金额或不可撤销的修改才确认（用户偏好）　确认 1 次，最近 2026-10-28
+- **单一字体栈**：一个产出只用一条字体栈，界面文字不小于 12 像素（网站与阅读页 14），禁用斜体（用户偏好）　确认 1 次，最近 2026-10-28
+- **卡片等高**：同一行卡片等高，内容填满或垂直居中，不留大块底部空白；指标名大于图标（用户纠正）　确认 1 次，最近 2026-10-28
+- **后台浅底**：管理后台底色用极浅灰或白，卡片白底，层次靠留白与细线而不是深色块（用户偏好）　确认 1 次，最近 2026-10-28
+- **居中悬浮面板**：详情、编辑、确认用居中悬浮面板，不用贴右侧的抽屉，视觉重心在中间（用户纠正）　确认 1 次，最近 2026-10-28
+- **扁平线性风格**：界面用扁平线性风格：纯色或白底线稿，不用立体、渐变、纹理与发光（用户多次纠正）　确认 1 次，最近 2026-10-28
+- **表格居中**：表格对齐与缩进：表头居中；单元格左右内边距不小于 16 像素；长文本左对齐并收紧列宽落在表头下方；状态、日期、负责人、操作等短值居中；金额右对齐、等宽数字、单位写在表头（用户 2026-10-28 纠正，替换原“表头与数据全部居中”）　确认 2 次，最近 2026-10-28
+- **配置闭环**：小程序展示的所有运营内容（横幅、套餐、公告、活动等）都要在后台完整增删改排序，不写死，数据只存一份（用户要求）　确认 1 次，最近 2026-10-28
+- **驾驶舱按价值排序**：数据驾驶舱按价值排序：经营结果、增长、活跃在前，效率与风险其次，退款等负向数据和长期变化小的指标放最后（用户纠正）　确认 1 次，最近 2026-10-28
+- **默认头像**：无照片时用按用户标识固定的卡通动物，未登录或系统用户用线性图标；严禁首字母、姓氏等文字头像（用户纠正）　确认 1 次，最近 2026-10-28
+
+## 教训（1/120）
+
+- **规范页技术记号**：规范页正文用中文，99+、Esc、YYYY-MM-DD 等技术记号放进 code 或 kbd 元素；“不要字母”指的是不用文字头像，不是页面里禁止一切拉丁字母（用户澄清，validate_skill.py 已改为只放行 code 与 kbd）　确认 1 次，最近 2026-10-28
+
+## 有效信息（1/120）
+
+- **component-library-reference**：组件库参考清单在 references/ui-standards.html“参考组件库”；2026-10-28 已采集 Ant Design 字体与数据格式、Arco、TDesign 字体与表格、Semi、Element Plus、Carbon、Polaris、Atlassian 表格及 NN/g 数据表格、驾驶舱、筛选共 16 页（LuzCrawl 批次 batch-f38ef88f）（Luz-Crawl 调研 009）　确认 1 次，最近 2026-10-28
 
 ## 功能
 
@@ -431,7 +461,7 @@
 - 要点：页面标题与主操作 → 筛选卡片（最多 4 个常用条件，查询与重置） → 表格卡片（数量统计、表格、分页）
 - 表格：表头浅底粗体，只有横线，数字右对齐，空值“—”，操作列最多 3 个文字按钮，不可用操作禁用并说明
 - 状态：加载、空结果（附清空筛选）、网络错误（附重新加载）
-- 依据：[后台高级表格](https://procomponents.ant.design/components/table)；[桌面表格组件](https://element-plus.org/zh-CN/component/table.html)
+- 依据：[后台高级表格](https://procomponents.ant.design/components/table)；[Element Plus 表格](https://element-plus.org/zh-CN/component/table.html)
 
 ### PAT-028 后台详情悬浮面板与确认弹窗
 - 适用：后台；行业：通用；使用 1 次，最近 2026-10-26
@@ -526,6 +556,14 @@
 - 反例：折线锯齿生硬、线下渐变面积、深色网格
 - 依据：维基百科图表垃圾（浓重网格与装饰渐变不传达数据）、苹果人机界面指南图表数据（保持简单）
 - 依据：[维基百科 图表垃圾](https://en.wikipedia.org/wiki/Chartjunk)；[苹果人机界面指南 图表数据](https://developer.apple.com/design/human-interface-guidelines/charting-data)
+
+## 色彩
+
+### PAT-157 B2B获客·商机雷达获客系统前端重设计配色
+- 适用：后台、通用；行业：B2B获客；使用 1 次，最近 2026-10-28
+- 要点：企业服务气质“信赖、专业、探索”：主色 Ant Design 极客蓝一列，品牌阶 #2f54eb（白字 5.85:1）、悬停 #597ef7、按下 #1d39c4、浅底 #f0f5ff；信号辅色金盏花 #874d00 配 #fffbe6，只用于“正在招标”等浅底标签；页面底 #f5f6f8，卡片白。用户在三个候选（极客蓝、TDesign 蓝、Ant 青）中选定。
+- 令牌：brand #2f54eb；hover #597ef7；press #1d39c4；tint #f0f5ff；signal #874d00；signal-tint #fffbe6；page #f5f6f8
+- 对比度：brand-白字 5.85:1；press-于-tint 7.89:1；signal-于-tint 10.10:1
 
 ## 字阶
 
@@ -646,6 +684,18 @@
 - 依据：尼尔森诺曼集团图标可用性：图标必须配可见文字，导航尤其如此
 - 依据：[尼尔森诺曼集团 图标可用性](https://www.nngroup.com/articles/icon-usability)；[碳设计体系 图标用法](https://carbondesignsystem.com/elements/icons/usage)
 
+### PAT-160 智能体工作台的研究过程卡
+- 适用：通用；行业：B2B获客；使用 1 次，最近 2026-10-28
+- 要点：回答上方一张过程卡：阶段名 + 本地每秒计时（后端只在保存点更新耗时）+ 待读数量；每次工具调用一行可折叠，失败默认展开；需要登录、验证或选择企业时在过程卡下方出现交接卡（我已处理，继续 / 跳过该网站 / 选择这家企业）；完成后过程卡收为一行汇总。
+
+### PAT-163 表格对齐与缩进
+- 适用：后台、通用；行业：通用；使用 1 次，最近 2026-10-28
+- 要点：表头居中；数据单元格左右内边距不小于 16 像素；长文本左对齐并按内容收紧列宽，使文字块落在表头下方；状态、日期、负责人、操作等短值居中；金额右对齐、等宽数字、单位写在表头；表头行与数据行同高（Carbon、Ant Design、NN/g）。
+
+### PAT-164 列表默认视图先显示要处理的
+- 适用：后台、小程序；行业：通用；使用 1 次，最近 2026-10-28
+- 要点：订单默认已支付、线索默认待跟进、工单默认待处理、会员默认有效、评价默认待回复；状态标签顺序等于处理顺序，0 数量弱化，终态排后或收进更多；状态标签与统计卡二选一；小程序“我的订单”默认进行中。
+
 ## 设计理念
 
 ### PAT-036 健身房会员系统：卡—脸—门
@@ -716,6 +766,10 @@
 - 改法：改为首屏一个主行动，滚出视区后由吸顶栏承接，同一时刻只出现一个
 - 依据：[原子设计方法 第二章](https://atomicdesign.bradfrost.com/chapter-2)
 
+### PAT-161 智能体产品的驾驶舱可以只汇总智能体产出
+- 适用：后台；行业：B2B获客；使用 1 次，最近 2026-10-28
+- 要点：获客智能体的概览按价值排列：新增线索、高分线索、已成交 → 新增企业、已读公告 → 研究任务；等待处理与失败任务、站点成功率放在风险与异常，等待处理大于 0 时顶部出现可关闭预警。
+
 ## 调研经验
 
 ### PAT-039 LuzCrawl 采集节奏
@@ -759,6 +813,18 @@
 - 适用：表格；行业：企业服务；使用 1 次，最近 2026-10-28
 - 要点：Bing 结果链接是 ck 跳转，u 参数去掉 a1 前缀后按 urlsafe base64 解码得到真实地址再 batch；可读来源：beefed.ai UAT 签署清单、Worktile/PingCode 验收范围与延期类型（需求型、资源型、决策型）、ERP 准出标准与客户确认双判断、ONES 需求验收五字段、CSDN 上线前检查清单、支道 ERP 验收规范；search --read 1 会读到必应帮助页，不可依赖
 
+### PAT-158 系统设计网页的模块内容只能是短标签
+- 适用：后台、通用；行业：B2B获客；使用 1 次，最近 2026-10-28
+- 要点：validate_session 要求模块内容区每个文字元素带 label/value 类（类名以 - 或 _ 连接，如 cell-value），不超过 32 字、不含句末标点，且不含“说明、详情、流程、原因、提示”等词；长内容按标点拆成短语行，页面名避免“详情”（改用“主页”）。模块名不能含“数据来源”，可用“数据源”。
+
+### PAT-159 研究来源要通过验证器的实时访问检查
+- 适用：通用；行业：B2B获客；使用 1 次，最近 2026-10-28
+- 要点：验证器用非浏览器 UA 实时请求每个来源 URL，状态码与访问日期都要与记录一致；help.openai.com 这类站点返回 403，会被判失败，调研时先用 validate_session.fetch_source_status 预检。LuzCrawl 状态写“成功”或“部分”（部分需要 content.json 的 valid_content 为 true）。
+
+### PAT-162 设计前先查开源与大厂组件库
+- 适用：后台、小程序、网站；行业：通用；使用 1 次，最近 2026-10-28
+- 要点：设计后台、小程序、网站界面前，用 LuzCrawl 打开对应组件库的规范页与组件页，记录参考了哪一家的哪个组件，只借鉴做法不照搬风格。中后台：Ant Design（含 ProComponents 高级表格）、TDesign、Arco Design、Semi Design、Element Plus；移动与小程序：Vant、NutUI、TDesign 小程序、微信小程序设计指南；数据表格与密度：IBM Carbon、Atlassian、Shopify Polaris；可用性研究：NN/g；通用网页：Material 3、Fluent 2、shadcn/ui、GitHub Primer。清单在 references/ui-standards.html“参考组件库”。
+
 ## 来源
 
 | 编号 | 类别 | 来源 | 可借鉴 | 采集日期 | 复用 |
@@ -766,7 +832,7 @@
 | SRC-001 | 交互流程 | [微信小程序设计指南](https://developers.weixin.qq.com/miniprogram/design/) | 标签独立、二级页返回、异常状态必须给出下一步 | 2026-10-26 | 可复用快照 |
 | SRC-002 | 页面结构 | [后台高级表格](https://procomponents.ant.design/components/table) | 列表页按搜索表单 → 工具栏 → 表格 → 批量操作组织 | 2026-10-26 | 可复用快照 |
 | SRC-003 | 页面结构 | [后台高级布局](https://procomponents.ant.design/components/layout) | 左侧菜单可收起、顶部仅放门店与账号 | 2026-10-26 | 可复用快照 |
-| SRC-004 | 页面结构 | [桌面表格组件](https://element-plus.org/zh-CN/component/table.html) | 表格列支持排序与筛选，日期与金额列独立 | 2026-10-26 | 可复用快照 |
+| SRC-004 | 组件状态 | [Element Plus 表格](https://element-plus.org/zh-CN/component/table.html) | 表头筛选、固定表头、加载与空状态 | 2026-10-28 | 可复用快照 |
 | SRC-005 | 页面结构 | [健身俱乐部管理系统开源项目](https://github.com/small-bears/gyms) | 后台以会员、会员卡、订单为核心菜单 | 2026-10-26 | 可复用快照 |
 | SRC-006 | 交互流程 | [小程序发起支付](https://developers.weixin.qq.com/miniprogram/dev/api/payment/wx.requestPayment.html) | 支付后分别进入成功、失败可重试两种结果界面 | 2026-10-26 | 可复用快照 |
 | SRC-007 | 交互流程 | [小程序相机组件](https://developers.weixin.qq.com/miniprogram/dev/component/camera.html) | 拍摄前先请求相机授权，拒绝时提供去设置与改用相册上传 | 2026-10-26 | 可复用快照 |
@@ -810,3 +876,31 @@
 | SRC-064 | 前端规则 | [尼尔森诺曼集团 图标可用性](https://www.nngroup.com/articles/icon-usability) | 每个菜单项和功能按钮图标加文字 | 2026-10-28 | 可复用快照 |
 | SRC-069 | 前端规则 | [碳设计体系 图标用法](https://carbondesignsystem.com/elements/icons/usage) | 按钮内 16 像素，菜单 20 像素，单色 | 2026-10-28 | 可复用快照 |
 | SRC-070 | 前端规则 | [苹果人机界面指南 图表数据](https://developer.apple.com/design/human-interface-guidelines/charting-data) | 一张图一个问题，去掉装饰 | 2026-10-28 | 可复用快照 |
+| SRC-080 | 页面结构 | [销售易首页](https://www.xiaoshouyi.com/) | 按业务域组织导航；智能体与业务模块并列而非替代 | 2026-10-28 | 可复用快照 |
+| SRC-081 | 页面结构 | [Apollo 首页](https://www.apollo.io/) | 企业统一视图：基本信息、采购信号、关系集中在一页 | 2026-10-28 | 可复用快照 |
+| SRC-082 | 页面结构 | [ZoomInfo Sales 产品页](https://www.zoominfo.com/products/sales) | 线索按采购信号评分排序；列表支持一键导出 | 2026-10-28 | 可复用快照 |
+| SRC-083 | 交互流程 | [Ant Design X RICH 设计范式](https://x.ant.design/docs/spec/introduce-cn) | 对话负责发起与追问，结构化结果以产物面板和档案页的图形界面呈现 | 2026-10-28 | 可复用快照 |
+| SRC-084 | 组件状态 | [Ant Design X 思维链组件](https://x.ant.design/components/thought-chain-cn) | 工具调用卡的执行中、完成、失败、中止四态与折叠交互 | 2026-10-28 | 可复用快照 |
+| SRC-085 | 组件状态 | [Ant Design X 输入框组件](https://x.ant.design/components/sender-cn) | 发送按钮在生成中变为停止；附件区在输入框上方展开 | 2026-10-28 | 可复用快照 |
+| SRC-086 | 组件状态 | [Ant Design 色彩](https://ant.design/docs/spec/colors-cn) | 主色取官方色板一列：品牌阶、悬停、按下、浅底四种状态色 | 2026-10-28 | 可复用快照 |
+| SRC-087 | 组件状态 | [TDesign 色彩](https://tdesign.tencent.com/design/color) | 品牌阶以白字对比达标为准；状态色独立成列 | 2026-10-28 | 可复用快照 |
+| SRC-088 | 组件状态 | [Element Plus 标签](https://element-plus.org/zh-CN/component/tag.html) | 状态标签采用浅底深字的 light 效果 | 2026-10-28 | 可复用快照 |
+| SRC-089 | 页面结构 | [HubSpot Sales Hub](https://www.hubspot.com/products/sales) | 线索跟进与销售动作集中在同一记录页 | 2026-10-28 | 可复用快照 |
+| SRC-090 | 交互流程 | [Ant Design X 管理对话](https://x.ant.design/components/conversations-cn) | 左侧历史对话列表，顶部新建，当前会话高亮 | 2026-10-28 | 可复用快照 |
+| SRC-091 | 页面结构 | [Salesforce Sales Cloud](https://www.salesforce.com/sales/) | 线索详情汇集需求、联系人、跟进记录 | 2026-10-28 | 可复用快照 |
+| SRC-092 | 组件状态 | [Element Plus 空状态](https://element-plus.org/zh-CN/component/empty.html) | 空状态：一句话写对象 + 一个行动 | 2026-10-28 | 可复用快照 |
+| SRC-093 | 交互流程 | [Ant Design X 确认](https://x.ant.design/docs/spec/confirm-cn) | 需要选择企业或登录时停在交接卡片等用户处理；开始研究时复述识别出的产品与关键词 | 2026-10-28 | 可复用快照 |
+| SRC-094 | 交互流程 | [Ant Design 反馈](https://ant.design/docs/spec/feedback-cn) | 采集工具未就绪时页面顶部常驻提示；任务等待处理时在会话列表加标记 | 2026-10-28 | 可复用快照 |
+| SRC-095 | 交互流程 | [NN/g 进度指示](https://www.nngroup.com/articles/progress-indicators/) | 长时间研究显示当前阶段与已完成步骤、已读公告数 | 2026-10-28 | 可复用快照 |
+| SRC-096 | 前端规则 | [Ant Design 字体规范](https://ant.design/docs/spec/font-cn) | 后台正文与表格 14 像素、行高 22 的密度底线 | 2026-10-28 | 知识，无快照 |
+| SRC-097 | 前端规则 | [Ant Design 数据格式规范](https://ant.design/docs/spec/data-format-cn) | 导出与表格的数字、金额、日期格式 | 2026-10-28 | 知识，无快照 |
+| SRC-098 | 组件状态 | [Arco Design 表格](https://arco.design/react/components/table) | 列设置隐藏空列、表头筛选 | 2026-10-28 | 知识，无快照 |
+| SRC-099 | 前端规则 | [TDesign 字体规范](https://tdesign.tencent.com/design/fonts) | 后台字阶与辅助文字只用于次要信息 | 2026-10-28 | 知识，无快照 |
+| SRC-100 | 组件状态 | [TDesign 表格](https://tdesign.tencent.com/vue-next/components/table) | 表格行高档位与列配置 | 2026-10-28 | 知识，无快照 |
+| SRC-101 | 组件状态 | [Semi Design 表格](https://semi.design/zh-CN/show/table) | 紧凑模式行高 | 2026-10-28 | 知识，无快照 |
+| SRC-102 | 组件状态 | [IBM Carbon 数据表格用法](https://carbondesignsystem.com/components/data-table/usage/) | 行高档位、工具栏与行高匹配、金额右对齐 | 2026-10-28 | 知识，无快照 |
+| SRC-103 | 页面结构 | [Shopify Polaris 索引表格](https://polaris.shopify.com/components/tables/index-table) | 状态标签页、第一列放可识别标识 | 2026-10-28 | 知识，无快照 |
+| SRC-104 | 组件状态 | [Atlassian 动态表格](https://atlassian.design/components/dynamic-table/usage) | 空状态与加载状态 | 2026-10-28 | 知识，无快照 |
+| SRC-105 | 交互流程 | [NN/g 数据表格](https://www.nngroup.com/articles/data-tables/) | 按任务设计表格列、对齐与批量操作 | 2026-10-28 | 知识，无快照 |
+| SRC-106 | 页面结构 | [NN/g 驾驶舱与前注意特征](https://www.nngroup.com/articles/dashboards-preattentive/) | 驾驶舱只突出计算后的变化与异常 | 2026-10-28 | 知识，无快照 |
+| SRC-107 | 交互流程 | [NN/g 筛选与分面](https://www.nngroup.com/articles/filters-vs-facets/) | 已生效筛选标签与清空、0 数量选项处理 | 2026-10-28 | 知识，无快照 |
