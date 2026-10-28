@@ -3278,6 +3278,53 @@
       "first_seen": "2026-10-28",
       "last_used": "2026-10-28",
       "uses": 1
+    },
+    {
+      "kind": "色彩",
+      "title": "软件·Demo一键生成助手Agent平台配色",
+      "industries": [
+        "软件"
+      ],
+      "surfaces": [
+        "小程序",
+        "后台"
+      ],
+      "summary": "canvas #F0F2FC、accent #8A5523",
+      "details": {
+        "令牌": {
+          "canvas": "#F0F2FC",
+          "board": "#FFFFFF",
+          "card": "#FFFFFF",
+          "line": "#EEEEEE",
+          "border": "#DCDCE4",
+          "ink": "#2B2326",
+          "ink-2": "#6E6064",
+          "action": "#4A5BD6",
+          "press": "#3A48B0",
+          "tint": "#E6E9FA",
+          "nav": "#E2E5F8",
+          "accent": "#8A5523",
+          "accent-tint": "#F9EBDD",
+          "ok": "#18794E",
+          "ok-tint": "#E4F3EC",
+          "warn": "#A15C00",
+          "warn-tint": "#FBF0DE",
+          "bad": "#B42B39",
+          "bad-tint": "#FBE7E9"
+        },
+        "对比度": {
+          "ink 于 canvas": 13.7,
+          "accent 于 accent-tint": 5.3
+        }
+      },
+      "sources": [],
+      "id": "PAT-165",
+      "sessions": [
+        "008-Demo一键生成助手Agent平台"
+      ],
+      "first_seen": "2026-10-28",
+      "last_used": "2026-10-28",
+      "uses": 1
     }
   ]
 }

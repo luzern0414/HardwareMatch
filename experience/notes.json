@@ -209,6 +209,15 @@
       "last_confirmed": "2026-10-28"
     },
     {
+      "key": "prototype-panel-and-icons",
+      "kind": "lesson",
+      "text": "原型配置面板若未写入架构，用单选与复选控件实现，避免无动作编号的按钮；check_document 把 svg 后第一段文字当图标含义，图标按钮要带可见文字，同一插画不在多处复用，头像用 img；全局加 [hidden]{display:none!important} 防止按钮样式覆盖隐藏",
+      "why": "008 原型多轮校验与浏览器验收",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
       "key": "reuse-knowledge-only-sources",
       "kind": "lesson",
       "text": "experience.py reuse 遇到只有 Luz-Crawl 原始路径、没有会话快照的来源（如 SRC-078/079/106）会中断整批，复用前先确认 snapshot 带 session 字段，并分小批复用",
@@ -240,6 +249,15 @@
       "kind": "fact",
       "text": "组件库参考清单在 references/ui-standards.html“参考组件库”；2026-10-28 已采集 Ant Design 字体与数据格式、Arco、TDesign 字体与表格、Semi、Element Plus、Carbon、Polaris、Atlassian 表格及 NN/g 数据表格、驾驶舱、筛选共 16 页（LuzCrawl 批次 batch-f38ef88f）",
       "why": "Luz-Crawl 调研 009",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "manifest-strict-fields",
+      "kind": "fact",
+      "text": "strict-production 要求 MANIFEST 状态 approved、各阶段 sha256、verification 全 pass、deliverables 的 id 以 ARCH/SYS/VIS/PROTO 等前缀开头且每个模式至少一项",
+      "why": "008 发布时 strict 校验",
       "uses": 1,
       "first_seen": "2026-10-28",
       "last_confirmed": "2026-10-28"

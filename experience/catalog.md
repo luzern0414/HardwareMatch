@@ -26,16 +26,18 @@
 - **驾驶舱按价值排序**：数据驾驶舱按价值排序：经营结果、增长、活跃在前，效率与风险其次，退款等负向数据和长期变化小的指标放最后（用户纠正）　确认 1 次，最近 2026-10-28
 - **默认头像**：无照片时用按用户标识固定的卡通动物，未登录或系统用户用线性图标；严禁首字母、姓氏等文字头像（用户纠正）　确认 1 次，最近 2026-10-28
 
-## 教训（4/120）
+## 教训（5/120）
 
 - **arch-html-inline-style**：架构等审阅页不要写内联 style：校验器把多个内联样式拼接后按 font 声明检查，会把 margin、padding 误判为字号；数据字段名避开 更新时间、生成时间、SHA-256、示例数据 等被 check_document 拦截的元数据词（008 会话架构页首次校验失败）　确认 1 次，最近 2026-10-28
+- **prototype-panel-and-icons**：原型配置面板若未写入架构，用单选与复选控件实现，避免无动作编号的按钮；check_document 把 svg 后第一段文字当图标含义，图标按钮要带可见文字，同一插画不在多处复用，头像用 img；全局加 [hidden]{display:none!important} 防止按钮样式覆盖隐藏（008 原型多轮校验与浏览器验收）　确认 1 次，最近 2026-10-28
 - **reuse-knowledge-only-sources**：experience.py reuse 遇到只有 Luz-Crawl 原始路径、没有会话快照的来源（如 SRC-078/079/106）会中断整批，复用前先确认 snapshot 带 session 字段，并分小批复用（008 会话复用时 KeyError session）　确认 1 次，最近 2026-10-28
 - **system-design-table-cells**：系统设计页模块内容区按标签规则逐格检查：表头加 cell-label，单元格加 cell-value，长文本按分号拆成不超过 30 字的 line-value 行，避免 详情、原因、步骤、提示、流程、指南、备注、点击查看 等词，内容区外层用 module-content（008 会话系统设计页多轮校验失败后归纳）　确认 1 次，最近 2026-10-28
 - **规范页技术记号**：规范页正文用中文，99+、Esc、YYYY-MM-DD 等技术记号放进 code 或 kbd 元素；“不要字母”指的是不用文字头像，不是页面里禁止一切拉丁字母（用户澄清，validate_skill.py 已改为只放行 code 与 kbd）　确认 1 次，最近 2026-10-28
 
-## 有效信息（1/120）
+## 有效信息（2/120）
 
 - **component-library-reference**：组件库参考清单在 references/ui-standards.html“参考组件库”；2026-10-28 已采集 Ant Design 字体与数据格式、Arco、TDesign 字体与表格、Semi、Element Plus、Carbon、Polaris、Atlassian 表格及 NN/g 数据表格、驾驶舱、筛选共 16 页（LuzCrawl 批次 batch-f38ef88f）（Luz-Crawl 调研 009）　确认 1 次，最近 2026-10-28
+- **manifest-strict-fields**：strict-production 要求 MANIFEST 状态 approved、各阶段 sha256、verification 全 pass、deliverables 的 id 以 ARCH/SYS/VIS/PROTO 等前缀开头且每个模式至少一项（008 发布时 strict 校验）　确认 1 次，最近 2026-10-28
 
 ## 功能
 
@@ -569,6 +571,12 @@
 - 要点：企业服务气质“信赖、专业、探索”：主色 Ant Design 极客蓝一列，品牌阶 #2f54eb（白字 5.85:1）、悬停 #597ef7、按下 #1d39c4、浅底 #f0f5ff；信号辅色金盏花 #874d00 配 #fffbe6，只用于“正在招标”等浅底标签；页面底 #f5f6f8，卡片白。用户在三个候选（极客蓝、TDesign 蓝、Ant 青）中选定。
 - 令牌：brand #2f54eb；hover #597ef7；press #1d39c4；tint #f0f5ff；signal #874d00；signal-tint #fffbe6；page #f5f6f8
 - 对比度：brand-白字 5.85:1；press-于-tint 7.89:1；signal-于-tint 10.10:1
+
+### PAT-165 软件·Demo一键生成助手Agent平台配色
+- 适用：小程序、后台；行业：软件；使用 1 次，最近 2026-10-28
+- 要点：canvas #F0F2FC、accent #8A5523
+- 令牌：canvas #F0F2FC；board #FFFFFF；card #FFFFFF；line #EEEEEE；border #DCDCE4；ink #2B2326；ink-2 #6E6064；action #4A5BD6；press #3A48B0；tint #E6E9FA；nav #E2E5F8；accent #8A5523；accent-tint #F9EBDD；ok #18794E；ok-tint #E4F3EC；warn #A15C00；warn-tint #FBF0DE；bad #B42B39；bad-tint #FBE7E9
+- 对比度：ink 于 canvas 13.7；accent 于 accent-tint 5.3
 
 ## 字阶
 
