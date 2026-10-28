@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>网页管理后台设计规范</title>
+  <link rel="stylesheet" href="guidelines.css">
+</head>
+<body>
+<main id="main" aria-label="网页管理后台设计规范">
+    <h1>网页管理后台设计规范</h1>
+<!-- SECTION:scope:START id=scope data-rule-id=admin-scope -->
+<section id="scope" data-rule-id="admin-scope" aria-labelledby="scope-heading">
+<h2 id="scope-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><circle cx="12" cy="12" r="3"/></svg><span>适用范围</span></h2>
+<p>适用于网页管理后台（门店后台、运营后台、商家后台），包括交付网页中的后台原型。通用标准见<a href="ui-standards.html">界面通用规范</a>；本页按同样的七层只写后台的细则，没有写到的按通用规范执行。</p>
+</section>
+<!-- SECTION:scope:END -->
+
+<!-- SECTION:workflow:START id=workflow data-rule-id=admin-workflow -->
+<section id="workflow" data-rule-id="admin-workflow" aria-labelledby="workflow-heading">
+<h2 id="workflow-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h5a3 3 0 0 1 3 3v1M16 18h-5a3 3 0 0 1-3-3v-1"/><path d="m13 8 3 2 3-2M11 16l-3-2-3 2"/></svg><span>工作流程</span></h2>
+<ol class="steps">
+<li>从批准的模块列出菜单，按业务域分组，第一个菜单固定为数据驾驶舱。</li>
+<li>每个菜单页确定页面类型，一个页面一个主任务；为前台的每处运营内容找到维护页面。</li>
+<li>为列表定义列、筛选、排序、批量操作与导出；为表单定义字段、校验、保存结果；为危险操作定义确认等级。</li>
+<li>按本页第六层的配色、图标、字阶出图，再做可交互原型。</li>
+<li>原型自动测试：在 1280、1366、1440、1920 像素宽度逐页检查没有内容超出右边界；表头与短列居中；分组标题加粗；菜单项与功能按钮都有图标；单一字体族与字阶。</li>
+</ol>
+</section>
+<!-- SECTION:workflow:END -->
+
+<!-- SECTION:rules:START id=rules data-rule-id=admin-rules -->
+<section id="rules" data-rule-id="admin-rules" aria-labelledby="rules-heading">
+<h2 id="rules-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 5 6v5c0 4.5 2.8 7.8 7 10 4.2-2.2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg><span>核心规则</span></h2>
+<h3 class="layer">一、设计架构</h3>
+<h4>设计理念</h4>
+<ul>
+<li>效率优先：常用操作一步可达，列表可扫读，数据可比较。</li>
+<li>克制：主色只用于主按钮、当前菜单、选中项和关键数字；其余是中性色。</li>
+<li>扁平极简：页面浅白或极浅灰底，低饱和、干净中性；线性描边图标、细线条、造型极简；卡片轻微悬浮；没有立体效果。</li>
+<li>数据先行：先给结论数字，再给趋势和明细。</li>
+<li>完整：每个列表、表单和危险操作都有加载、空、失败、权限和结果反馈。</li>
+</ul>
+<h4>页面类型</h4>
+<div class="table-wrap"><table><thead><tr><th>类型</th><th>主任务</th><th>构成</th></tr></thead><tbody>
+<tr><td>数据驾驶舱</td><td>看经营结论与趋势</td><td>指标卡 → 趋势与占比 → 分布与结果 → 排行与动态</td></tr>
+<tr><td>列表页</td><td>查找、筛选、批量处理</td><td>页面标题区 → 搜索与筛选标签 → 表格 → 分页</td></tr>
+<tr><td>详情</td><td>查看一个对象的全部信息与记录</td><td>居中悬浮面板或独立页，分组展示，底部操作</td></tr>
+<tr><td>表单</td><td>新建或编辑</td><td>居中悬浮面板，单列字段，底部取消与保存</td></tr>
+<tr><td>设置与内容维护</td><td>维护前台展示的运营内容</td><td>分组卡片，列表增删改排序，即时生效的项不放保存按钮</td></tr>
+</tbody></table></div>
+<h3 class="layer">二、功能架构</h3>
+<h4>菜单与模块</h4>
+<ul>
+<li>从批准的模块列出菜单，按业务域分组（例如概览、会员与交易、营销、门店），第一个菜单固定为数据驾驶舱。</li>
+<li>一级菜单 5–9 项，超出时分组；每个菜单页确定页面类型，一个页面一个主任务。</li>
+</ul>
+<h4>内容维护闭环</h4>
+<ul>
+<li>先列出前台每一处内容的来源：后台配置（门店资料、照片、设施、公告、须知、套餐、优惠券、奖品、活动开关、模块显隐）、系统计算（评分、距离、客流人数、销量、剩余次数）、用户产生（订单、入场记录、评价）。</li>
+<li>每一项后台配置都有完整的维护动作：列表类内容可新增、编辑、删除（或停用）、排序、显示与隐藏；图片类可上传、删除、设为封面、改说明、拖动排序，并标出数量上限；文字类可编辑并显示字数；状态类用开关。缺任何一个动作都要说明原因。</li>
+<li>前台只读取这些数据，不写死任何运营内容；同一内容只有一份数据，例如首页新人礼券取自后台“首页领取”的优惠券，停用后首页同步消失，不另存一份。</li>
+<li>只读的系统计算项在后台以只读方式展示并说明来源，不提供编辑框。</li>
+<li>删除、暂停、改动已发放的内容先确认；新增、恢复、改说明直接生效。有数量下限的列表到下限时禁用删除。</li>
+<li>排序既能拖动，也能用方向键；拖动时被拖项变淡、放置位置高亮。</li>
+</ul>
+<h4>操作成本</h4>
+<ul>
+<li>状态类字段（上下架、发放、账户启用、活动开关）放在列表行内的开关上，一步切换，不进入详情或编辑页。</li>
+<li>行内放最常用的直达操作（详情、发券、编辑），点一下直接打开对应面板并带好对象，不先勾选再找按钮。</li>
+<li>任何一项日常修改最多两次点击完成（含确认）；筛选、排序、搜索都即时生效。</li>
+</ul>
+<h4>权限与角色</h4>
+<ul>
+<li>只读角色看到同样的页面，写操作按钮禁用并悬停说明原因，页面顶部一条浅色提示当前角色。</li>
+<li>变更、审批与敏感操作进入审计记录；服务端授权属于实现。</li>
+</ul>
+<h3 class="layer">三、信息架构与导航</h3>
+<h4>侧栏与顶栏</h4>
+<div class="table-wrap"><table><thead><tr><th>区域</th><th>标准</th></tr></thead><tbody>
+<tr><td>顶栏</td><td>高 56 像素，白底，底部 1 像素分隔线；左侧系统名，右侧门店与账号</td></tr>
+<tr><td>侧栏</td><td>宽 200–240 像素，白底，右侧分隔线。分组标题 14 像素粗体、深色字，前面一条中性灰短竖条，分组之间一条分隔线和 16 像素间距；每个菜单项 20 像素线性图标 + 14 像素常规灰色文字，当前项主色浅调底 + 主色粗体字 + 左侧细条</td></tr>
+<tr><td>面包屑</td><td>三层以上的页面在标题上方显示，可点击回到上级</td></tr>
+</tbody></table></div>
+<ul>
+<li>菜单与页面名用 2–6 字的业务名词；同一对象在菜单、标题、面包屑、按钮中叫同一个名字。</li>
+<li>打开详情或表单面板，关闭后回到列表原位置，保留筛选、排序与滚动。</li>
+</ul>
+<h3 class="layer">四、页面与版式</h3>
+<h4>页面框架</h4>
+<div class="table-wrap"><table><thead><tr><th>区域</th><th>标准</th></tr></thead><tbody>
+<tr><td>内容区</td><td>极浅灰底，卡片白底、圆角 12、最轻一级阴影；边距 24 像素；所有栅格用可收缩的列（最小宽度 0 或自动换行），任何宽度下内容不超出右边界</td></tr>
+<tr><td>页面标题区</td><td>左侧页面标题与线性图标，右侧最多 1 个主按钮 + 2 个次按钮；标题下方不放解释段</td></tr>
+<tr><td>列表页</td><td>筛选区 → 工具栏（批量操作、导出）→ 表格 → 分页</td></tr>
+<tr><td>详情与表单</td><td>居中悬浮面板（宽 560–640 像素，圆角 12，四周留白，内容区内部滚动）或独立页；不用贴右边的侧滑抽屉；表单单列，输入框宽度不超过 560 像素</td></tr>
+</tbody></table></div>
+<h4>宽度与溢出</h4>
+<ul>
+<li>在 1280、1366、1440、1920 像素宽度下逐页检查：任何元素的右边缘不超过内容区右边界，指标卡、图表卡、筛选区都不被遮挡。</li>
+<li>栅格列使用可收缩宽度；文字不设不换行的固定总宽；迷你图、标签可换行到下一行。</li>
+<li>窄于 760 像素时侧栏收进菜单按钮打开的抽屉，指标卡两列，图表单列，表格转卡片。</li>
+</ul>
+<h3 class="layer">五、组件</h3>
+<h4>数据驾驶舱</h4>
+<ul>
+<li>每个后台必备，作为第一个菜单。从上到下：指标卡 → 主趋势图与占比环图 → 分布图与排行 → 风险与异常 → 实时动态；单屏 5–9 个模块，一张卡片一个主题。</li>
+<li>按价值排序：指标卡从左到右、模块从上到下，先放经营结果（营收、订单、成交额），再放增长（新增会员、新客、复购），再放活跃与使用（入场人次、访问、在线人数），最后放效率、风险与负向数据（退款、核验失败、投诉、取消、库存预警）。最重要、最需要老板看到的指标放左上。</li>
+<li>同一类里，变化大、需要采取行动的排在前面；长期稳定、变化很小的（例如长期在 96%–98% 之间的通过率）排在该组最后，或收进二级页。占比、排行、列表内部按数值从大到小排。</li>
+<li>负向数据不占首行首位，但不隐藏：放在靠后的“风险与异常”位置，用浅红标签标数值；超过阈值（例如退款率比上期高 50%）时，在指标卡区上方加一条可关闭的预警，写出对象和数值，点击直达对应明细。</li>
+<li>指标卡用自适应栅格（每张最小约 180 像素，放不下自动换行），名称、数字、涨跌、迷你趋势居中排列；指标名 16 像素 600 深色字，旁边主色浅底图标块 32 像素，数字 28 像素等宽数字，涨跌 12 像素；文字不能看起来比图标小。</li>
+<li>同一行卡片等高；环图、仪表的图例放在图下方单列完整显示；排行、动态等列表在卡片内均匀分布。</li>
+<li>顶部有时间范围切换和导出；所有图表有悬浮提示（数值与单位）；切换范围时数字滚动、图表重绘；加载用骨架，失败可重试，无数据显示空状态。</li>
+<li>图表扁平极简：折线 1.5–2 像素平滑曲线、不加渐变填充，数据点悬停才出现；只留最浅的横向网格线；图表文字按实际像素 12 显示，不随图表缩放变化。</li>
+</ul>
+<h4>表格与列表</h4>
+<ul>
+<li>行高 52 像素，表头 44 像素浅底、600 字重；只用横向分隔线；行悬停浅色高亮。</li>
+<li>表头全部居中；数字、金额、状态、日期、编号等单值单元格居中；只有会换行的长文本列左对齐，表头仍居中。</li>
+<li>组合单元格（图片加名称、头像加姓名加手机号、开关加状态字、图标加文字的操作组）居中后左对齐：同一列的组合块取最宽者的宽度，整块在列中居中，块内左边缘对齐成一条线。</li>
+<li>同一表格每行等高；日期加时间分两行显示（日期在上，时间小一号在下）。</li>
+<li>搜索即输即查（不放“查询”按钮）；每个枚举列的表头带筛选标记，点开显示选项及数量，选中即生效并在表格上方显示可一键清除的筛选标签；不另设一排下拉筛选框。</li>
+<li>搜索框、筛选、按钮旁不放说明文字或字段标签；操作列最多 3 个带图标的文字按钮，危险操作不放第一个。</li>
+<li>表格放在可横向滚动的容器里，手机上转为卡片：每个单元格左侧列名、右侧值。</li>
+</ul>
+<h4>表单与输入</h4>
+<ul>
+<li>完整表单包含：必填标记、前后缀、字数计数、默认值、单选组、开关、下拉、图片选择、标签增删、预览、底部取消与保存。</li>
+<li>区间类参数（中奖概率、比例、折扣、阈值）用可拖动的滑块并实时显示数值；有总和约束时由一项自动补齐，不让用户手算。</li>
+<li>保存中按钮显示进行状态；成功关闭面板、轻提示并让对应行闪一次；失败保留输入并在顶部说明原因。</li>
+<li>确认按后果分级：开启、恢复、上架等可撤回的操作一键生效并轻提示；下架、停用、冻结、改价、退款、删除等影响用户或金额的修改弹出居中确认框，标题写对象，正文写后果，确认按钮写动作，危险操作用红色。</li>
+</ul>
+<h4>按钮与浮层</h4>
+<ul>
+<li>页面与卡片上的功能按钮前置 16 像素线性图标；按钮高 32，页面标题区主按钮可 36。</li>
+<li>所有浮层（详情、表单、确认）在内容区水平垂直居中，遮罩覆盖整个后台框；面板四周至少留 16 像素，高度超出时只滚动面板内容，标题和底部按钮固定。</li>
+<li>打开用轻微放大加淡入（200–280 毫秒），不从右侧滑入；关闭按钮在右上角，点遮罩或按取消关闭。窄屏时面板左右各留 12 像素；手机宽度下侧栏菜单可以用左侧抽屉，这是导航，不承载详情。</li>
+</ul>
+<h3 class="layer">六、视觉基础</h3>
+<h4>配色</h4>
+<ul>
+<li>一个克制的主色，按视觉设计规范“取色依据”从官方色板取阶：主按钮、开关、勾选、滑块用白字达 4.5:1 的品牌阶实色，悬停浅一阶、按下深一阶；当前菜单用浅底阶加按下阶文字；危险确认按钮用红色列实色阶；不给整块区域染色。</li>
+<li>页面底色用中性灰第 2 阶的极浅灰，卡片、侧栏、顶栏纯白；不用深色侧栏，品牌区也不染色。</li>
+<li>图表色板 5–6 色，第一色为主色，其余取官方色板各色相同一阶（例如火山、金盏花、拂晓蓝、灰），相邻系列不用同一色相的深浅；超过 5 类时合并为“其他”并用灰色。迷你趋势线统一用主色。</li>
+<li>状态标签统一“浅底 + 深色字”，同一状态全系统同色同名。</li>
+</ul>
+<h4>图标与图形</h4>
+<ul>
+<li>侧边导航每一项前置一个 20 像素线性图标，全站同一套图标、线宽统一 1.5 像素；分组标题前用中性灰短竖条标记，不用图标。</li>
+<li>页面标题、卡片标题前用与文字同色的线性图标；指标卡用主色浅底阶圆角块承托线性图标；表格内只用头像、缩略图和状态标签。</li>
+</ul>
+<h4>字体与字号</h4>
+<ul>
+<li>后台正文、表格、表单、菜单统一 14 像素；页面标题 22；指标数字 28；菜单分组标题 14 像素粗体，与菜单项（14 常规）用字重和分隔区分。字阶与系统功能列表、小程序共用：</li>
+</ul>
+<div class="table-wrap"><table class="num"><thead><tr><th>字号 / 行高（像素）</th><th>字重</th><th>用途</th></tr></thead><tbody>
+<tr><td>12 / 18</td><td>400</td><td>时间、角标、图表坐标、标签内文字、注释</td></tr>
+<tr><td>14 / 22</td><td>400；表头与分组标题 600</td><td>正文、表格、表单、按钮、菜单、列表</td></tr>
+<tr><td>16 / 24</td><td>600</td><td>卡片与模块标题、弹窗标题、小程序导航栏标题</td></tr>
+<tr><td>18 / 26</td><td>600</td><td>小程序门店名与页面主标题</td></tr>
+<tr><td>22 / 30</td><td>600</td><td>后台页面标题、价格、交付网页二级标题</td></tr>
+<tr><td>28 / 36</td><td>600</td><td>指标数字、在馆人数等大数字</td></tr>
+<tr><td>32 / 40</td><td>600</td><td>交付网页的主标题，只出现一次</td></tr>
+</tbody></table></div>
+<h3 class="layer">七、文案</h3>
+<h4>文案</h4>
+<ul>
+<li>菜单与页面名用业务名词，不加“管理”“列表”等虚词，除非用于区分。</li>
+<li>页面标题下不放功能介绍；空状态写对象与一个行动；确认框写对象、后果与能否恢复。</li>
+<li>审计记录写成可读的句子：谁、何时、对什么、做了什么、结果如何。</li>
+</ul>
+</section>
+<!-- SECTION:rules:END -->
+
+<!-- SECTION:platform-matrix:START id=platform-matrix data-rule-id=admin-platform-matrix -->
+<section id="platform-matrix" data-rule-id="admin-platform-matrix" aria-labelledby="platform-matrix-heading">
+<h2 id="platform-matrix-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="6" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/></svg><span>平台矩阵</span></h2>
+<div class="table-wrap"><table><thead><tr><th>宽度</th><th>布局</th><th>表格</th><th>指标卡</th></tr></thead><tbody>
+<tr><td>≥ 1440</td><td>侧栏 + 内容区，内容区最大 1440</td><td>完整列</td><td>一行 5 张</td></tr>
+<tr><td>1280–1439</td><td>侧栏 + 内容区</td><td>完整列，容器内可横向滚动</td><td>自动换行，不出边界</td></tr>
+<tr><td>761–1279</td><td>侧栏可折叠为图标栏</td><td>容器内横向滚动</td><td>2–3 列</td></tr>
+<tr><td>≤ 760</td><td>侧栏收进抽屉</td><td>每行转为卡片</td><td>两列</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:platform-matrix:END -->
+
+<!-- SECTION:examples:START id=examples data-rule-id=admin-examples -->
+<section id="examples" data-rule-id="admin-examples" aria-labelledby="examples-heading">
+<h2 id="examples-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m4 17 5-5 3 3 2-2 6 6"/></svg><span>案例样本</span></h2>
+<h3>门店后台驾驶舱的改正</h3>
+<div class="pair"><div class="wrong"><h4>错误</h4><ul>
+<li>五张指标卡固定一行，第五张在 1366 宽度被右边界遮住。</li>
+<li>柱状图坐标 15 像素、折线图坐标 12 像素、环图标注 10 像素，同一页三种大小；折线锯齿生硬并带渐变面积。</li>
+<li>侧栏分组标题与菜单项同样灰色常规字，看不出层级；有的菜单项没有图标；“保存”“重置”只有文字。</li>
+<li>表格数字右对齐、文本左对齐、表头左对齐，列与列之间视线来回跳。</li>
+</ul></div><div class="right"><h4>正确</h4><ul>
+<li>指标卡自适应栅格，内容居中，迷你趋势换到数字下方，任何宽度都完整显示。</li>
+<li>所有图表文字按实际像素 12 显示；折线平滑细线、无渐变填充、淡横向网格。</li>
+<li>分组标题 14 像素粗体深色字，前有短竖条，分组之间有分隔线；每个菜单项和功能按钮都有线性图标。</li>
+<li>表头与短内容单元格全部居中，长文本列左对齐。</li>
+</ul></div></div>
+</section>
+<!-- SECTION:examples:END -->
+
+<!-- SECTION:output-contract:START id=output-contract data-rule-id=admin-output-contract -->
+<section id="output-contract" data-rule-id="admin-output-contract" aria-labelledby="output-contract-heading">
+<h2 id="output-contract-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>输出契约</span></h2>
+<div class="table-wrap"><table><thead><tr><th>位置</th><th>职责</th><th>通过条件</th></tr></thead><tbody>
+<tr><td>交付网页的后台原型</td><td>可操作的后台与配置面板</td><td>各宽度无右侧遮挡；驾驶舱、表格、表单、权限场景齐全</td></tr>
+<tr><td>原型自动测试</td><td>宽度、字体、对齐、分组标题、图标、浮层位置</td><td>1280–1920 每页无溢出；单一字体族；表头居中；分组标题粗体；菜单项与页面级功能按钮都有图标；详情面板居中</td></tr>
+<tr><td>截图验收</td><td>桌面与 390 像素宽度</td><td>菜单抽屉、表格卡片可操作</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:output-contract:END -->
+
+<!-- SECTION:quality-gates:START id=quality-gates data-rule-id=admin-quality-gates -->
+<section id="quality-gates" data-rule-id="admin-quality-gates" aria-labelledby="quality-gates-heading">
+<h2 id="quality-gates-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h5M15 7h5M9 7a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM4 17h10M18 17h2M14 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg><span>质量门禁</span></h2>
+<ul>
+<li>任一页面在 1280–1920 像素宽度有内容超出右边界或被遮挡：失败。</li>
+<li>详情、表单用贴右边的侧滑抽屉，或打开后面板偏离中间：失败。</li>
+<li>前台展示的任一运营内容在后台找不到维护入口，或只能改一部分：失败。原型测试在后台修改后到前台对应位置核对。</li>
+<li>同一列组合块左边缘不齐、行高不一、卡片内容越过右侧内边距或底部空白超过两成：失败。</li>
+<li>状态字段需要进入编辑页才能修改、搜索需要再点查询、枚举列不能点表头筛选、重要修改没有二次确认或开启类操作也要确认：退回修改。</li>
+<li>侧边菜单项或页面级功能按钮缺少图标、图标线宽不统一、出现立体图标、装饰渐变、厚阴影，折线图带渐变填充或深色网格：退回修改。</li>
+<li>指标名小于 16 像素或看起来比旁边的图标小；表头未居中，或数字、金额、状态、日期、编号、操作列未居中：退回修改。</li>
+<li>配色说不出依据、出现第二个字体族、斜体、字阶外字号、400 与 600 以外的字重：退回修改。</li>
+<li>用户头像用文字代替：退回修改。</li>
+<li>没有数据驾驶舱，或驾驶舱缺少指标卡、趋势、占比、悬浮提示、时间范围中的任一项；列表缺少搜索、筛选数量、分页、批量或导出中的适用项：退回设计。</li>
+<li>驾驶舱首行首位放了退款、失败、投诉等负向指标或长期不变的指标，经营结果与增长指标排在后面，或排行与占比没有按数值降序：退回修改。</li>
+</ul>
+</section>
+<!-- SECTION:quality-gates:END -->
+
+<!-- SECTION:handoff:START id=handoff data-rule-id=admin-handoff -->
+<section id="handoff" data-rule-id="admin-handoff" aria-labelledby="handoff-heading">
+<h2 id="handoff-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h12M13 4l3 3-3 3M20 17H8M11 14l-3 3 3 3"/></svg><span>交接规则</span></h2>
+<p>菜单分组、页面类型、列定义与对齐、表单字段与校验、确认等级和驾驶舱指标进入 <a href="handoff.md">开发交接契约</a>。</p>
+</section>
+<!-- SECTION:handoff:END -->
+
+</main>
+</body>
+</html>

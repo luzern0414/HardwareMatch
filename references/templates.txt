@@ -1,0 +1,451 @@
+# Luz System 会话模板
+# 每个模板以 “=== template: 名称 ===” 开始、以 “=== end ===” 结束；scripts/new_session.py 的 read_template(名称) 按名称读取。
+# 修改模板时只改块内内容，不改标记行。
+
+# BRIEF.md：需求台账、角色、范围、约束、假设与待决事项
+=== template: brief.md ===
+# Brief
+
+## Request
+
+- Session:
+- Request summary:
+- Primary outcome:
+- Success signal:
+
+## Requirement ledger
+
+| Requirement ID | User request (verbatim) | Module | Acceptance signal |
+|---|---|---|---|
+| REQ-001 |  |  |  |
+
+## Users and roles
+
+| Role | Job | Data scope | Success |
+|---|---|---|---|
+
+## Current situation
+
+- Existing behavior:
+- Pain or opportunity:
+- Evidence supplied:
+
+## Scope
+
+- Included:
+- Excluded:
+- Channels:
+- Platforms:
+
+## Constraints
+
+- Brand:
+- Legal or policy:
+- Technical:
+- Time and production:
+
+## Sources
+
+| Source | Purpose | Location or URL |
+|---|---|---|
+
+## Assumptions
+
+| ID | Assumption | Impact | Owner | Status |
+|---|---|---|---|
+| ASSUME-001 |  |  |  | open |
+
+## Open decisions
+
+| ID | Decision needed | Affected modes | Status |
+|---|---|---|---|
+=== end ===
+
+# 01-system/02-research.md：调研记录格式与最低门槛
+=== template: research.md ===
+# Research
+
+Every completed record below must come from an actual LuzCrawl run for this session. Keep the raw local snapshot and its SHA-256. A copied URL, a hand-written status, or an unverifiable summary cannot support an architecture decision.
+
+<!--
+### REF-001
+- Source name: 中文来源名
+- URL: https://example.com/page
+- Registrable domain: example.com
+- Access date: YYYY-MM-DD
+- HTTP status: 200
+- Page title: 页面标题
+- LuzCrawl task ID: LC-YYYYMMDD-001
+- LuzCrawl status: 成功
+- Evidence category: 页面结构
+- Visible evidence: 页面中实际可见且与本会话有关的事实
+- Supported functions: F-001，或待确认功能描述
+- Business flow or module: 已批准模块名
+- Borrowable: 可借鉴的结构或规则
+- Not copyable: 品牌、文案、图像、字体、布局等禁止照搬项
+- Snapshot path: 01-system/crawl-snapshots/LC-YYYYMMDD-001.md
+- Snapshot sha256: 64位小写十六进制摘要
+-->
+
+Minimum gate: at least 12 unique URLs across 5 registrable domains, with at least 3 page-structure, 3 interaction-flow, and 2 component-state records. Research only frontend references: page layouts, navigation, interaction flows, component states, and visual treatment. Business rules, regulations, payment callbacks, and other backend behavior belong to Luz Dev and are not research sources here. Each snapshot must be a session-local file whose actual SHA-256 matches the record.
+=== end ===
+
+# 01-system/01-module-intake.html：模块选择表单
+=== template: module-intake.html ===
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{SYSTEM_NAME}}</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --canvas: #ffffff;
+      --surface: #f7f8fa;
+      --surface-strong: #eef2f6;
+      --ink: #172033;
+      --muted: #526071;
+      --line: #d9e0e8;
+      --accent: #235a8c;
+      --accent-soft: #e8f1f9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--canvas);
+      color: var(--ink);
+      font: 16px/1.5 "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+    }
+    main { width: min(880px, calc(100% - 40px)); margin: 0 auto; padding: 64px 0; }
+    h1 { margin: 0 0 40px; font-size: 32px; line-height: 1.25; letter-spacing: -.02em; }
+    ul { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+    label {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface);
+      font-size: 16px;
+      cursor: pointer;
+    }
+    label:hover { background: var(--surface-strong); }
+    input { position: absolute; opacity: 0; pointer-events: none; }
+    .icon { width: 30px; height: 30px; flex: 0 0 30px; color: var(--accent); }
+    .icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .name { flex: 1; }
+    .mark {
+      width: 22px; height: 22px; display: grid; place-items: center;
+      border: 1.5px solid #9aa7b6; border-radius: 6px; background: #fff;
+    }
+    .mark::after { content: ""; width: 10px; height: 6px; border-left: 2px solid transparent; border-bottom: 2px solid transparent; transform: rotate(-45deg) translate(1px, -1px); }
+    input:focus-visible + .icon { outline: 3px solid #9cc3e5; outline-offset: 7px; border-radius: 4px; }
+    input:checked ~ .mark { border-color: var(--accent); background: var(--accent); }
+    input:checked ~ .mark::after { border-color: #fff; }
+    input:checked ~ .name { font-weight: 600; }
+    @media (max-width: 600px) { main { width: min(100% - 28px, 880px); padding: 36px 0; } h1 { font-size: 26px; } label { min-height: 66px; } }
+  </style>
+</head>
+<body>
+  <main data-artifact="module-intake" data-system-name="{{SYSTEM_NAME}}">
+    <h1>{{SYSTEM_NAME}}</h1>
+    <section id="module-selection">
+      <h2>模块选择</h2>
+      <ul aria-label="模块选择">
+{{MODULE_ITEMS}}
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
+=== end ===
+
+# 01-system/03-system-architecture.html：系统架构起始稿
+=== template: system-architecture.html ===
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{SYSTEM_NAME}}</title>
+<style>
+:root{color-scheme:light;--canvas:#fff;--surface:#f8fafc;--ink:#172033;--muted:#526071;--line:#d9e2eb;--accent:#245b83}
+*{box-sizing:border-box}body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.55 "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif}main{width:min(1180px,calc(100% - 40px));margin:0 auto;padding:44px 0 72px}h1{margin:0 0 28px;font-size:34px}h2{margin:0 0 14px;font-size:23px}h3{margin:20px 0 8px;font-size:18px}section{margin:0 0 22px;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:10px;border:1px solid var(--line);text-align:left}th{background:#eef4f8}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.node{padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff}@media(max-width:720px){main{width:min(100% - 28px,1180px);padding-top:28px}.grid{grid-template-columns:1fr}h1{font-size:28px}}
+</style>
+</head>
+<body>
+<main data-artifact="system-architecture">
+<h1>{{SYSTEM_NAME}}</h1>
+<section id="scope"><h2>范围与角色权限</h2><div class="grid"><div class="node" data-role-id="R-001">角色</div></div></section>
+<section id="functions"><h2>模块与功能</h2><div class="node" data-function-id="F-001" data-module="{{MODULE}}" data-source="用户要求" data-req-ids="REQ-001">功能</div></section>
+<section id="pages"><h2>页面与路由</h2><div class="node" data-page-id="P-001" data-route="/home" data-function-ids="F-001">页面</div></section>
+<section id="navigation"><h2>导航树</h2><div class="node" data-navigation-id="N-001" data-page-id="P-001">导航</div></section>
+<section id="components"><h2>组件与动作</h2><div class="node" data-component-id="C-001" data-page-id="P-001">组件</div><button type="button" data-action-id="A-001" data-page-id="P-001" data-component-id="C-001" data-function-ids="F-001">动作</button></section>
+<section id="flows"><h2>交互流程与异常</h2><div class="node" data-flow-id="FL-001" data-exception="界面呈现失败原因并提供恢复入口">主流程</div></section>
+<section id="states"><h2>界面状态</h2><div class="grid"><div class="node" data-state-id="S-001" data-module="{{MODULE}}" data-state-subject="{{MODULE}}">加载、空、错误、成功、禁用</div></div></section>
+<section id="data"><h2>页面数据</h2><div class="node" data-entity-id="D-001" data-module="{{MODULE}}">页面展示的数据字段</div></section>
+<section id="trace"><h2>追溯矩阵</h2><table><thead><tr><th>需求</th><th>功能</th><th>调研</th></tr></thead><tbody><tr><td>REQ-001</td><td>F-001</td><td>REF-001</td></tr></tbody></table></section>
+<section id="acceptance"><h2>验收标准</h2><ul><li>主流程、异常恢复与界面状态均可在原型中操作验证。</li></ul></section>
+</main>
+</body>
+</html>
+=== end ===
+
+# 01-system/04-system-design.html：系统设计网页起始稿
+=== template: system-design.html ===
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{SYSTEM_NAME}}</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --canvas: #ffffff;
+      --surface: #ffffff;
+      --surface-soft: #f7f9fc;
+      --surface-strong: #edf3f8;
+      --ink: #172033;
+      --ink-soft: #526071;
+      --line: #dbe3ec;
+      --accent: #225f91;
+      --accent-soft: #e6f0f8;
+      --positive: #26785a;
+      --positive-soft: #e7f4ee;
+      --warm: #9a5c18;
+      --warm-soft: #fbf0df;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--canvas); }
+    body {
+      margin: 0;
+      background: var(--canvas);
+      color: var(--ink);
+      font: 14px/1.55 "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    main { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 32px 0; }
+    h1 { margin: 0 0 28px; font-size: 30px; line-height: 1.25; }
+    .module { margin: 0 0 28px; padding: 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .module-head { display: flex; align-items: center; gap: 12px; min-height: 44px; }
+    .module-icon { width: 30px; height: 30px; color: var(--accent); }
+    .module-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    h2 { margin: 0; font-size: 24px; line-height: 1.3; letter-spacing: -.01em; }
+    .module-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding-top: 20px; }
+    .metric { min-height: 112px; padding: 17px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+    .metric-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--ink-soft); }
+    .metric-icon { width: 22px; height: 22px; color: var(--accent); }
+    .metric strong { display: block; margin-top: 12px; font-size: 26px; line-height: 1.2; }
+    .chart { min-height: 190px; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+    .chart.wide { grid-column: span 2; }
+    .chart svg { display: block; width: 100%; height: 138px; overflow: visible; }
+    .line { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .area { fill: var(--accent-soft); opacity: .9; }
+    .grid-line { stroke: var(--line); stroke-width: 1; }
+    .pie-a { fill: var(--accent); }
+    .pie-b { fill: var(--positive); }
+    .pie-c { fill: var(--warm); }
+    .donut-hole { fill: var(--surface); }
+    .chart-label { margin-top: 8px; color: var(--ink-soft); }
+    .list { grid-column: span 2; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 13px 15px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { color: var(--ink-soft); background: var(--surface-soft); font-weight: 600; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-flex; padding: 4px 9px; border-radius: 999px; background: var(--positive-soft); color: var(--positive); }
+    @media (max-width: 980px) { .module-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .chart.wide, .list { grid-column: span 2; } }
+    @media (max-width: 720px) { main { width: min(100% - 28px,1180px); } .module-grid { grid-template-columns: 1fr; } .chart.wide, .list { grid-column: auto; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>{{SYSTEM_NAME}}</h1>
+{{MODULE_SECTIONS}}
+  </main>
+</body>
+</html>
+=== end ===
+
+# 02-visual/visual-board.html：视觉方案总览
+=== template: visual-board.html ===
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>视觉方案总览</title>
+<style>
+:root{color-scheme:light;--canvas:#fff;--surface:#f7f9fc;--line:#d9e2eb;--ink:#172033;--muted:#526071;--accent:#235b8a;--tint:#e8f1f8}
+*{box-sizing:border-box}html,body{background:var(--canvas)}body{margin:0;color:var(--ink);font:16px/1.55 "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif}
+main{width:min(1120px,calc(100% - 40px));margin:0 auto;padding:48px 0 72px}h1{margin:0 0 28px;font-size:34px;line-height:1.2}h2{margin:0 0 14px;font-size:22px}h3{margin:0 0 8px;font-size:17px}p{margin:0 0 12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:24px}section{padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}.wide{grid-column:1/-1}.slot{min-height:72px;margin-top:12px;padding:14px;border:1px dashed #aebdca;border-radius:10px;background:#fff;color:var(--muted)}table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:10px;border:1px solid var(--line);text-align:left;vertical-align:top}th{background:var(--tint)}
+@media(max-width:720px){main{width:min(100% - 24px,1120px);padding-top:28px}.grid{grid-template-columns:1fr}.wide{grid-column:auto}h1{font-size:28px}}
+</style>
+</head>
+<body>
+<main data-artifact="visual-board">
+<h1>视觉方案总览</h1>
+<section class="wide" id="approved-scope">
+<h2>批准范围</h2>
+<div class="slot" data-page-id="{{PAGE_ID}}">填写已批准的页面与功能编号。</div>
+</section>
+<div class="grid">
+<section><h2>设计方向</h2><h3>方向甲</h3><div class="slot">定位、层级、字体、色彩、图像与版式。</div></section>
+<section><h2>方案板</h2><div class="slot">放置本地方案预览、精确文案和状态。</div></section>
+<section><h2>交互状态</h2><div class="slot">加载、空、错误、成功与禁用。</div></section>
+<section><h2>验证</h2><div class="slot">对比度、可读性、安全区、响应式与网页验收。</div></section>
+<section class="wide"><h2>交付清单</h2><table><thead><tr><th>编号</th><th>文件</th><th>格式</th><th>状态</th></tr></thead><tbody><tr><td>VIS-001</td><td>02-visual/visual-board.html</td><td>网页</td><td>草稿</td></tr></tbody></table></section>
+</div>
+</main>
+</body>
+</html>
+=== end ===
+
+# 03-prototype/interactive-prototype.html：可交互原型外壳
+=== template: interactive-prototype.html ===
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{SYSTEM_NAME}}</title>
+<style>
+:root{color-scheme:light;--canvas:#f7f9fc;--surface:#fff;--ink:#172033;--muted:#526071;--line:#d9e2eb;--accent:#245b83;--soft:#e8f1f8}
+*{box-sizing:border-box}body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.55 "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif}main{width:min(980px,calc(100% - 40px));margin:0 auto;padding:44px 0}h1{margin:0 0 28px;font-size:34px}h2{margin:0 0 14px;font-size:23px}section{margin:0 0 18px;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}button{min-height:44px;padding:10px 16px;border:0;border-radius:9px;background:var(--accent);color:#fff;font:inherit;cursor:pointer}[disabled]{background:#d5dde5;color:#5b6672;cursor:not-allowed}.view{padding:16px;border:1px solid var(--line);border-radius:10px;background:var(--canvas)}.state{display:inline-block;margin:5px;padding:5px 9px;border:1px solid var(--line);border-radius:99px;background:#fff}@media(max-width:720px){main{width:min(100% - 28px,980px)}h1{font-size:28px}}
+</style>
+</head>
+<body>
+<main data-artifact="interactive-prototype" data-architecture-sha256="{{ARCHITECTURE_SHA256}}">
+<h1>{{SYSTEM_NAME}}</h1>
+<section id="prototype-main">
+<h2>交互原型</h2>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16M12 4v16"/></svg>
+<nav data-navigation-id="N-001"><a href="#view-1" data-page-id="{{PAGE_ID}}">已批准页面</a></nav>
+<div class="view" id="view-1" data-page-id="{{PAGE_ID}}" data-fixture-id="DEMO-001">模拟数据与页面内容</div>
+<button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">继续</button>
+<button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" data-state-kind="加载">加载</button>
+<button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" data-state-kind="空">空结果</button>
+<button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" data-state-kind="错误">错误</button>
+<button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" data-state-kind="成功">成功</button>
+<button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" data-state-kind="禁用" disabled>禁用</button>
+</section>
+</main>
+</body>
+</html>
+=== end ===
+
+# 99-delivery/APPROVALS.json：人工批准账本
+=== template: approvals.json ===
+{
+  "schema_version": "2.0",
+  "module_scope": {
+    "status": "pending",
+    "requested_modules": [],
+    "selected_modules": [],
+    "artifact_path": "01-system/01-module-intake.html",
+    "artifact_sha256": null,
+    "approved_at": null,
+    "approved_by": null,
+    "note": null
+  },
+  "architecture": {
+    "status": "pending",
+    "artifact_path": "01-system/03-system-architecture.html",
+    "artifact_sha256": null,
+    "approved_at": null,
+    "approved_by": null,
+    "note": null
+  },
+  "system_design": {
+    "status": "pending",
+    "artifact_path": "01-system/04-system-design.html",
+    "artifact_sha256": null,
+    "approved_at": null,
+    "approved_by": null,
+    "note": null
+  },
+  "visual": {
+    "status": "pending",
+    "artifact_path": "02-visual/visual-board.html",
+    "artifact_sha256": null,
+    "approved_at": null,
+    "approved_by": null,
+    "note": null
+  },
+  "prototype": {
+    "status": "pending",
+    "artifact_path": "03-prototype/interactive-prototype.html",
+    "artifact_sha256": null,
+    "browser_acceptance_path": null,
+    "browser_acceptance_sha256": null,
+    "approved_at": null,
+    "approved_by": null,
+    "note": null
+  },
+  "standalone_poster": {
+    "status": "not_requested",
+    "approved_at": null,
+    "approved_by": null,
+    "note": null
+  }
+}
+=== end ===
+
+# 99-delivery/MANIFEST.json：交付清单
+=== template: manifest.json ===
+{
+  "schema_version": "2.0",
+  "session_id": "SES-001",
+  "sequence": 1,
+  "folder": "001-session-title",
+  "title": "<session-title>",
+  "created_at": "<ISO-8601>",
+  "session_kind": "general",
+  "status": "draft",
+  "modes": [],
+  "approvals_file": "99-delivery/APPROVALS.json",
+  "stages": {
+    "module_scope": {
+      "path": "01-system/01-module-intake.html",
+      "sha256": null,
+      "approval": "pending"
+    },
+    "research": {
+      "path": "01-system/02-research.md",
+      "sha256": null,
+      "approval": "research_pending"
+    },
+    "architecture": {
+      "path": "01-system/03-system-architecture.html",
+      "sha256": null,
+      "approval": "pending"
+    },
+    "system_design": {
+      "path": "01-system/04-system-design.html",
+      "sha256": null,
+      "approval": "pending"
+    },
+    "visual": {
+      "path": "02-visual/visual-board.html",
+      "sha256": null,
+      "approval": "pending"
+    },
+    "prototype": {
+      "path": "03-prototype/interactive-prototype.html",
+      "sha256": null,
+      "approval": "pending"
+    }
+  },
+  "deliverables": [],
+  "assumptions": [],
+  "verification": [],
+  "notes": []
+}
+=== end ===

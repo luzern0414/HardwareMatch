@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>网站设计规范</title>
+  <link rel="stylesheet" href="guidelines.css">
+</head>
+<body>
+<main id="main" aria-label="网站设计规范">
+    <h1>网站设计规范</h1>
+<!-- SECTION:scope:START id=scope data-rule-id=website-scope -->
+<section id="scope" data-rule-id="website-scope" aria-labelledby="scope-heading">
+<h2 id="scope-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><circle cx="12" cy="12" r="3"/></svg><span>适用范围</span></h2>
+<p>适用于品牌官网、门店网站、落地页、产品介绍站和内容站，以及交付网页中的网站原型。通用标准见<a href="ui-standards.html">界面通用规范</a>；本页按同样的七层只写网站的细则，没有写到的按通用规范执行。</p>
+</section>
+<!-- SECTION:scope:END -->
+
+<!-- SECTION:workflow:START id=workflow data-rule-id=website-workflow -->
+<section id="workflow" data-rule-id="website-workflow" aria-labelledby="workflow-heading">
+<h2 id="workflow-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h5a3 3 0 0 1 3 3v1M16 18h-5a3 3 0 0 1-3-3v-1"/><path d="m13 8 3 2 3-2M11 16l-3-2-3 2"/></svg><span>工作流程</span></h2>
+<ol class="steps">
+<li>写出网站的访客、来源（搜索、广告、社交、线下二维码）和每页的主行动。</li>
+<li>画站点地图：页面类型、层级、导航与页脚；每个页面能独立成立。</li>
+<li>按区块写内容：首屏价值、核心服务、证据、流程、价格、常见问题、联系方式；内容来自后台内容管理。</li>
+<li>按断点出图，再做可交互原型；写页面标题与描述。</li>
+<li>用浏览器在 390、768、1280、1920 宽度验证：无横向滚动、导航可用、表单可提交、首屏看得懂。</li>
+</ol>
+</section>
+<!-- SECTION:workflow:END -->
+
+<!-- SECTION:rules:START id=rules data-rule-id=website-rules -->
+<section id="rules" data-rule-id="website-rules" aria-labelledby="rules-heading">
+<h2 id="rules-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 5 6v5c0 4.5 2.8 7.8 7 10 4.2-2.2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg><span>核心规则</span></h2>
+<h3 class="layer">一、设计架构</h3>
+<h4>设计理念</h4>
+<ul>
+<li>五秒看懂：首屏用一句话说清“你是谁、提供什么、对访客有什么用”，再给一个主行动（尼尔森诺曼集团首页指南：先说明网站的目的）。</li>
+<li>一页一个转化目标：每页只有一个主行动（咨询、预约、购买、下载、注册），其余是次行动。</li>
+<li>每扇窗都是门：访客常从搜索直接进入内页，每个页面都能独立说明自己并回到首页和主行动。</li>
+<li>内容先于装饰：真实照片、具体数字和证据替代空泛口号；扁平、留白充足、可扫读。</li>
+<li>快、可搜索、可访问：页面加载快，标题与描述可被搜索引擎理解，键盘与读屏可用。</li>
+</ul>
+<h4>页面类型</h4>
+<div class="table-wrap"><table><thead><tr><th>类型</th><th>主任务</th><th>构成（自上而下）</th></tr></thead><tbody>
+<tr><td>首页</td><td>建立认知并分流</td><td>导航 → 首屏（价值一句话 + 主行动 + 真实图）→ 核心服务 → 证据（数字、案例、评价）→ 流程 → 联系方式与地址 → 页脚</td></tr>
+<tr><td>落地页</td><td>单一转化</td><td>首屏（含唯一主行动）→ 痛点与利益 → 证据 → 价格或方案 → 常见问题；滚动后主行动由吸顶栏承接，不放其他分流</td></tr>
+<tr><td>产品或服务页</td><td>了解并比较</td><td>概述 → 特性 → 场景 → 规格或价格 → 常见问题 → 行动</td></tr>
+<tr><td>价格页</td><td>选择方案</td><td>方案卡 2–4 张并排，推荐项标记，差异逐项对比</td></tr>
+<tr><td>案例与内容列表</td><td>找到相关内容</td><td>筛选或分类 → 卡片列表 → 分页</td></tr>
+<tr><td>内容详情</td><td>阅读</td><td>标题 → 摘要 → 正文（最宽 720）→ 相关内容 → 行动</td></tr>
+<tr><td>关于与联系</td><td>建立信任、联系</td><td>介绍、团队或门店、地址地图、联系方式与表单</td></tr>
+<tr><td>法务页</td><td>合规</td><td>隐私政策、用户协议、备案信息</td></tr>
+</tbody></table></div>
+<h3 class="layer">二、功能架构</h3>
+<h4>转化与内容</h4>
+<ul>
+<li>写出每页的主行动与次行动。主行动放在首屏；首屏滚出视区后，主行动按钮出现在吸顶导航右侧，替换而不是增加，同一时刻页面上只出现一个主行动入口（界面通用规范“一个入口，不重复表达”）。</li>
+<li>表单只问必要字段（3–5 个），提交后显示结果与下一步，并说明多久回复；线索去向写进后台。</li>
+<li>页面内容（首屏文案、服务、案例、价格、常见问题、门店）由后台内容管理维护，不写死在页面里。</li>
+<li>每页写出页面标题（不超过 30 个汉字，含品牌名）与页面描述（约 80 个汉字），标题层级与内容一致（谷歌搜索中心入门指南）；图片写替代文本。</li>
+<li>记录关键事件：主行动点击、表单提交、电话与地图点击。</li>
+</ul>
+<h3 class="layer">三、信息架构与导航</h3>
+<h4>顶部导航与页脚</h4>
+<ul>
+<li>顶部导航 5–7 项，用访客的词而不是公司内部部门名；当前页高亮；滚动时吸顶，高 64；首屏离开视区后右侧显示主行动按钮。</li>
+<li>桌面端导航直接展开，不收进菜单按钮（尼尔森诺曼集团菜单设计清单）；手机端收进右上角菜单按钮，打开后全屏列出。</li>
+<li>下拉菜单与大菜单打开时不遮住整屏，悬停与点击都能打开，键盘可操作。</li>
+<li>三层以上的页面显示面包屑；内容站提供站内搜索。</li>
+<li>页脚：联系方式、地址、主要页面链接、隐私政策、用户协议、备案信息、社交账号；页脚是全站导航的补充，不堆杂项。</li>
+</ul>
+<h3 class="layer">四、页面与版式</h3>
+<h4>栅格与断点</h4>
+<div class="table-wrap"><table><thead><tr><th>宽度</th><th>栅格</th><th>布局</th></tr></thead><tbody>
+<tr><td>< 600</td><td>4 栏，边距 16</td><td>单栏；导航进菜单按钮；首屏标题 28</td></tr>
+<tr><td>600–839</td><td>8 栏，边距 24</td><td>卡片两列</td></tr>
+<tr><td>840–1199</td><td>12 栏，边距 32</td><td>卡片三列；首屏左右分栏</td></tr>
+<tr><td>1200–1599</td><td>12 栏，内容最宽 1200 居中</td><td>标准桌面</td></tr>
+<tr><td>≥ 1600</td><td>12 栏，内容仍最宽 1200</td><td>两侧留白，不拉伸正文</td></tr>
+</tbody></table></div>
+<ul>
+<li>区块纵向间距：桌面 64–96，手机 40–56；区块之间可用白与极浅灰交替分隔，不用渐变或斜切。</li>
+<li>阅读正文最宽 720，约每行 36–40 个汉字；段落短，小标题多，重要信息放在段首（尼尔森诺曼集团字母形阅读研究：访客先扫左上与段首）。</li>
+<li>首屏高度不强制占满屏幕，下一块内容露出一部分，提示可继续滚动。</li>
+</ul>
+<h3 class="layer">五、组件</h3>
+<h4>区块组件</h4>
+<div class="table-wrap"><table><thead><tr><th>组件</th><th>标准</th></tr></thead><tbody>
+<tr><td>首屏</td><td>标题 + 一句价值说明 + 主行动 + 次行动 + 真实照片或产品图；不用自动轮播</td></tr>
+<tr><td>特性区块</td><td>3–4 列，每项线性图标 24–32 + 标题 18 + 两行说明</td></tr>
+<tr><td>证据区</td><td>具体数字（门店数、服务人数）、案例卡、带姓名与身份的评价；不编造</td></tr>
+<tr><td>价格表</td><td>2–4 张方案卡等高并排，推荐项描边与标签，主行动在卡底对齐</td></tr>
+<tr><td>常见问题</td><td>折叠列表，问题 16 像素 600，一次可展开多项</td></tr>
+<tr><td>表单</td><td>单列，输入框高 44，标签在上，提交按钮高 44 通栏（手机）</td></tr>
+</tbody></table></div>
+<ul>
+<li>按钮高 40，首屏主行动 48；链接文字用主色，悬停加下划线。</li>
+<li>图片同组同比例，懒加载并预留尺寸，避免布局跳动。</li>
+</ul>
+<h3 class="layer">六、视觉基础</h3>
+<h4>视觉</h4>
+<ul>
+<li>与同品牌其他端共用主题色、字体族与线性图标；扁平风格，页面白底，区块交替极浅灰。</li>
+<li>主色只用于主行动、链接与关键数字；营销辅色只在活动区块出现。</li>
+<li>首次进入视区的区块可轻微上移淡入（不超过 300 毫秒、只播一次）；不用视差滚动、自动轮播和跟随鼠标的装饰。</li>
+<li>性能是视觉的一部分：最大内容绘制 2.5 秒以内、交互响应 200 毫秒以内、布局偏移 0.1 以内（网页核心体验指标）；图片按显示尺寸压缩。</li>
+</ul>
+<h4>字阶</h4>
+<div class="table-wrap"><table class="num"><thead><tr><th>字号 / 行高（像素）</th><th>字重</th><th>用途</th></tr></thead><tbody>
+<tr><td>14 / 22</td><td>400</td><td>注释、页脚、表单说明、标签</td></tr>
+<tr><td>16 / 28</td><td>400</td><td>正文、导航、按钮、表单</td></tr>
+<tr><td>18 / 28</td><td>600</td><td>卡片标题、首屏副标题</td></tr>
+<tr><td>22 / 32</td><td>600</td><td>小节标题</td></tr>
+<tr><td>28 / 38</td><td>600</td><td>区块标题；手机端首屏标题</td></tr>
+<tr><td>40 / 52</td><td>600</td><td>桌面首屏标题，每页一次</td></tr>
+<tr><td>48 / 60</td><td>600</td><td>品牌首页首屏标题（可选），每站一次</td></tr>
+</tbody></table></div>
+<h3 class="layer">七、文案</h3>
+<h4>文案</h4>
+<ul>
+<li>首屏标题写访客得到的好处，不写“欢迎来到”与空洞口号；副标题补充对象与方式。</li>
+<li>行动按钮写结果：“预约体验课”“获取报价”，不写“提交”“了解更多”。</li>
+<li>用访客的词：服务名、价格、地址写具体；数字带单位与时间范围。</li>
+<li>页面标题与描述写给搜索结果里的人看：说明这页是什么、为什么点。</li>
+</ul>
+</section>
+<!-- SECTION:rules:END -->
+
+<!-- SECTION:platform-matrix:START id=platform-matrix data-rule-id=website-platform-matrix -->
+<section id="platform-matrix" data-rule-id="website-platform-matrix" aria-labelledby="platform-matrix-heading">
+<h2 id="platform-matrix-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="6" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/></svg><span>平台矩阵</span></h2>
+<div class="table-wrap"><table><thead><tr><th>宽度</th><th>导航</th><th>首屏</th><th>卡片</th></tr></thead><tbody>
+<tr><td>< 600</td><td>菜单按钮</td><td>单栏，标题 28，图片在文字下</td><td>单列</td></tr>
+<tr><td>600–839</td><td>菜单按钮</td><td>单栏，标题 28</td><td>两列</td></tr>
+<tr><td>840–1199</td><td>展开导航</td><td>左右分栏，标题 40</td><td>三列</td></tr>
+<tr><td>≥ 1200</td><td>展开导航</td><td>左右分栏，标题 40–48，内容最宽 1200</td><td>三到四列</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:platform-matrix:END -->
+
+<!-- SECTION:examples:START id=examples data-rule-id=website-examples -->
+<section id="examples" data-rule-id="website-examples" aria-labelledby="examples-heading">
+<h2 id="examples-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m4 17 5-5 3 3 2-2 6 6"/></svg><span>案例样本</span></h2>
+<h3>健身房官网首页的改正</h3>
+<div class="pair"><div class="wrong"><h4>错误</h4><ul>
+<li>首屏自动轮播三张横幅，标题“欢迎来到动力空间”，按钮“了解更多”。</li>
+<li>导航 10 项，用“企业文化”“新闻中心”等内部栏目名；手机端导航挤成两行。</li>
+<li>服务介绍写成长段落，没有价格与门店地址。</li>
+</ul></div><div class="right"><h4>正确</h4><ul>
+<li>首屏一张真实门店照片，标题“下班顺路练，24 小时自助健身”，主行动“预约免费体验”。</li>
+<li>导航 6 项：课程、会员卡、门店、价格、关于、联系我们；手机端收进菜单按钮。</li>
+<li>特性区块 4 项配线性图标，价格表 3 张方案卡，页尾门店地图与联系方式；滚动后“预约免费体验”由吸顶栏承接。</li>
+</ul></div></div>
+</section>
+<!-- SECTION:examples:END -->
+
+<!-- SECTION:output-contract:START id=output-contract data-rule-id=website-output-contract -->
+<section id="output-contract" data-rule-id="website-output-contract" aria-labelledby="output-contract-heading">
+<h2 id="output-contract-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>输出契约</span></h2>
+<div class="table-wrap"><table><thead><tr><th>位置</th><th>职责</th><th>通过条件</th></tr></thead><tbody>
+<tr><td>站点地图</td><td>页面类型、层级、导航、页脚</td><td>每页一个主行动，层级不超过 3 级</td></tr>
+<tr><td>网站原型</td><td>可点击的首页与关键内页</td><td>各断点无横向滚动，导航与表单可用</td></tr>
+<tr><td>页面标题与描述表</td><td>每页标题、描述、主行动</td><td>标题含品牌与页面主题，描述说明价值</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:output-contract:END -->
+
+<!-- SECTION:quality-gates:START id=quality-gates data-rule-id=website-quality-gates -->
+<section id="quality-gates" data-rule-id="website-quality-gates" aria-labelledby="quality-gates-heading">
+<h2 id="quality-gates-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h5M15 7h5M9 7a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM4 17h10M18 17h2M14 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg><span>质量门禁</span></h2>
+<ul>
+<li>首屏看不出“是谁、提供什么、下一步做什么”，或一页有多个同等强调的主行动：退回设计。</li>
+<li>桌面端导航收进菜单按钮、当前页不高亮、手机端导航挤压换行：退回修改。</li>
+<li>自动轮播、视差滚动、装饰渐变、立体图标、正文超过 720 宽或字号小于 14：退回修改。</li>
+<li>页面内容写死、表单字段超过必要数量或提交后没有结果：退回设计。</li>
+<li>任一断点出现横向滚动、布局跳动明显、图片缺少替代文本、页面缺少标题与描述：退回修改。</li>
+</ul>
+</section>
+<!-- SECTION:quality-gates:END -->
+
+<!-- SECTION:handoff:START id=handoff data-rule-id=website-handoff -->
+<section id="handoff" data-rule-id="website-handoff" aria-labelledby="handoff-heading">
+<h2 id="handoff-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h12M13 4l3 3-3 3M20 17H8M11 14l-3 3 3 3"/></svg><span>交接规则</span></h2>
+<p>站点地图、页面区块、内容来源、主行动、页面标题与描述、断点参数进入 <a href="handoff.md">开发交接契约</a>。</p>
+</section>
+<!-- SECTION:handoff:END -->
+
+</main>
+</body>
+</html>

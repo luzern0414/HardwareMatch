@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>智能体设计规范</title>
+  <link rel="stylesheet" href="guidelines.css">
+</head>
+<body>
+<main id="main" aria-label="智能体设计规范">
+    <h1>智能体设计规范</h1>
+<!-- SECTION:scope:START id=scope data-rule-id=agent-scope -->
+<section id="scope" data-rule-id="agent-scope" aria-labelledby="scope-heading">
+<h2 id="scope-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><circle cx="12" cy="12" r="3"/></svg><span>适用范围</span></h2>
+<p>适用于对话助手、任务执行智能体和嵌入在后台或网站里的助手界面。通用标准见<a href="ui-standards.html">界面通用规范</a>；本页按同样的七层只写智能体的细则，没有写到的按通用规范执行。</p>
+</section>
+<!-- SECTION:scope:END -->
+
+<!-- SECTION:workflow:START id=workflow data-rule-id=agent-workflow -->
+<section id="workflow" data-rule-id="agent-workflow" aria-labelledby="workflow-heading">
+<h2 id="workflow-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h5a3 3 0 0 1 3 3v1M16 18h-5a3 3 0 0 1-3-3v-1"/><path d="m13 8 3 2 3-2M11 16l-3-2-3 2"/></svg><span>工作流程</span></h2>
+<ol class="steps">
+<li>写出智能体的任务目标、用户、形态（对话助手、任务执行、嵌入式）和终止条件。</li>
+<li>列出工具与可读写对象，按影响分级，标出必须人工审批的动作。</li>
+<li>设计会话或任务列表、对话区、输入区、产物面板，以及工具调用卡、审批卡、错误卡。</li>
+<li>为排队、运行、等待审批、已停止、失败、完成写出界面与文案。</li>
+<li>用浏览器验证：流式输出可停止、审批前不继续、失败不伪装完成、手机单栏可操作。</li>
+</ol>
+</section>
+<!-- SECTION:workflow:END -->
+
+<!-- SECTION:rules:START id=rules data-rule-id=agent-rules -->
+<section id="rules" data-rule-id="agent-rules" aria-labelledby="rules-heading">
+<h2 id="rules-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 5 6v5c0 4.5 2.8 7.8 7 10 4.2-2.2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg><span>核心规则</span></h2>
+<h3 class="layer">一、设计架构</h3>
+<h4>设计理念</h4>
+<ul>
+<li>能力透明：一开始就让用户知道智能体能做什么、做不到什么、做得有多可靠，并标明哪些内容由智能体生成（苹果人机界面指南“生成式人工智能”：设定清楚的预期，让用户能撤销、重试、关闭生成内容；微软人机交互指南）。</li>
+<li>过程可见：执行中的每一步、调用的工具、读写的对象都看得到；长任务显示进度，可随时停止。</li>
+<li>人可接管：涉及写入、金额、对外发送、不可撤销的动作先停下等人批准；用户可以修改、拒绝或接手。</li>
+<li>易于纠正：回答和结果可以重新生成、编辑后重试、反馈好坏；纠错的成本低于重做。</li>
+<li>不确定时收窄：不确定用户意图或缺少信息时先追问，不臆造；引用来源可点击核对。</li>
+</ul>
+<h4>形态与页面</h4>
+<div class="table-wrap"><table><thead><tr><th>形态</th><th>用于</th><th>页面构成</th></tr></thead><tbody>
+<tr><td>对话助手</td><td>问答、查询、生成内容</td><td>会话列表 + 对话区 + 输入区</td></tr>
+<tr><td>任务执行</td><td>代替用户多步操作业务系统</td><td>任务列表 + 运行详情（步骤、工具调用、审批）+ 产物</td></tr>
+<tr><td>嵌入式助手</td><td>在后台或网站某一页里辅助</td><td>页面右下角入口打开的居中或侧边对话面板，只作用于当前页对象</td></tr>
+</tbody></table></div>
+<h3 class="layer">二、功能架构</h3>
+<h4>任务定义</h4>
+<ul>
+<li>每个智能体写清：任务目标、输入、可用工具、每个工具能读写的对象、权限、审批中断点、人工接管方式和终止条件。</li>
+<li>工具按影响分级：只读（查询）直接执行；可撤销的写入执行后告知并提供撤销；不可撤销、涉及金额或对外发送的动作必须人工批准。</li>
+<li>知识、工具清单、提示与审批规则由后台维护，不写死在界面里；用户的记忆与数据可查看、可删除。</li>
+</ul>
+<h4>状态</h4>
+<div class="table-wrap"><table><thead><tr><th>状态</th><th>呈现</th></tr></thead><tbody>
+<tr><td>排队</td><td>任务卡显示排队位置与预计开始</td></tr>
+<tr><td>运行中</td><td>步骤列表逐条出现，当前步骤有进行标记，可停止</td></tr>
+<tr><td>等待审批</td><td>停在审批卡，写清要做什么、对谁、影响什么；任务列表上有醒目标记</td></tr>
+<tr><td>已停止</td><td>写明在哪一步停止、已完成和未完成的部分</td></tr>
+<tr><td>失败</td><td>写原因、已做的改动和恢复建议；不静默重试，不伪装为完成</td></tr>
+<tr><td>完成</td><td>给出结果摘要与产物，列出做过的写入</td></tr>
+</tbody></table></div>
+<h3 class="layer">三、信息架构与导航</h3>
+<h4>导航</h4>
+<ul>
+<li>左侧会话或任务列表，按今天、昨天、更早分组，顶部固定“新建”；运行中与等待审批的任务在列表上带状态标记。</li>
+<li>会话标题由首条消息生成，可改名、删除；搜索历史会话。</li>
+<li>会话内不分页；从通知或链接进入任务时直接定位到相关步骤。</li>
+</ul>
+<h3 class="layer">四、页面与版式</h3>
+<h4>版式</h4>
+<div class="table-wrap"><table><thead><tr><th>区域</th><th>标准</th></tr></thead><tbody>
+<tr><td>会话栏</td><td>宽 260，白底，右侧分隔线；840 以下收进抽屉</td></tr>
+<tr><td>对话区</td><td>单栏，最大宽度 760，居中；消息间距 24</td></tr>
+<tr><td>输入区</td><td>固定在底部，与对话区同宽，最小高 48，随内容增高到 8 行后内部滚动</td></tr>
+<tr><td>产物面板</td><td>宽屏（1200 以上）在右侧打开文件、表格、代码等产物，可关闭；窄屏改为全屏浮层</td></tr>
+</tbody></table></div>
+<h3 class="layer">五、组件</h3>
+<h4>消息与输入</h4>
+<ul>
+<li>用户消息右对齐、浅灰底、圆角 12；智能体消息左对齐、无底色，正文 16 像素，行高 26；不用深色气泡，不显示模型名。</li>
+<li>流式输出逐段出现，发送按钮在生成时变为“停止”；停止后保留已生成内容。</li>
+<li>首次进入的空状态给 3–4 个示例任务，点击即填入输入框；不放功能介绍长文。</li>
+<li>每条回答下方的工具：复制、重新生成、反馈（有用、没用）；编辑用户消息后从该处重新生成。</li>
+</ul>
+<h4>工具调用与审批</h4>
+<ul>
+<li>每次工具调用是一张可折叠卡片：线性图标、工具名（业务名词）、对象、意图、结果和副作用；默认收起，失败时展开。</li>
+<li>审批卡写清动作、对象、影响和能否撤销，按钮为“批准”“修改”“拒绝”“我来处理”；批准前任务不继续。</li>
+<li>引用来源用编号标在句末，点击展开来源标题与链接；没有来源的事实不写成确定语气。</li>
+<li>错误卡写原因与下一步，提供“重试”“改用其他方式”“交给人工”。</li>
+</ul>
+<h3 class="layer">六、视觉基础</h3>
+<h4>视觉</h4>
+<ul>
+<li>与同产品其他端共用主题色、字体族与图标；页面白底或极浅灰，消息区不加卡片阴影。</li>
+<li>正文 16 像素；代码与数据可用等宽字体，字号 14；其余字号取字阶 12 / 14 / 16 / 18 / 22。</li>
+<li>主色只用于发送按钮、当前会话、链接与审批卡的主行动；运行状态用中性灰加线性图标，审批用警示色浅底。</li>
+<li>智能体头像用线性图标或产品标识，不用拟人照片；动效只有流式出现与卡片展开，不做打字机音效与闪烁。</li>
+</ul>
+<h3 class="layer">七、文案</h3>
+<h4>文案</h4>
+<ul>
+<li>说清能力与局限，不夸大；不确定时说“不确定”，并说明需要什么信息。</li>
+<li>不拟人过度：不用“我很开心”等情绪表达，不假装是人。</li>
+<li>不显示内部推理、调试日志与系统提示；步骤名写业务动作，例如“查询本周订单”，不写函数名。</li>
+<li>失败写原因与恢复建议，不写错误代码；完成写结果与做过的改动。</li>
+</ul>
+</section>
+<!-- SECTION:rules:END -->
+
+<!-- SECTION:platform-matrix:START id=platform-matrix data-rule-id=agent-platform-matrix -->
+<section id="platform-matrix" data-rule-id="agent-platform-matrix" aria-labelledby="platform-matrix-heading">
+<h2 id="platform-matrix-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="6" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/></svg><span>平台矩阵</span></h2>
+<div class="table-wrap"><table><thead><tr><th>宽度</th><th>布局</th></tr></thead><tbody>
+<tr><td>≥ 1200</td><td>会话栏 + 对话区 + 可选产物面板</td></tr>
+<tr><td>840–1199</td><td>会话栏 + 对话区；产物以居中浮层打开</td></tr>
+<tr><td>< 840</td><td>单栏对话区，会话栏进抽屉，输入区固定底部并避让键盘</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:platform-matrix:END -->
+
+<!-- SECTION:examples:START id=examples data-rule-id=agent-examples -->
+<section id="examples" data-rule-id="agent-examples" aria-labelledby="examples-heading">
+<h2 id="examples-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m4 17 5-5 3 3 2-2 6 6"/></svg><span>案例样本</span></h2>
+<h3>订单助手的改正</h3>
+<div class="pair"><div class="wrong"><h4>错误</h4><ul>
+<li>深色气泡、显示模型名与思考过程；工具调用只写函数名和原始参数。</li>
+<li>智能体直接执行退款，事后才告诉用户。</li>
+<li>失败后自动重试三次并回复“已完成”。</li>
+</ul></div><div class="right"><h4>正确</h4><ul>
+<li>用户消息浅灰底右对齐，回答无底色；工具卡写“查询订单 · 本周 · 共 128 笔”。</li>
+<li>退款前停在审批卡：“为订单 2026-1028-001 退款 ¥88.00，退回原支付账户，不可撤销”，等用户批准。</li>
+<li>失败写明原因与已做的改动，给出重试与交给人工。</li>
+</ul></div></div>
+</section>
+<!-- SECTION:examples:END -->
+
+<!-- SECTION:output-contract:START id=output-contract data-rule-id=agent-output-contract -->
+<section id="output-contract" data-rule-id="agent-output-contract" aria-labelledby="output-contract-heading">
+<h2 id="output-contract-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>输出契约</span></h2>
+<div class="table-wrap"><table><thead><tr><th>位置</th><th>职责</th><th>通过条件</th></tr></thead><tbody>
+<tr><td>任务定义表</td><td>目标、工具、权限、审批点、终止条件</td><td>每个工具有影响分级，不可撤销动作都有审批</td></tr>
+<tr><td>界面原型</td><td>会话、运行、审批、失败、完成</td><td>流式可停止、审批卡阻断、状态齐全</td></tr>
+<tr><td>截图验收</td><td>桌面与 390 像素宽度</td><td>单栏可操作，输入区不被键盘遮挡</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:output-contract:END -->
+
+<!-- SECTION:quality-gates:START id=quality-gates data-rule-id=agent-quality-gates -->
+<section id="quality-gates" data-rule-id="agent-quality-gates" aria-labelledby="quality-gates-heading">
+<h2 id="quality-gates-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h5M15 7h5M9 7a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM4 17h10M18 17h2M14 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg><span>质量门禁</span></h2>
+<ul>
+<li>不可撤销、涉及金额或对外发送的动作没有人工审批：失败。</li>
+<li>失败被静默重试或显示为完成、看不到做过哪些写入：失败。</li>
+<li>界面显示模型名、内部推理、调试日志或函数名：退回修改。</li>
+<li>生成中不能停止、工具调用不可见、引用来源不可核对：退回设计。</li>
+<li>深色气泡、立体图标、装饰渐变、第二个字体族或字阶外字号：退回修改。</li>
+</ul>
+</section>
+<!-- SECTION:quality-gates:END -->
+
+<!-- SECTION:handoff:START id=handoff data-rule-id=agent-handoff -->
+<section id="handoff" data-rule-id="agent-handoff" aria-labelledby="handoff-heading">
+<h2 id="handoff-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h12M13 4l3 3-3 3M20 17H8M11 14l-3 3 3 3"/></svg><span>交接规则</span></h2>
+<p>任务定义、工具分级、审批点、状态与文案进入 <a href="handoff.md">开发交接契约</a>；实现不得绕过审批，也不得改变失败的呈现。</p>
+</section>
+<!-- SECTION:handoff:END -->
+
+</main>
+</body>
+</html>

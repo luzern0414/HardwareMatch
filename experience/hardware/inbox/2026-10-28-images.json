@@ -1,0 +1,9 @@
+{"products":[
+ {"id":"seagate-skyhawk-8tb","category":"视频感知","subsystem":"无人自助","brand":"希捷","model":"酷鹰 SkyHawk 8TB","specs":{"类型":"监控级硬盘，7×24 写入","接口":"SATA"},"prices":[],"verdict":"可用","notes":"按 4 路 4 Mbps × 30 天约 5.2 TB 选 8 TB；价格未核实，走希捷官网或京东自营"},
+ {"id":"wiegand-l02","notes":"实物图为同类双门 TCP 控制板（卡帝），非微耕原厂图"}
+],
+"queries":[
+ {"platform":"bing-images","query":"<品牌 型号>（图片搜索）","useful":true,"date":"2026-10-28","note":"快照里 murl 字段是原图地址；一次 capture 会嵌入几十张缩略图，按域名占用 LuzCrawl 预算（cn.bing.com 已放宽到 100/10 分钟，代码上限 100）"},
+ {"platform":"so360-images","query":"<品牌 型号>（图片搜索）","useful":true,"date":"2026-10-28","note":"image.so.com 快照里 p*.ssl.qhimgs*.com/sdr/400__ 为 400px 缩略图，够做卡片；与必应轮换可加倍吞吐"},
+ {"platform":"http","query":"直接请求必应图片结果页","useful":false,"date":"2026-10-28","note":"第一次能取到，随后返回固定图库图（pixnio）或空结果，判为机器人；不可批量"}
+]}

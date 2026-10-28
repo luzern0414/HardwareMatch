@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小程序设计规范</title>
+  <link rel="stylesheet" href="guidelines.css">
+</head>
+<body>
+<main id="main" aria-label="小程序设计规范">
+    <h1>小程序设计规范</h1>
+<!-- SECTION:scope:START id=scope data-rule-id=miniprogram-scope -->
+<section id="scope" data-rule-id="miniprogram-scope" aria-labelledby="scope-heading">
+<h2 id="scope-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><circle cx="12" cy="12" r="3"/></svg><span>适用范围</span></h2>
+<p>适用于微信等平台的小程序与交付网页中的小程序原型。通用标准见<a href="ui-standards.html">界面通用规范</a>；本页按同样的七层只写小程序的细则，没有写到的按通用规范执行。</p>
+</section>
+<!-- SECTION:scope:END -->
+
+<!-- SECTION:workflow:START id=workflow data-rule-id=miniprogram-workflow -->
+<section id="workflow" data-rule-id="miniprogram-workflow" aria-labelledby="workflow-heading">
+<h2 id="workflow-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h5a3 3 0 0 1 3 3v1M16 18h-5a3 3 0 0 1-3-3v-1"/><path d="m13 8 3 2 3-2M11 16l-3-2-3 2"/></svg><span>工作流程</span></h2>
+<ol class="steps">
+<li>列出用户来这个小程序主要完成的任务，按界面通用规范“入口与内容分层”把每个功能分为核心、信息、营销、辅助。</li>
+<li>由核心功能决定底部标签（2–5 个）：每个核心任务一个标签，首页承载门店或品牌、实时信息与营销。</li>
+<li>为每个标签列出模块并标注类别；核心模块固定，信息与营销模块可配置；每处内容找到后台维护入口。</li>
+<li>为每个二级页写出“来源 → 当前页 → 返回目标 → 完成目标”。</li>
+<li>按本页参数出图，再做可交互原型；自动测试标签隔离、返回来源、入口唯一、卡片内不重复、同类等高、字体与字阶。</li>
+</ol>
+</section>
+<!-- SECTION:workflow:END -->
+
+<!-- SECTION:rules:START id=rules data-rule-id=miniprogram-rules -->
+<section id="rules" data-rule-id="miniprogram-rules" aria-labelledby="rules-heading">
+<h2 id="rules-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 5 6v5c0 4.5 2.8 7.8 7 10 4.2-2.2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg><span>核心规则</span></h2>
+<h3 class="layer">一、设计架构</h3>
+<h4>设计理念</h4>
+<ul>
+<li>即用即走：用户打开就能完成主任务，核心任务不超过 3 次点击。</li>
+<li>一个标签一个目的：每个底部标签只承载一类任务，标签之间互不干扰。</li>
+<li>核心在前、营销在后：首屏先回答“这家店现在怎样、我能做什么”，再展示活动。</li>
+<li>来去清楚：用户随时知道在哪、能去哪、怎么回去。</li>
+<li>丰富而不杂乱：用真实照片、线性图标和清楚的层次承载品牌，图形一律扁平，每样东西只出现一次。</li>
+</ul>
+<h4>页面类型</h4>
+<div class="table-wrap"><table><thead><tr><th>类型</th><th>构成</th></tr></thead><tbody>
+<tr><td>首页（一级）</td><td>品牌或门店（核心，固定）→ 实时信息 → 营销</td></tr>
+<tr><td>标签页（一级）</td><td>一个核心任务的完整入口，例如会员卡、入场、我的</td></tr>
+<tr><td>二级页</td><td>详情、列表、表单，左上角返回，隐藏标签栏</td></tr>
+<tr><td>结果页</td><td>支付、核验、领取的结果，写结果、原因与下一步，“完成”回到发起处</td></tr>
+</tbody></table></div>
+<h3 class="layer">二、功能架构</h3>
+<h4>首页与入口</h4>
+<ul>
+<li>先判断核心任务（例如健身房的购卡续卡、刷脸入场）。核心任务已有底部标签时，首页不再放它们的入口、状态卡或商品列表。</li>
+<li>首页从上到下：品牌或门店（核心，固定）→ 实时信息（公告、客流、营业状态）→ 营销（礼券、抽奖、活动），首屏营销模块不超过 2 个。</li>
+<li>核心任务没有独立标签时，首屏给它一个唯一的显眼入口；不用宫格、轮播和卡片同时指向它。</li>
+<li>宫格只在有 4 个以上不同业务需要分发、且这些业务没有标签和模块时使用；不放本页已有模块的业务，也不放其他标签的功能。</li>
+<li>轮播只放一个活动的多张图或品牌图；门店卡用一行“门店详情”进入详情，相册、设施、地图只在门店详情出现。</li>
+<li>营销活动结束、礼券领完或用户不是目标人群时，模块自动收起，下方模块上移。</li>
+</ul>
+<h4>可配置模块</h4>
+<ul>
+<li>每个标签页由模块组成，每个模块标注类别（核心、信息、营销）；核心模块固定显示，只能调整顺序；信息与营销模块可以隐藏和排序。</li>
+<li>隐藏即不渲染、不占位：下方模块平滑上移；重新显示时原位展开。</li>
+<li>模块配置与全部运营内容由后台维护，小程序只读，不写死；草稿与发布分开，发布失败保留草稿。</li>
+</ul>
+<h4>合规</h4>
+<ul>
+<li>首次授权与协议勾选、用户协议、隐私政策、敏感信息单独同意、购买须知、隐私设置（撤回授权、个性化推荐、注销）、联系客服；条款正文由法务提供。</li>
+</ul>
+<h3 class="layer">三、信息架构与导航</h3>
+<h4>导航、页面栈与返回</h4>
+<div class="table-wrap"><table><thead><tr><th>规则</th><th>做法</th><th>反例（不限于）</th></tr></thead><tbody>
+<tr><td>标签只由标签栏切换</td><td>页面内的按钮、卡片、结果页按钮都不切换底部标签；需要另一个标签的内容时，在当前标签内打开承载它的二级页</td><td>首页入口跳到会员卡标签；支付成功后切到入场标签</td></tr>
+<tr><td>标签之间互不影响</td><td>每个标签独立页面栈；切走再切回停留在原页面与滚动位置；再次点击当前标签滚动到页面起始处</td><td>切回首页被重置</td></tr>
+<tr><td>二级页都有返回</td><td>二级及以下页面左上角有返回按钮，任何底色上清晰可见；二级页隐藏底部标签栏</td><td>返回按钮与图片同色看不见</td></tr>
+<tr><td>返回到来源</td><td>返回回到打开当前页的页面；同一二级页从不同来源打开，返回到各自来源</td><td>从抽奖进入购卡，返回却到了首页</td></tr>
+<tr><td>流程完成回到发起处</td><td>“完成”回到发起流程的页面；结果页替换最后一步</td><td>支付成功后返回又回到确认订单</td></tr>
+<tr><td>栈深有上限</td><td>页面栈最多 10 层，满时以替换方式打开</td><td>反复点击叠出十几层同一页面</td></tr>
+</tbody></table></div>
+<h3 class="layer">四、页面与版式</h3>
+<h4>版式参数</h4>
+<div class="table-wrap"><table><thead><tr><th>项目</th><th>参数</th></tr></thead><tbody>
+<tr><td>画布</td><td>375 像素宽（设计稿 750）；原型框固定高度，内容在框内滚动</td></tr>
+<tr><td>边距</td><td>页面左右 12–16 像素；卡片之间 12 像素；卡片内边距 12–16 像素</td></tr>
+<tr><td>导航栏</td><td>高 44 像素，避让右上角胶囊；一级页显示门店或页面名，二级页左侧返回按钮</td></tr>
+<tr><td>底部标签栏</td><td>2–5 个，高 50 像素加安全区；只在一级页显示</td></tr>
+<tr><td>底部操作栏</td><td>一个主行动 + 最多一个次行动，避让安全区</td></tr>
+</tbody></table></div>
+<ul>
+<li>同组图片同一宽高比：门店相册、环境图、商品图在一组内统一 4:3 或 1:1 并裁切填满，等高对齐。</li>
+</ul>
+<h3 class="layer">五、组件</h3>
+<h4>组件参数</h4>
+<div class="table-wrap"><table><thead><tr><th>组件</th><th>参数</th></tr></thead><tbody>
+<tr><td>按钮</td><td>主按钮高 44（大）或 32（卡片内），一张卡片只有一个主按钮；营销按钮用辅色浅底容器</td></tr>
+<tr><td>图标按钮</td><td>电话、导航等用浅底圆形 36 加线性图标，下方 12 像素文字</td></tr>
+<tr><td>入口块</td><td>主色浅底阶圆角块 40 承托 22–24 线性图标，下方标签 12</td></tr>
+<tr><td>弹层</td><td>底部弹出，高度不超过屏幕 80%，内容超出时内部滚动，底部按钮固定</td></tr>
+<tr><td>标签与券</td><td>标签高 20、圆角 4；券面用辅色最浅一阶，缺口边只是形状，不用渐变</td></tr>
+</tbody></table></div>
+<h4>交互与动效</h4>
+<ul>
+<li>进入二级页从右滑入，返回向右滑出，切换标签淡入，时长 280–320 毫秒；尊重系统“减少动态效果”。</li>
+<li>点击反馈 100–150 毫秒；模块收起 300 毫秒；数字滚动不超过 1 秒；庆祝动效只给中奖与支付成功。</li>
+<li>修复动作放在出问题的状态上（例如“人脸 未录入 · 去录入”），失败提示只写原因和怎么办，不再重复按钮。</li>
+</ul>
+<h4>状态</h4>
+<ul>
+<li>每个页面处理加载（骨架）、空、失败与重试、弱网、断网、过期；支付、人脸、核验等结果逐一列出原因。</li>
+</ul>
+<h3 class="layer">六、视觉基础</h3>
+<h4>配色</h4>
+<ul>
+<li>主色按行业气质调研后选择，不默认青绿：健身房用活力橙，按视觉设计规范“取色依据”从官方色板取阶（火山色板）：主按钮、开关、勾选用白字达 4.5:1 的品牌阶实色，按下深一阶；一屏只有一个实色主按钮；主色单屏面积不超过约 10%。</li>
+<li>营销辅色按“配色和谐”取主色的邻近色（健身房用金盏花金色板）：领取、抽奖等营销按钮用浅金容器底配深金文字阶，券面用最浅一阶。</li>
+<li>按 60-30-10：页面底用极浅灰、卡片白底；头部、会员卡、新人礼券、抽奖区用纯色浅底阶，不用渐变、纹理、半透明玻璃、背景斑点和斜面立体按钮。</li>
+</ul>
+<h4>图标与图形</h4>
+<ul>
+<li>全部图标来自同一套线性描边图标，线宽统一 1.5 像素、圆角端点。</li>
+<li>底部标签图标 22–24 像素：当前项主色线性图标加主色文字，未选中灰色；不用灰度滤镜或放大表示选中。</li>
+<li>门店、商品、环境用真实或生成的照片；空状态、结果页用白底深灰线稿插画；不用表情符号代替图标。</li>
+</ul>
+<h4>字体与字号</h4>
+<ul>
+<li>小程序正文 14 像素（750 设计稿 28），最小 12 像素只用于注释、角标、坐标；导航栏标题 16，门店名 18，价格与大数字 22–28。字阶与后台共用：</li>
+</ul>
+<div class="table-wrap"><table class="num"><thead><tr><th>字号 / 行高（像素）</th><th>字重</th><th>用途</th></tr></thead><tbody>
+<tr><td>12 / 18</td><td>400</td><td>时间、角标、图表坐标、标签内文字、注释</td></tr>
+<tr><td>14 / 22</td><td>400；表头与分组标题 600</td><td>正文、表格、表单、按钮、菜单、列表</td></tr>
+<tr><td>16 / 24</td><td>600</td><td>卡片与模块标题、弹窗标题、小程序导航栏标题</td></tr>
+<tr><td>18 / 26</td><td>600</td><td>小程序门店名与页面主标题</td></tr>
+<tr><td>22 / 30</td><td>600</td><td>后台页面标题、价格、交付网页二级标题</td></tr>
+<tr><td>28 / 36</td><td>600</td><td>指标数字、在馆人数等大数字</td></tr>
+<tr><td>32 / 40</td><td>600</td><td>交付网页的主标题，只出现一次</td></tr>
+</tbody></table></div>
+<h3 class="layer">七、文案</h3>
+<h4>文案</h4>
+<ul>
+<li>短句、口语，先说结果；按钮写动作，例如“去录入”“立即购买”。</li>
+<li>公告只写门店运营消息，不复述下方活动；授权说明写清用途与可撤回。</li>
+</ul>
+</section>
+<!-- SECTION:rules:END -->
+
+<!-- SECTION:platform-matrix:START id=platform-matrix data-rule-id=miniprogram-platform-matrix -->
+<section id="platform-matrix" data-rule-id="miniprogram-platform-matrix" aria-labelledby="platform-matrix-heading">
+<h2 id="platform-matrix-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="6" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/></svg><span>平台矩阵</span></h2>
+<div class="table-wrap"><table><thead><tr><th>能力</th><th>交付网页原型</th><th>真机小程序</th></tr></thead><tbody>
+<tr><td>尺寸</td><td>375 像素宽，固定高度的手机框</td><td>设计稿 750，按机型缩放</td></tr>
+<tr><td>返回</td><td>导航栏返回按钮</td><td>导航栏返回、右滑返回、安卓返回键</td></tr>
+<tr><td>字体</td><td>与功能列表、后台同一字体族</td><td>跟随系统字体，字阶相同</td></tr>
+<tr><td>手机浏览器打开</td><td>手机框占满宽度、高度固定，可完整操作</td><td>—</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:platform-matrix:END -->
+
+<!-- SECTION:examples:START id=examples data-rule-id=miniprogram-examples -->
+<section id="examples" data-rule-id="miniprogram-examples" aria-labelledby="examples-heading">
+<h2 id="examples-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m4 17 5-5 3 3 2-2 6 6"/></svg><span>案例样本</span></h2>
+<h3>健身房首页的改正</h3>
+<div class="pair"><div class="wrong"><h4>错误</h4><ul>
+<li>宫格放新人礼券、每日抽奖、门店相册、设施服务、联系客服；下方又有新人券卡、抽奖卡、轮播图、门店环境模块，同一业务 3–4 个入口。</li>
+<li>首页再放热门会员卡横滑和会员卡状态，与会员卡标签重复。</li>
+<li>入口用立体图标，头部用橙色渐变，抽奖按钮做成内凹立体按钮。</li>
+</ul></div><div class="right"><h4>正确</h4><ul>
+<li>首页只有：门店卡（核心，固定）→ 门店公告、实时客流（信息）→ 新人礼券、每日抽奖（营销），每个业务一个入口。</li>
+<li>购卡与会员卡状态只在会员卡标签，刷脸只在入场标签。</li>
+<li>入口用浅底块承托线性图标，头部纯色浅底，按钮单阶纯色。</li>
+</ul></div></div>
+</section>
+<!-- SECTION:examples:END -->
+
+<!-- SECTION:output-contract:START id=output-contract data-rule-id=miniprogram-output-contract -->
+<section id="output-contract" data-rule-id="miniprogram-output-contract" aria-labelledby="output-contract-heading">
+<h2 id="output-contract-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>输出契约</span></h2>
+<div class="table-wrap"><table><thead><tr><th>位置</th><th>职责</th><th>通过条件</th></tr></thead><tbody>
+<tr><td>交付网页的小程序原型</td><td>可操作的手机框与配置面板</td><td>标签隔离、返回来源、入口唯一、字体与字阶、同类等高的自动测试全部通过</td></tr>
+<tr><td>原型配置面板</td><td>按标签分类的页面直达、模块开关与场景</td><td>场景逐一列出结果，核心模块开关锁定</td></tr>
+<tr><td>截图验收</td><td>桌面与 390 像素宽度</td><td>无横向滚动，框高固定，文字不截断</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:output-contract:END -->
+
+<!-- SECTION:quality-gates:START id=quality-gates data-rule-id=miniprogram-quality-gates -->
+<section id="quality-gates" data-rule-id="miniprogram-quality-gates" aria-labelledby="quality-gates-heading">
+<h2 id="quality-gates-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h5M15 7h5M9 7a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM4 17h10M18 17h2M14 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg><span>质量门禁</span></h2>
+<ul>
+<li>首页放了已有标签的核心功能入口、同一页面同一目的地有两个入口、同一活动占两个位置：退回设计。</li>
+<li>运营内容写死在小程序里，后台没有对应的维护入口：退回设计。</li>
+<li>页面内入口切换底部标签、二级页没有返回、返回或“完成”没有回到打开它的页面：退回设计。</li>
+<li>核心模块可以被隐藏或排在营销之后、首屏营销模块超过 2 个、活动结束后仍留空卡：退回设计。</li>
+<li>一张卡片里同一信息出现两次、一张卡片有两个主按钮：退回修改。</li>
+<li>用户头像用文字或表情符号代替：退回修改。</li>
+<li>配色说不出依据、一屏多个实色按钮、营销按钮与主按钮同等强调、开关开启色对白底不足 3:1：退回修改。</li>
+<li>出现立体图标、彩色面性图标、装饰渐变、斜面立体按钮、发光或厚阴影、半透明玻璃与背景斑点，或图标线宽不统一：退回修改。</li>
+<li>出现第二个字体族、斜体、字阶外字号或低于 12 像素的文字；同组图片高低不齐：退回修改。</li>
+</ul>
+</section>
+<!-- SECTION:quality-gates:END -->
+
+<!-- SECTION:handoff:START id=handoff data-rule-id=miniprogram-handoff -->
+<section id="handoff" data-rule-id="miniprogram-handoff" aria-labelledby="handoff-heading">
+<h2 id="handoff-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h12M13 4l3 3-3 3M20 17H8M11 14l-3 3 3 3"/></svg><span>交接规则</span></h2>
+<p>标签结构、模块类别、页面栈规则、场景名与组件参数进入 <a href="handoff.md">开发交接契约</a>；实现不得把二级页改成标签页，也不得新增重复入口。</p>
+</section>
+<!-- SECTION:handoff:END -->
+
+</main>
+</body>
+</html>

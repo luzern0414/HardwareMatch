@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>系统功能列表规范</title>
+  <link rel="stylesheet" href="guidelines.css">
+</head>
+<body>
+<main id="main" aria-label="系统功能列表规范">
+    <h1>系统功能列表规范</h1>
+<!-- SECTION:scope:START id=scope data-rule-id=flist-scope -->
+<section id="scope" data-rule-id="flist-scope" aria-labelledby="scope-heading">
+<h2 id="scope-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><circle cx="12" cy="12" r="3"/></svg><span>适用范围</span></h2>
+<p>适用于交付网页里的“系统功能列表”和系统架构文件中的功能表。功能列表是一个系统全部功能的唯一索引：每个功能出现一次，读者从这一张表就能知道系统有哪些功能、在哪个端、在哪个页面、怎样操作、会出现哪些状态。</p>
+<p>字体、颜色、间距继承界面通用规范；本页规定这张表的结构、字体、对齐和写法。</p>
+</section>
+<!-- SECTION:scope:END -->
+
+<!-- SECTION:workflow:START id=workflow data-rule-id=flist-workflow -->
+<section id="workflow" data-rule-id="flist-workflow" aria-labelledby="workflow-heading">
+<h2 id="workflow-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h5a3 3 0 0 1 3 3v1M16 18h-5a3 3 0 0 1-3-3v-1"/><path d="m13 8 3 2 3-2M11 16l-3-2-3 2"/></svg><span>工作流程</span></h2>
+<ol class="steps">
+<li>从已批准的模块和系统架构取功能，不新增未批准的功能；每个功能一个编号，编号在架构、原型和交付网页中保持一致。</li>
+<li>为每个功能找到所在页面、关键交互（原型里真实存在的动作名）和该模块的界面状态（与状态机同名）。</li>
+<li>按批准的模块顺序分组；同一模块内小程序在前、后台在后，再按编号升序。</li>
+<li>套用本页的列结构、字体、对齐和合并单元格规则生成表格。</li>
+<li>用“重复检查”核对：没有两个编号描述同一能力，没有一行复述另一行，模块和界面状态在每组只出现一次。</li>
+<li>在 1280 像素和 390 像素宽度截图检查：表格不撑破页面，文字不被截断，表头与内容对齐。</li>
+</ol>
+</section>
+<!-- SECTION:workflow:END -->
+
+<!-- SECTION:rules:START id=rules data-rule-id=flist-rules -->
+<section id="rules" data-rule-id="flist-rules" aria-labelledby="rules-heading">
+<h2 id="rules-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 5 6v5c0 4.5 2.8 7.8 7 10 4.2-2.2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg><span>核心规则</span></h2>
+<h3>设计理念</h3>
+<ul>
+<li>一张表回答五个问题：有什么功能、在哪个端、在哪个页面、怎样操作、有哪些状态。表外不再写功能介绍。</li>
+<li>一眼能扫读：同一种信息永远在同一列、同一种字体和对齐；分组靠合并单元格和分组线，不靠颜色和加粗。</li>
+<li>不重复：一个能力只有一个编号；同一模块共享的信息（模块名、界面状态）只写一次。</li>
+</ul>
+<h3>字体</h3>
+<ul>
+<li>字体族与原型、网页标题完全相同：苹方、微软雅黑、思源黑体依次回退，最后回退到系统无衬线字体；编号列也用这个字体，不换等宽字体。</li>
+<li>表头 14 / 22 像素，字重 600；表格正文所有列 14 / 22 像素，字重 400，同一种正文色。只有合并后的模块名用 600 区分分组。</li>
+<li>不用斜体，不用彩色文字，不用两种以上灰度；不为某一列单独缩小字号。</li>
+</ul>
+<h3>配色</h3>
+<ul>
+<li>表头浅底（与页面浅灰同一色值），表体白底；分组之间用一条略深的横线，组内用浅横线；不画竖线，只在合并单元格与内容之间画一条浅竖线。</li>
+<li>只有“端”列使用颜色：小程序用主色浅调底配主色深字，后台用暖色浅调底配暖色深字；全表不出现第三种强调色。</li>
+</ul>
+<h3>图案</h3>
+<ul>
+<li>表内不放图标、插画和表情；端标签是唯一的图形元素，统一圆角、同高、同字号 12 像素。</li>
+</ul>
+<h3>列结构</h3>
+<div class="table-wrap"><table><thead><tr><th>列</th><th>内容</th><th>宽度</th><th>对齐</th></tr></thead><tbody><tr><td>模块</td><td>批准的模块名，按模块合并单元格</td><td>约 96 像素，固定</td><td>居中</td></tr><tr><td>编号</td><td>功能编号，字母前缀加三位数字</td><td>约 76 像素，固定</td><td>居中</td></tr><tr><td>端</td><td>小程序或后台的端标签</td><td>约 72 像素，固定</td><td>居中</td></tr><tr><td>功能</td><td>“对象 + 能力”，例如“选择月卡或次卡套餐”</td><td>自适应</td><td>左对齐</td></tr><tr><td>所在页面</td><td>页面名，多个用顿号</td><td>约 128 像素，固定</td><td>居中</td></tr><tr><td>关键交互</td><td>原型中真实存在的动作名，用顿号分隔</td><td>自适应</td><td>左对齐</td></tr><tr><td>界面状态</td><td>该模块状态机里的状态名，按模块合并单元格</td><td>约 220 像素，固定</td><td>左对齐</td></tr></tbody></table></div>
+<h3>对齐</h3>
+<ul>
+<li>表头全部居中。短内容列（模块、编号、端、所在页面）居中；会换行的长文字列（功能、关键交互、界面状态）左对齐，多行居中会让每行起点不同，难以阅读。</li>
+<li>所有单元格垂直居中；表头行与数据行同样的上下内边距。</li>
+<li>列宽用固定宽度加自适应列，表格使用固定布局，避免长文字把短列挤窄。</li>
+</ul>
+<h3>内容写法</h3>
+<ul>
+<li>功能名写用户能做的事，不写实现方式，不写“支持”“提供”“实现”等空动词。</li>
+<li>关键交互只写原型里能点到的动作名，不写原型配置面板的操作；没有交互写“—”。</li>
+<li>界面状态与状态机、原型配置面板的场景名逐字一致。</li>
+<li>同一能力只出现一次：两个编号描述同一件事时合并；一行的内容被另一行包含时删除。</li>
+<li>不写来源、证据、优先级、负责人、时间等过程信息。</li>
+</ul>
+<h3>窄屏</h3>
+<ul>
+<li>窄于表格最小宽度时表格在自己的容器里横向滚动，页面本身不出现横向滚动；不缩小字号。</li>
+</ul>
+</section>
+<!-- SECTION:rules:END -->
+
+<!-- SECTION:platform-matrix:START id=platform-matrix data-rule-id=flist-platform-matrix -->
+<section id="platform-matrix" data-rule-id="flist-platform-matrix" aria-labelledby="platform-matrix-heading">
+<h2 id="platform-matrix-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="6" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/></svg><span>平台矩阵</span></h2>
+<div class="table-wrap"><table><thead><tr><th>场景</th><th>交付网页</th><th>系统架构文件</th><th>手机浏览器</th></tr></thead><tbody><tr><td>位置</td><td>主标题之后的第一个二级标题</td><td>功能与页面章节</td><td>同交付网页</td></tr><tr><td>字号</td><td>表头 14 粗体，正文 14 常规</td><td>同左</td><td>同左，不缩小</td></tr><tr><td>合并单元格</td><td>模块与界面状态按组合并</td><td>模块合并，状态另列状态机</td><td>保留合并</td></tr><tr><td>宽度</td><td>随内容宽度，最大 1280</td><td>随阅读宽度</td><td>容器内横向滚动</td></tr></tbody></table></div>
+</section>
+<!-- SECTION:platform-matrix:END -->
+
+<!-- SECTION:examples:START id=examples data-rule-id=flist-examples -->
+<section id="examples" data-rule-id="flist-examples" aria-labelledby="examples-heading">
+<h2 id="examples-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m4 17 5-5 3 3 2-2 6 6"/></svg><span>案例样本</span></h2>
+<h3>健身房功能列表的改正</h3>
+<div class="pair"><div class="wrong"><h4>错误</h4><ul>
+<li>编号列 14 号灰字、功能列 16 号黑字、模块列加粗，三种字号与颜色混排。</li>
+<li>每一行都重复写一遍模块名和一长串界面状态。</li>
+<li>表头与数据都左对齐，编号、端、页面这些短列在宽列里贴左，难以纵向扫读。</li>
+<li>两个编号都写“购卡”，一个在会员卡页，一个在选择会员卡页，看不出区别。</li>
+</ul></div><div class="right"><h4>正确</h4><ul>
+<li>全表 14 号同一字体，表头 600，正文 400，同一正文色。</li>
+<li>模块和界面状态按模块合并，只出现一次。</li>
+<li>表头全部居中；短列居中，长文字列左对齐。</li>
+<li>一个能力一个编号：会员卡标签与选择会员卡二级页分别写清各自承担的事。</li>
+</ul></div></div>
+</section>
+<!-- SECTION:examples:END -->
+
+<!-- SECTION:output-contract:START id=output-contract data-rule-id=flist-output-contract -->
+<section id="output-contract" data-rule-id="flist-output-contract" aria-labelledby="output-contract-heading">
+<h2 id="output-contract-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>输出契约</span></h2>
+<div class="table-wrap"><table><thead><tr><th>位置</th><th>职责</th><th>通过条件</th></tr></thead><tbody><tr><td>交付网页中的系统功能列表</td><td>全部功能的唯一索引</td><td>列结构、字体、对齐、合并单元格符合本页；行数与架构功能数一致</td></tr><tr><td>系统架构文件中的功能表</td><td>功能与需求、模块的追溯</td><td>编号与交付网页一致</td></tr><tr><td>原型自动测试</td><td>核对字体、对齐与重复</td><td>单一字体族、无斜体、短列居中、无重复功能</td></tr></tbody></table></div>
+</section>
+<!-- SECTION:output-contract:END -->
+
+<!-- SECTION:quality-gates:START id=quality-gates data-rule-id=flist-quality-gates -->
+<section id="quality-gates" data-rule-id="flist-quality-gates" aria-labelledby="quality-gates-heading">
+<h2 id="quality-gates-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h5M15 7h5M9 7a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM4 17h10M18 17h2M14 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg><span>质量门禁</span></h2>
+<ul>
+<li>出现第二个字体族、斜体、字阶外的字号，或正文列之间字号、颜色不一致：退回修改。</li>
+<li>表头未居中，或编号、端、模块、所在页面这些短列未居中：退回修改。</li>
+<li>模块名或界面状态在同一模块内重复出现，或两个编号描述同一能力：退回修改。</li>
+<li>关键交互写了原型中不存在的动作，或界面状态与状态机名称不一致：退回修改。</li>
+<li>表格撑破页面、文字被截断或手机上出现页面级横向滚动：失败。</li>
+</ul>
+</section>
+<!-- SECTION:quality-gates:END -->
+
+<!-- SECTION:handoff:START id=handoff data-rule-id=flist-handoff -->
+<section id="handoff" data-rule-id="flist-handoff" aria-labelledby="handoff-heading">
+<h2 id="handoff-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h12M13 4l3 3-3 3M20 17H8M11 14l-3 3 3 3"/></svg><span>交接规则</span></h2>
+<p>功能编号、功能名、所在页面和状态名进入 <a href="handoff.md">开发交接契约</a>，实现阶段按编号追溯，不改写用户可见的功能名与状态名。</p>
+</section>
+<!-- SECTION:handoff:END -->
+
+</main>
+</body>
+</html>

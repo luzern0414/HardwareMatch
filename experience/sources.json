@@ -1,0 +1,1329 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "id": "SRC-001",
+      "url": "https://developers.weixin.qq.com/miniprogram/design/",
+      "title": "微信小程序设计指南",
+      "page_title": "微信小程序设计指南",
+      "domain": "qq.com",
+      "category": "交互流程",
+      "evidence": "导航要告诉用户当前在哪、可以去哪、如何回去；次级页面左上角提供返回；标签分页 2–5 个；原生底部标签栏只用于首页级页面；所有页面右上角保留胶囊",
+      "borrowable": "标签独立、二级页返回、异常状态必须给出下一步",
+      "not_copyable": "微信官方组件样式",
+      "supports": "页面框架、底部标签、返回按钮、结果页与异常处理",
+      "surfaces": [
+        "小程序"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-3b83b53a-58ca-40e6-9b59-db9993a14af1",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-018",
+        "path": "01-system/crawl-snapshots/REF-018.json",
+        "sha256": "832379fa54edea0bef8302e1996d2fc0208922734d1f4045bbd21bdfaae726a5"
+      }
+    },
+    {
+      "id": "SRC-002",
+      "url": "https://procomponents.ant.design/components/table",
+      "title": "后台高级表格",
+      "page_title": "ProTable 高级表格 - ProComponents",
+      "domain": "ant.design",
+      "category": "页面结构",
+      "evidence": "组件导航列出批量操作、搜索表单、列表工具栏三个区块",
+      "borrowable": "列表页按搜索表单 → 工具栏 → 表格 → 批量操作组织",
+      "not_copyable": "组件代码与示例数据",
+      "supports": "订单管理、用户管理、套餐管理列表页",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-6f0b906d-95d0-4552-a7e0-5116c0de77b1",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-002",
+        "path": "01-system/crawl-snapshots/REF-002.json",
+        "sha256": "6cbfc258eea8addf0a56b26310b45ce2ca7c1c5c25609f7018972e395dc4fe2a"
+      }
+    },
+    {
+      "id": "SRC-003",
+      "url": "https://procomponents.ant.design/components/layout",
+      "title": "后台高级布局",
+      "page_title": "ProLayout 高级布局 - ProComponents",
+      "domain": "ant.design",
+      "category": "页面结构",
+      "evidence": "布局文档包含收起展开、自定义菜单宽度、自动切割菜单",
+      "borrowable": "左侧菜单可收起、顶部仅放门店与账号",
+      "not_copyable": "样式主题",
+      "supports": "后台整体框架",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-95663bf9-0edf-448e-ab48-fafae3142e40",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-003",
+        "path": "01-system/crawl-snapshots/REF-003.json",
+        "sha256": "e34ed4c88900bd8ae507386e0d85ba9461a82789b39506a3d7b91c5c380f3c3e"
+      }
+    },
+    {
+      "id": "SRC-004",
+      "url": "https://element-plus.org/zh-CN/component/table.html",
+      "title": "桌面表格组件",
+      "page_title": "Table 表格 | Element Plus",
+      "domain": "element-plus.org",
+      "category": "页面结构",
+      "evidence": "用于展示多条结构类似的数据，可对数据进行排序、筛选、对比",
+      "borrowable": "表格列支持排序与筛选，日期与金额列独立",
+      "not_copyable": "示例数据",
+      "supports": "后台各类列表",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-be9092f6-f120-4e5c-974f-51c272ff9f96",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-004",
+        "path": "01-system/crawl-snapshots/REF-004.json",
+        "sha256": "5da0a1246264aad55e61b587691ed2a5db023e7590225a2ee96bd09b71713fe1"
+      }
+    },
+    {
+      "id": "SRC-005",
+      "url": "https://github.com/small-bears/gyms",
+      "title": "健身俱乐部管理系统开源项目",
+      "page_title": "small-bears/gyms: 健身俱乐部网站  java springboot vue ssm mysql python Django 健身房管理系统(源代码+数据库+配套论文+ppt) 管理员：用户、执教教练、健身百科、课程类型、课程信息、课程报名、健身商品、商品分类、预约教练、会员卡、商品订单、充值信息、健身论坛、系统管理、我的信息 用户：当游客打开系统的网址后，php,Flask,node.js,SSM,JSP,Uniapp,hadoop,spark,hive,ThinkPhp,Flask,Koa,Express,Springcloud,ASP.Net,C#,Mysql,大数据毕业设计,基于微信小程序,Ai对话,协同过滤推荐算法,基于安卓,机器学习,深度学习,",
+      "domain": "github.com",
+      "category": "页面结构",
+      "evidence": "管理员菜单包含用户、执教教练、课程、会员卡、商品订单、充值信息等",
+      "borrowable": "后台以会员、会员卡、订单为核心菜单",
+      "not_copyable": "代码、界面、数据库与论文内容",
+      "supports": "后台菜单与会员卡管理",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "健身",
+        "健身房",
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-63d75535-9235-4dd7-b591-490e68d13b52",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-005",
+        "path": "01-system/crawl-snapshots/REF-005.json",
+        "sha256": "f0b602019b2b55b0d037b8323a82979b415692ec09f5e68737c7a1189b578b49"
+      }
+    },
+    {
+      "id": "SRC-006",
+      "url": "https://developers.weixin.qq.com/miniprogram/dev/api/payment/wx.requestPayment.html",
+      "title": "小程序发起支付",
+      "page_title": "支付 / wx.requestPayment",
+      "domain": "qq.com",
+      "category": "交互流程",
+      "evidence": "发起支付接口提供成功、失败、结束三种回调",
+      "borrowable": "支付后分别进入成功、失败可重试两种结果界面",
+      "not_copyable": "接口参数与示例",
+      "supports": "购卡支付结果页",
+      "surfaces": [
+        "小程序"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-4b1510e6-5f59-4b54-be12-3013306b0047",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-006",
+        "path": "01-system/crawl-snapshots/REF-006.json",
+        "sha256": "e6e09fbb173362f7f7f28057856aaf5a01957ecf948065463e5f861502984134"
+      }
+    },
+    {
+      "id": "SRC-007",
+      "url": "https://developers.weixin.qq.com/miniprogram/dev/component/camera.html",
+      "title": "小程序相机组件",
+      "page_title": "媒体组件 / camera",
+      "domain": "qq.com",
+      "category": "交互流程",
+      "evidence": "系统相机组件，需要用户授权使用相机",
+      "borrowable": "拍摄前先请求相机授权，拒绝时提供去设置与改用相册上传",
+      "not_copyable": "示例代码",
+      "supports": "人脸录入拍摄页",
+      "surfaces": [
+        "小程序"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-d2e264bd-e213-41e9-b957-5e28035f25c1",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-007",
+        "path": "01-system/crawl-snapshots/REF-007.json",
+        "sha256": "30552c3c0d2f135487dc1d257040a94f7f34474fb578acc1c37b7e83d09cc27c"
+      }
+    },
+    {
+      "id": "SRC-008",
+      "url": "https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/subscribe-message.html",
+      "title": "小程序订阅消息",
+      "page_title": "开放能力 / 消息 / 订阅消息 / 小程序订阅消息（用户通过弹窗订阅）开发指南",
+      "domain": "qq.com",
+      "category": "交互流程",
+      "evidence": "订阅通过弹窗由用户授权，用户可勾选总是保持以上选择",
+      "borrowable": "在购卡成功后请求一次订阅，不在首页强弹",
+      "not_copyable": "模板内容",
+      "supports": "核验结果与到期提醒订阅",
+      "surfaces": [
+        "小程序"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-c03daaea-ab62-4f40-b012-9958832b9de3",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-008",
+        "path": "01-system/crawl-snapshots/REF-008.json",
+        "sha256": "36269194eb5be61ad7210785aff9137b65ae5c05c4281365020e6eab1d03f7d7"
+      }
+    },
+    {
+      "id": "SRC-009",
+      "url": "https://tdesign.tencent.com/miniprogram/components/upload",
+      "title": "小程序上传组件",
+      "page_title": "TDesign",
+      "domain": "tencent.com",
+      "category": "交互流程",
+      "evidence": "上传支持加载、重新上传、失败等多种状态，可展示进度",
+      "borrowable": "上传中显示进度，失败可重新上传",
+      "not_copyable": "组件代码",
+      "supports": "人脸照片上传",
+      "surfaces": [
+        "小程序"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-2f712d82-1851-42c1-8a92-d0af803e874d",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-009",
+        "path": "01-system/crawl-snapshots/REF-009.json",
+        "sha256": "379014aa1e2611b0bf16176dccdb7d377ee23c2fd0ab4631bba65087db24f5f3"
+      }
+    },
+    {
+      "id": "SRC-010",
+      "url": "https://vant-ui.github.io/vant/#/zh-CN/submit-bar",
+      "title": "底部提交订单栏",
+      "page_title": "SubmitBar 提交订单栏 - Vant 4",
+      "domain": "github.io",
+      "category": "交互流程",
+      "evidence": "金额左侧文案为合计；禁用状态下不会触发提交",
+      "borrowable": "底部固定显示合计金额与支付按钮，未选套餐时禁用",
+      "not_copyable": "样式与文案",
+      "supports": "购卡确认页底部支付栏",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-5f06bd35-086d-423c-96cf-058745ecbbd1",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-010",
+        "path": "01-system/crawl-snapshots/REF-010.json",
+        "sha256": "2cb5f7da8c39665c08c5d26acca20af00d5df29bf89e27b2368f738fba79a81b"
+      }
+    },
+    {
+      "id": "SRC-011",
+      "url": "https://vant-ui.github.io/vant/#/zh-CN/coupon-list",
+      "title": "优惠券选择器",
+      "page_title": "Coupon 优惠券 - Vant 4",
+      "domain": "github.io",
+      "category": "组件状态",
+      "evidence": "分为可用优惠券列表与不可用优惠券列表，可切换选中优惠券",
+      "borrowable": "券分可用与不可用两组，不可用券显示原因",
+      "not_copyable": "样式与图形",
+      "supports": "购卡选券、我的优惠券",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-ca76a52b-a7d3-42bb-99c4-7c3470e64875",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-011",
+        "path": "01-system/crawl-snapshots/REF-011.json",
+        "sha256": "2c2c33f1f8aa4bc4990ae84c17bdeb49637305ed27ba0fa830fc2ccba4580b2f"
+      }
+    },
+    {
+      "id": "SRC-012",
+      "url": "https://vant-ui.github.io/vant/#/zh-CN/empty",
+      "title": "空状态组件",
+      "page_title": "Empty 空状态 - Vant 4",
+      "domain": "github.io",
+      "category": "组件状态",
+      "evidence": "内置通用错误、网络错误等多种占位图片类型",
+      "borrowable": "空、网络错误、通用错误使用不同插图与一句话说明",
+      "not_copyable": "插图",
+      "supports": "订单、使用记录、优惠券的空与错误状态",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-e2011c6f-34e4-4f38-b3cc-db62a47ba039",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-012",
+        "path": "01-system/crawl-snapshots/REF-012.json",
+        "sha256": "e8ea7067af5aa28c014808f498ff1855bfabbecff9cc40a99fe77a75b9429bc0"
+      }
+    },
+    {
+      "id": "SRC-018",
+      "url": "https://dribbble.com/shots/17378261-Gym-membership-app-UI-UX-design-Part-1",
+      "title": "健身会员应用设计稿",
+      "page_title": "Gym membership app UI/UX design - Part 1 by Mobindustry on Dribbble",
+      "domain": "dribbble.com",
+      "category": "页面结构",
+      "evidence": "照片铺满的课程卡上叠评分与时长标签，促销卡左图右文配大号折扣，背景有机圆形装饰，底部标签选中带填充",
+      "borrowable": "照片主导卡片 + 叠加信息标签 + 有机装饰背景",
+      "not_copyable": "人物照片、品牌与配色、具体文案",
+      "supports": "首页门店卡、热门会员卡、横幅",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "健身",
+        "健身房",
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "202",
+      "luzcrawl_task": "luzcrawl-bd0ff479-adc6-4bd8-9cf8-03d89a9062e2",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-013",
+        "path": "01-system/crawl-snapshots/REF-013.json",
+        "sha256": "7f0e9b0a02890fcae0456d606881bd74602135be045d7e57ec3bc9a8431c0cc4"
+      }
+    },
+    {
+      "id": "SRC-019",
+      "url": "https://vant-ui.github.io/vant/#/zh-CN/swipe",
+      "title": "轮播组件",
+      "page_title": "Swipe 轮播 - Vant 4",
+      "domain": "github.io",
+      "category": "交互流程",
+      "evidence": "轮播支持自动播放、指示器与手动滑动",
+      "borrowable": "自动轮播 + 可滑动 + 短横条指示器",
+      "not_copyable": "组件代码",
+      "supports": "首页营销横幅",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-f2424579-dea6-4b47-b4a0-6239cbb4955e",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-014",
+        "path": "01-system/crawl-snapshots/REF-014.json",
+        "sha256": "abb8a4741b034dcd6e8a97f627a028077f31c0a882638965c6122ace0d08f614"
+      }
+    },
+    {
+      "id": "SRC-023",
+      "url": "https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/route.html",
+      "title": "小程序页面路由",
+      "page_title": "界面渲染 / 页面间关系 / 页面路由",
+      "domain": "qq.com",
+      "category": "交互流程",
+      "evidence": "navigateTo 保留当前页入栈，navigateBack 逐层出栈，switchTab 只能打开标签页，navigateTo 与 redirectTo 不能打开标签页",
+      "borrowable": "页面内只打开二级页；结果页替换上一步；返回回到来源页",
+      "not_copyable": "接口代码",
+      "supports": "标签页独立页面栈、来源回退、支付结果替换确认订单",
+      "surfaces": [
+        "小程序"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-90805c2f-6b27-40a6-82da-85a9500eb817",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-019",
+        "path": "01-system/crawl-snapshots/REF-019.json",
+        "sha256": "e0719490051f96794ccb6a104e7db845becde2d28257cf53842d826bee58426f"
+      }
+    },
+    {
+      "id": "SRC-024",
+      "url": "https://ant.design/docs/spec/visualization-page-cn",
+      "title": "数据可视化页设计规范",
+      "page_title": "数据可视化页 - Ant Design",
+      "domain": "ant.design",
+      "category": "页面结构",
+      "evidence": "概览优先、聚焦过滤、按需看详情；最重要指标放左上；单屏 5–9 个模块；一张卡片一个主题；指标卡、排行、图表分层",
+      "borrowable": "指标卡在顶部，下方按主题分卡，排行与明细在后",
+      "not_copyable": "组件代码与配色",
+      "supports": "驾驶舱指标卡、趋势图、占比图、排行与动态",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-437ca2d9-598d-45e3-8bc9-86ab0b8e0f58",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-020",
+        "path": "01-system/crawl-snapshots/REF-020.json",
+        "sha256": "6dff8233a88de6baa4f8e9ac40ed01985da1ba07b7265de01d0310d791dd1532"
+      }
+    },
+    {
+      "id": "SRC-025",
+      "url": "https://ant.design/docs/spec/visual-cn",
+      "title": "图表选型规范",
+      "page_title": "可视化 - Ant Design",
+      "domain": "ant.design",
+      "category": "页面结构",
+      "evidence": "趋势用折线或面积，比较用柱状，占比用饼或环图，分布用散点；提示框显示数值与单位",
+      "borrowable": "按数据关系选图；悬浮提示显示数值与单位",
+      "not_copyable": "图表库实现",
+      "supports": "营收折线、套餐占比环图、时段柱图、热力",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-ed593691-a2d1-41e6-aa05-39f92e843009",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-021",
+        "path": "01-system/crawl-snapshots/REF-021.json",
+        "sha256": "ddec8999ba1ddd978a7cb749541b095cc83b3f3a4302663032c5325c6110691b"
+      }
+    },
+    {
+      "id": "SRC-026",
+      "url": "https://help.shopify.com/en/manual/online-store/themes/theme-structure/sections-and-blocks",
+      "title": "店铺装修的分区与区块",
+      "page_title": "Shopify Help Center | Sections and blocks",
+      "domain": "shopify.com",
+      "category": "页面结构",
+      "evidence": "分区可拖拽排序、隐藏、删除；隐藏的分区不在店铺前台显示",
+      "borrowable": "模块列表带显隐开关与上下移，隐藏即不占位",
+      "not_copyable": "编辑器实现",
+      "supports": "小程序装修：模块显隐、排序、预览、发布",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-460b7427-c1a9-410b-a929-8936029c421e",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-022",
+        "path": "01-system/crawl-snapshots/REF-022.json",
+        "sha256": "fe08a0e212ce4272322e797108fc786f633b75bbba95041841db0cb4aefd191a"
+      }
+    },
+    {
+      "id": "SRC-027",
+      "url": "https://github.com/material-components/material-components-android/blob/master/docs/theming/Motion.md",
+      "title": "转场动效模式与时长",
+      "page_title": "material-components-android/docs/theming/Motion.md at master · material-components/material-components-android",
+      "domain": "github.com",
+      "category": "交互流程",
+      "evidence": "共享轴用于前进后退的层级导航，返回方向相反；淡入穿透用于底部导航目的地切换；时长与缓动曲线令牌",
+      "borrowable": "层级导航用横向滑动，标签切换用淡入，时长约 300 毫秒",
+      "not_copyable": "安卓实现代码",
+      "supports": "二级页右滑入与返回右滑出、标签切换淡入、驾驶舱动画",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-26",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-029783c3-14f2-42d3-b12c-8770d0e2eb22",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-023",
+        "path": "01-system/crawl-snapshots/REF-023.json",
+        "sha256": "049a1135492288322254e85896723c7243bb2ebf6748c71e5f815feaffa436ef"
+      }
+    },
+    {
+      "id": "SRC-028",
+      "url": "https://www.nngroup.com/articles/banner-blindness-old-and-new-findings/",
+      "title": "广告盲区研究",
+      "page_title": "Banner Blindness Revisited: Users Dodge Ads on Mobile and Desktop - NN/G",
+      "domain": "nngroup.com",
+      "category": "页面结构",
+      "evidence": "用户会忽略像广告的内容：广告常见位置、动画等广告式视觉、靠近广告或促销的内容都会被跳过",
+      "borrowable": "核心信息放首屏且不做广告样式；营销集中在核心之后，数量少",
+      "not_copyable": "研究截图",
+      "supports": "首页实时客流、门店卡放在营销之前；营销模块不用动画争抢注意力",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-e1ab1653-cf04-4a0d-ae59-7f3908fe1730",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-024",
+        "path": "01-system/crawl-snapshots/REF-024.json",
+        "sha256": "4745b6f0dfa572ea40020d532fcbe2f8d3a1fce63377df891689b34054c0b31b"
+      }
+    },
+    {
+      "id": "SRC-029",
+      "url": "https://www.woshipm.com/operate/3393101.html",
+      "title": "首页运营位分级",
+      "page_title": "首页运营攻略（下）：首页运营技巧 | 人人都是产品经理",
+      "domain": "woshipm.com",
+      "category": "页面结构",
+      "evidence": "最重要的通栏在宫格入口上方，次一级在宫格下方仍在首屏，再低一级放第二屏；轮播三帧以后流量断崖式下跌",
+      "borrowable": "按活动等级决定位置，常规入口不被营销挤下首屏；不用多帧轮播堆活动",
+      "not_copyable": "电商会场结构",
+      "supports": "首页信息与营销模块分层、营销模块数量与位置",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-a797d474-dcf2-4af1-bce8-4829c14db73c",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-025",
+        "path": "01-system/crawl-snapshots/REF-025.json",
+        "sha256": "2a4d1122c2cc0493ad006f6c55f6ede347f449c5cb571148af2cb7324881b544"
+      }
+    },
+    {
+      "id": "SRC-030",
+      "url": "https://blogs.ncl.ac.uk/web/?p=1796",
+      "title": "同页重复链接的代价",
+      "page_title": "To Link or Not to Link – When and Where to Use Hyperlinks | Go Mobile Blog",
+      "domain": "ncl.ac.uk",
+      "category": "交互流程",
+      "evidence": "引用尼尔森诺曼集团：重复链接被当作备用路径，但会增加记忆负担、浪费时间并分散注意力；把一个链接放在预期的显眼位置比在多处重复更有效",
+      "borrowable": "同一页同一目的地只保留一个入口，放在用户预期的位置",
+      "not_copyable": "博客版式",
+      "supports": "首页每个业务只有一个入口：抽奖、新人礼券、门店详情",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-a8e11557-05d7-465a-a71e-38bfa0e79de9",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-026",
+        "path": "01-system/crawl-snapshots/REF-026.json",
+        "sha256": "9101e3ba10cbfe2df7599f928067e8354c9cba8cb7ecaff21cacad5aae813147"
+      }
+    },
+    {
+      "id": "SRC-033",
+      "url": "https://carbondesignsystem.com/components/data-table/style",
+      "title": "数据表格样式",
+      "page_title": "Data table | Carbon Design System",
+      "domain": "carbondesignsystem.com",
+      "category": "组件状态",
+      "evidence": "列头行与数据行高度一致，文字在行内垂直居中；列宽按内容变化，只要求列间最小间距；分页高度与行高一致",
+      "borrowable": "表头与行同高，文字垂直居中，列宽按内容",
+      "not_copyable": "组件代码",
+      "supports": "后台表格与功能列表的行高、对齐和列宽",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-28718032-cb32-487e-8f77-1b509cd50848",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-030",
+        "path": "01-system/crawl-snapshots/REF-030.json",
+        "sha256": "39186597297dd2aeae572bf0095fef01f6f0b498ac272c89f24a94562c3179dc"
+      }
+    },
+    {
+      "id": "SRC-034",
+      "url": "https://ant.design/components/table-cn",
+      "title": "表格组件",
+      "page_title": "表格 Table - Ant Design",
+      "domain": "ant.design",
+      "category": "组件状态",
+      "evidence": "列可单独设置对齐方式并统一配置；固定表头需指定列宽否则列头与内容不对齐；单元格可自动省略并悬浮提示",
+      "borrowable": "列对齐统一配置，表头与内容对齐一致",
+      "not_copyable": "组件代码",
+      "supports": "表格居中对齐、固定列宽、长文本省略",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-a5adb941-8e1e-4bbd-a689-0664450cbd77",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-031",
+        "path": "01-system/crawl-snapshots/REF-031.json",
+        "sha256": "205688d629974f0dcd6886746dda92b65cee8f1b8d61ec08c089a9a1b14a2de7"
+      }
+    },
+    {
+      "id": "SRC-035",
+      "url": "https://ant.design/components/menu-cn",
+      "title": "导航菜单分组",
+      "page_title": "导航菜单 Menu - Ant Design",
+      "domain": "ant.design",
+      "category": "组件状态",
+      "evidence": "菜单项可按分组组织，分组有独立的分组标题，分组内为菜单项；另有分割线类型",
+      "borrowable": "分组标题与菜单项样式分开，分组之间留出间隔",
+      "not_copyable": "组件代码",
+      "supports": "后台侧栏分组标题与菜单项区分",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-9b3982e5-0806-408c-aa55-7f4f39c65610",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-032",
+        "path": "01-system/crawl-snapshots/REF-032.json",
+        "sha256": "e1c3fd6700ee5a7075d131f3c1aadd7308b8c8b414dad15730c7fc12768935ee"
+      }
+    },
+    {
+      "id": "SRC-036",
+      "url": "https://ant.design/docs/spec/layout-cn",
+      "title": "中后台布局与栅格",
+      "page_title": "布局 - Ant Design",
+      "domain": "ant.design",
+      "category": "页面结构",
+      "evidence": "以栅格与断点组织页面，内容区随宽度自适应，避免内容超出容器",
+      "borrowable": "指标卡按可用宽度换行或等分，不用固定总宽",
+      "not_copyable": "组件代码",
+      "supports": "后台内容区与指标卡自适应，不出现右侧遮挡",
+      "surfaces": [
+        "后台"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-c442aa99-b5e2-4847-8d03-d0b05a94c6d3",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-033",
+        "path": "01-system/crawl-snapshots/REF-033.json",
+        "sha256": "4d2d40bc360f90fb4fede448cbc9b127de35e1aab02f3618f3841dc1b23d0c90"
+      }
+    },
+    {
+      "id": "SRC-037",
+      "url": "https://www.woshipm.com/share/5956745.html",
+      "title": "超级猩猩会员与私域拆解",
+      "page_title": "百万付费会员，复购率高达60%，健身赛道新宠「超级猩猩」靠什么让用户买单？ | 人人都是产品经理",
+      "domain": "woshipm.com",
+      "category": "页面结构",
+      "evidence": "按次收费不推销年卡；小程序内有新人礼包入口引导添加企微；会员分五个成长等级并以上课积分兑换优惠券",
+      "borrowable": "新人礼包作为单一营销入口；会员权益放在个人中心",
+      "not_copyable": "品牌视觉与文案",
+      "supports": "首页新人礼券、会员等级、营销与核心分层",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-7d8188f4-988f-4822-bda7-0913d180227a",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-034",
+        "path": "01-system/crawl-snapshots/REF-034.json",
+        "sha256": "b69c506ecde39a2f5ef9852eb91cbae757fdc15f7d96f7fe9d2f6bc8fa27dad2"
+      }
+    },
+    {
+      "id": "SRC-038",
+      "url": "https://blog.csdn.net/qq_1262330535/article/details/141439012",
+      "title": "健身房小程序功能构成",
+      "page_title": "基于微信小程序的健身房管理平台(源码+文档+调试+讲解)_健身房小程序源码-CSDN博客",
+      "domain": "csdn.net",
+      "category": "页面结构",
+      "evidence": "健身房小程序围绕会员管理、课程或场地预约、教练与会员信息、后台管理展开",
+      "borrowable": "核心业务与营销功能分开规划",
+      "not_copyable": "源码",
+      "supports": "核心功能判断：购卡、入场、记录为核心，营销为辅",
+      "surfaces": [
+        "小程序"
+      ],
+      "industries": [
+        "健身",
+        "健身房",
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-12665a92-1203-4403-a69f-bc2ef3981564",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-035",
+        "path": "01-system/crawl-snapshots/REF-035.json",
+        "sha256": "d21c62f579b44ce51f9d0e5cbe2898b47d3e509816a0d42f2ab88687a6752f87"
+      }
+    },
+    {
+      "id": "SRC-040",
+      "url": "https://www.nngroup.com/articles/confirmation-dialog",
+      "title": "确认弹窗指南",
+      "page_title": "Confirmation Dialogs Can Prevent User Errors - NN/G",
+      "domain": "nngroup.com",
+      "category": "交互流程",
+      "evidence": "确认弹窗只用于后果严重的操作，过度使用会让用户不看就点确定；写明具体后果，按钮用具体动作词",
+      "borrowable": "只对重要修改确认，写清对象和后果，按钮写“确认下架”",
+      "not_copyable": "原文与配图",
+      "supports": "下架、停用、冻结、暂停活动、改价二次确认",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-d4f947d9-c6aa-4bf0-a3f7-935b73c6f0ee",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-037",
+        "path": "01-system/crawl-snapshots/REF-037.json",
+        "sha256": "da940a4daba31b65ecaf43a2cb568811d5d1030ea6bb09c828343eb63f41bd45"
+      }
+    },
+    {
+      "id": "SRC-041",
+      "url": "https://ant.design/components/switch-cn",
+      "title": "开关组件",
+      "page_title": "开关 Switch - Ant Design",
+      "domain": "ant.design",
+      "category": "组件状态",
+      "evidence": "开关切换会直接触发状态改变，与需配合提交的复选框不同；支持加载中与禁用状态",
+      "borrowable": "状态类字段用行内开关直接生效，执行中显示加载",
+      "not_copyable": "组件代码与样式",
+      "supports": "套餐上下架、优惠券发放、账户启用、抽奖活动开关",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-cfa31eca-60ba-455f-98dd-45006c5dfdc0",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-038",
+        "path": "01-system/crawl-snapshots/REF-038.json",
+        "sha256": "e6bbcdde1015fd0d844d6834deb8e70496fcdb09e72c39a5a7e16ff965fca298"
+      }
+    },
+    {
+      "id": "SRC-042",
+      "url": "https://ant.design/components/popconfirm-cn",
+      "title": "气泡确认框",
+      "page_title": "气泡确认框 Popconfirm - Ant Design",
+      "domain": "ant.design",
+      "category": "交互流程",
+      "evidence": "气泡确认在元素旁弹出，比居中对话框更轻；可按条件决定是否弹出确认",
+      "borrowable": "按条件触发确认的做法；本项目统一用居中确认框",
+      "not_copyable": "组件代码与样式",
+      "supports": "有条件的二次确认：关闭类确认，开启类直接生效",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-9ef4aaaf-662f-4895-b1f2-26ea54018b3e",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-039",
+        "path": "01-system/crawl-snapshots/REF-039.json",
+        "sha256": "fae98f6d0964be3ac10e2daae391f9f0abd0a9e95b576bebec50e40e5bdc3908"
+      }
+    },
+    {
+      "id": "SRC-043",
+      "url": "https://www.nngroup.com/articles/toggle-switch-guidelines",
+      "title": "开关设计指南",
+      "page_title": "Toggle-Switch Guidelines - NN/G",
+      "domain": "nngroup.com",
+      "category": "组件状态",
+      "evidence": "开关应立即生效，不需要再点保存；标签简洁、状态清楚",
+      "borrowable": "开关即时生效，旁边显示当前状态文字",
+      "not_copyable": "原文与配图",
+      "supports": "行内开关立即生效并提示结果",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-39e109fb-6ea9-4642-bc3f-32360b0f4953",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-040",
+        "path": "01-system/crawl-snapshots/REF-040.json",
+        "sha256": "23a958975807a518f0538dda23ed8d8b3048602824f467b0fd1d29cfc904788a"
+      }
+    },
+    {
+      "id": "SRC-044",
+      "url": "https://ant.design/components/upload-cn",
+      "title": "上传组件",
+      "page_title": "上传 Upload - Ant Design",
+      "domain": "ant.design",
+      "category": "组件状态",
+      "evidence": "支持点击与拖拽上传、照片墙、已上传列表、上传进度、删除与预览",
+      "borrowable": "照片墙形式管理相册，显示数量上限与上传入口",
+      "not_copyable": "组件代码与样式",
+      "supports": "门店相册上传、删除、封面、说明",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-1f6624a6-5800-4bf4-bf8b-5a4b5581e28d",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-041",
+        "path": "01-system/crawl-snapshots/REF-041.json",
+        "sha256": "809605c8cbd716bedf445a814cfa5008d0b0769f3b61f0e1616febeb865615c8"
+      }
+    },
+    {
+      "id": "SRC-045",
+      "url": "https://www.nngroup.com/articles/drag-drop",
+      "title": "拖放设计指南",
+      "page_title": "Drag–and–Drop: How to Design for Ease of Use - NN/G",
+      "domain": "nngroup.com",
+      "category": "交互流程",
+      "evidence": "拖放适合排序与分组；需要明显的可拖动标识、拖动中与放下位置反馈，并提供键盘等替代方式",
+      "borrowable": "拖动手柄、放置位置高亮、方向键排序作为替代",
+      "not_copyable": "原文与配图",
+      "supports": "相册、设施、须知、套餐拖动排序",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-27",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-f5ebe36d-d542-4cd0-b30d-aab2d81a0131",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-042",
+        "path": "01-system/crawl-snapshots/REF-042.json",
+        "sha256": "d8c460bfb533f3fa8ee391b68bf171bf98d762543f3c4144f354ccc7749cb938"
+      }
+    },
+    {
+      "url": "https://www.nngroup.com/articles/top-ten-guidelines-for-homepage-usability",
+      "title": "尼尔森诺曼集团 首页可用性十条",
+      "page_title": "Top 10 Guidelines for Homepage Usability - NN/G",
+      "domain": "nngroup.com",
+      "category": "前端规则",
+      "evidence": "首页先用一句话说明网站是谁、做什么；页面标题利于搜索与收藏；大型网站要有搜索；访客常从深链接进入内页",
+      "borrowable": "首屏价值一句话 + 主行动；每页能独立成立",
+      "not_copyable": "原文与示例截图",
+      "supports": "网站首屏与页面类型",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "path": "D:/Codes/skill输出/Luz-Crawl/raw/001_Luz-Design 健身房小程序与后台设计规范调研/raw/399_Top 10 Guidelines for Homepage Usability - NN G"
+      },
+      "id": "SRC-071"
+    },
+    {
+      "url": "https://m3.material.io/foundations/layout/applying-layout/window-size-classes",
+      "title": "谷歌材料设计第三版 断点",
+      "page_title": "Breakpoints – Material Design 3",
+      "domain": "material.io",
+      "category": "前端规则",
+      "evidence": "五个断点：紧凑、中等、展开、大、超大；按断点而不是具体设备设计，跨断点时决定元素显示、拆分、缩放、移位或替换",
+      "borrowable": "600 / 840 / 1200 / 1600 断点与栅格",
+      "not_copyable": "原文与示例截图",
+      "supports": "响应与适配",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "path": "D:/Codes/skill输出/Luz-Crawl/raw/001_Luz-Design 健身房小程序与后台设计规范调研/raw/400_Breakpoints – Material Design 3"
+      },
+      "id": "SRC-072"
+    },
+    {
+      "url": "https://www.nngroup.com/articles/f-shaped-pattern-reading-web-content",
+      "title": "尼尔森诺曼集团 字母形阅读模式",
+      "page_title": "F-Shaped Pattern of Reading: Misunderstood, But Still Relevant - NN/G",
+      "domain": "nngroup.com",
+      "category": "前端规则",
+      "evidence": "访客扫读网页呈字母形等多种模式；用小标题、段首关键词、列表等版式对抗无效扫读",
+      "borrowable": "重要信息放段首，短段落多小标题",
+      "not_copyable": "原文与示例截图",
+      "supports": "网站正文版式",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "path": "D:/Codes/skill输出/Luz-Crawl/raw/001_Luz-Design 健身房小程序与后台设计规范调研/raw/402_F-Shaped Pattern of Reading Misunderstood, But Still Relevant -"
+      },
+      "id": "SRC-073"
+    },
+    {
+      "url": "https://www.nngroup.com/articles/footers",
+      "title": "尼尔森诺曼集团 页脚设计模式",
+      "page_title": "Web Page Footers 101: Design Patterns and When to Use Each - NN/G",
+      "domain": "nngroup.com",
+      "category": "前端规则",
+      "evidence": "页脚是每页底部的固定区域，已成为完成任务的重要参照：联系方式、法务、站点导航等",
+      "borrowable": "页脚放联系方式、法务、备案与主要链接",
+      "not_copyable": "原文与示例截图",
+      "supports": "网站页脚",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "path": "D:/Codes/skill输出/Luz-Crawl/raw/001_Luz-Design 健身房小程序与后台设计规范调研/raw/404_Web Page Footers 101 Design Patterns and When to Use Each - NN G"
+      },
+      "id": "SRC-074"
+    },
+    {
+      "url": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+      "title": "谷歌搜索中心 搜索引擎优化入门指南",
+      "page_title": "SEO 新手指南：基础知识 | Google 搜索中心  |  Documentation  |  Google for Developers",
+      "domain": "google.com",
+      "category": "前端规则",
+      "evidence": "标题链接来自页面标题元素，帮助用户决定点击；图片写替代文本；重复内容指向首选网址",
+      "borrowable": "每页写标题、描述与图片替代文本",
+      "not_copyable": "原文与示例截图",
+      "supports": "网站页面标题与描述",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "path": "D:/Codes/skill输出/Luz-Crawl/raw/001_Luz-Design 健身房小程序与后台设计规范调研/raw/408_SEO 新手指南：基础知识 Google 搜索中心 Documentation Google for Developers"
+      },
+      "id": "SRC-075"
+    },
+    {
+      "url": "https://www.nngroup.com/articles/menu-design",
+      "title": "尼尔森诺曼集团 菜单设计清单",
+      "page_title": "Menu-Design Checklist: 17 UX Guidelines - NN/G",
+      "domain": "nngroup.com",
+      "category": "前端规则",
+      "evidence": "桌面网站不要把导航收进菜单按钮；链接与背景对比清楚；在菜单中标出当前位置；大菜单不遮住整屏",
+      "borrowable": "桌面导航展开、当前位置高亮",
+      "not_copyable": "原文与示例截图",
+      "supports": "网站与后台导航",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "path": "D:/Codes/skill输出/Luz-Crawl/raw/001_Luz-Design 健身房小程序与后台设计规范调研/raw/409_Menu-Design Checklist 17 UX Guidelines - NN G"
+      },
+      "id": "SRC-076"
+    },
+    {
+      "url": "https://atomicdesign.bradfrost.com/chapter-2",
+      "title": "原子设计方法 第二章",
+      "page_title": "Atomic Design Methodology | Atomic Design by Brad Frost",
+      "domain": "bradfrost.com",
+      "category": "前端规则",
+      "evidence": "界面由原子、分子、组织、模板、页面由小到大组合",
+      "borrowable": "组件由视觉基础组合，页面由组件组合",
+      "not_copyable": "原文与示例截图",
+      "supports": "规范的层次",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "path": "D:/Codes/skill输出/Luz-Crawl/raw/001_Luz-Design 健身房小程序与后台设计规范调研/raw/410_Atomic Design Methodology Atomic Design by Brad Frost"
+      },
+      "id": "SRC-077"
+    },
+    {
+      "url": "https://www.microsoft.com/en-us/research/project/guidelines-for-human-ai-interaction",
+      "title": "微软 人机交互指南",
+      "page_title": "Guidelines for Human-AI Interaction - Microsoft Research",
+      "domain": "microsoft.com",
+      "category": "前端规则",
+      "evidence": "人工智能交互十八条指南，经过四步验证，覆盖交互前、交互中、出错时与长期使用",
+      "borrowable": "说明能做什么、出错时易于纠正",
+      "not_copyable": "原文与示例截图",
+      "supports": "智能体设计理念",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "path": "D:/Codes/skill输出/Luz-Crawl/raw/001_Luz-Design 健身房小程序与后台设计规范调研/raw/414_Guidelines for Human-AI Interaction - Microsoft Research"
+      },
+      "id": "SRC-078"
+    },
+    {
+      "url": "https://developer.apple.com/design/human-interface-guidelines/generative-ai",
+      "title": "苹果人机界面指南 生成式人工智能",
+      "page_title": "Generative AI | Apple Developer Documentation",
+      "domain": "apple.com",
+      "category": "前端规则",
+      "evidence": "设定清楚的预期，说明人工智能功能能做与不能做的事；让用户能关闭、撤销或重试生成内容；标明哪里用了人工智能",
+      "borrowable": "标明生成内容，可撤销、可重试、可停止",
+      "not_copyable": "原文与示例截图",
+      "supports": "智能体消息与纠错",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "path": "D:/Codes/skill输出/Luz-Crawl/raw/001_Luz-Design 健身房小程序与后台设计规范调研/raw/417_Generative AI Apple Developer Documentation"
+      },
+      "id": "SRC-079"
+    },
+    {
+      "id": "SRC-062",
+      "url": "https://en.wikipedia.org/wiki/Chartjunk",
+      "title": "维基百科 图表垃圾",
+      "page_title": "Chartjunk - Wikipedia",
+      "domain": "wikipedia.org",
+      "category": "前端规则",
+      "evidence": "不必要的元素包括浓重或深色的网格线、装饰性底纹、不必要的立体维度与渐变，它们不传达数据",
+      "borrowable": "网格用最浅的线色，去掉渐变填充与立体",
+      "not_copyable": "原文",
+      "supports": "图表网格、填充与装饰",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-270734d2-7627-4bfc-a576-eee3f57bf86b",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-059",
+        "path": "01-system/crawl-snapshots/REF-059.json",
+        "sha256": "eca422aaa7c27792d71e87457b87849703aff67472c1e1b29dc0471ae13bd7b2"
+      }
+    },
+    {
+      "id": "SRC-064",
+      "url": "https://www.nngroup.com/articles/icon-usability",
+      "title": "尼尔森诺曼集团 图标可用性",
+      "page_title": "Icon Usability - NN/G",
+      "domain": "nngroup.com",
+      "category": "前端规则",
+      "evidence": "多数图标没有统一含义，必须在图标旁配可见文字标签；导航图标尤其需要标签，不能只靠悬停显示",
+      "borrowable": "每个菜单项和功能按钮图标加文字",
+      "not_copyable": "示例截图",
+      "supports": "侧栏菜单与功能按钮",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-735db960-4f6f-4958-abb0-a6e2c5726101",
+      "luzcrawl_status": "部分",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-061",
+        "path": "01-system/crawl-snapshots/REF-061.json",
+        "sha256": "758326276c721e2bb97776409b6798706e42622667ace55705c1cd5a216c81f5"
+      }
+    },
+    {
+      "id": "SRC-069",
+      "url": "https://carbondesignsystem.com/elements/icons/usage",
+      "title": "碳设计体系 图标用法",
+      "page_title": "Icons | Carbon Design System",
+      "domain": "carbondesignsystem.com",
+      "category": "前端规则",
+      "evidence": "组件内图标常用 16 像素，也可用 20、24、32；全产品图标尺寸一致；16 与 20 像素图标与 14、16 像素文字搭配平衡；图标为单色并与文字同样满足 4.5:1",
+      "borrowable": "按钮内 16 像素，菜单 20 像素，单色",
+      "not_copyable": "图标库",
+      "supports": "按钮与菜单图标尺寸",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-18ea6f46-6539-47f2-a30e-1970fad0c495",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-066",
+        "path": "01-system/crawl-snapshots/REF-066.json",
+        "sha256": "3c19bc4ed7a168b19dc89cf9f58fd0e12f4722ae3085b1ca054eca0168c51d91"
+      }
+    },
+    {
+      "id": "SRC-070",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/charting-data",
+      "title": "苹果人机界面指南 图表数据",
+      "page_title": "Charting data | Apple Developer Documentation",
+      "domain": "apple.com",
+      "category": "前端规则",
+      "evidence": "保持图表简单，让用户自己选择查看更多细节；不要把尽可能多的数据塞进图表，过多数据会让图表视觉上过载",
+      "borrowable": "一张图一个问题，去掉装饰",
+      "not_copyable": "原文",
+      "supports": "驾驶舱图表",
+      "surfaces": [
+        "通用"
+      ],
+      "industries": [
+        "通用"
+      ],
+      "captured_at": "2026-10-28",
+      "http_status": "200",
+      "luzcrawl_task": "luzcrawl-891208f6-2312-4976-b678-3cb8b241f347",
+      "luzcrawl_status": "成功",
+      "method": "LuzCrawl",
+      "snapshot": {
+        "session": "001-健身房小程序和后台系统",
+        "ref": "REF-067",
+        "path": "01-system/crawl-snapshots/REF-067.json",
+        "sha256": "a565e6d2ba7c52d40a7b006d728276face4e48a36d99bbcfa8b6954fa2a3059e"
+      }
+    }
+  ]
+}

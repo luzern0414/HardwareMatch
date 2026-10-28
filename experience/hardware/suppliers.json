@@ -1,0 +1,313 @@
+[
+  {
+    "id": "hikvision",
+    "name": "海康威视",
+    "channel": "厂商官网",
+    "url": "https://www.hikvision.com/cn/",
+    "categories": [
+      "人脸门禁",
+      "客流统计",
+      "鱼眼",
+      "NVR",
+      "明厨亮灶摄像机",
+      "热成像"
+    ],
+    "procurement": "授权经销商 / 海康云商 / 项目咨询表单",
+    "access": "官网首页 capture 失败；where-to-buy 页可读",
+    "how": "购买入口 https://www.hikvision.com/cn/where-to-buy/（海康云商、项目咨询、联系我们）；规格以官网产品页为准；1688 上多为经销商",
+    "checked": "2026-10-28",
+    "buy_url": "https://www.hikvision.com/cn/where-to-buy/"
+  },
+  {
+    "id": "dahua",
+    "name": "大华股份",
+    "channel": "厂商官网",
+    "url": "https://www.dahuatech.com/",
+    "categories": [
+      "门禁",
+      "摄像机",
+      "热成像",
+      "动火离人/离岗检测摄像机"
+    ],
+    "procurement": "授权渠道 / 官网服务热线",
+    "access": "可读",
+    "how": "页脚热线",
+    "checked": "2026-10-28",
+    "phone": "400-672-8166",
+    "phone_source": "https://www.dahuatech.com/"
+  },
+  {
+    "id": "zkteco",
+    "name": "熵基科技（ZKTeco）",
+    "channel": "厂商官网",
+    "url": "https://www.zkteco.com/cn/",
+    "categories": [
+      "人脸门禁",
+      "考勤",
+      "门禁控制器"
+    ],
+    "procurement": "授权渠道",
+    "access": "可读",
+    "how": "页脚热线",
+    "checked": "2026-10-28",
+    "phone": "400-690-0999",
+    "phone_source": "https://www.zkteco.com/cn/"
+  },
+  {
+    "id": "zksps",
+    "name": "北京中控智慧科技发展有限公司",
+    "channel": "厂商官网（含线上商城）",
+    "url": "https://www.zksps.com/ppjs",
+    "categories": [
+      "人脸门禁",
+      "考勤",
+      "门禁控制器"
+    ],
+    "procurement": "官网线上商城 / 购买方式页",
+    "access": "可读",
+    "how": "导航有'线上商城''购买方式''联系我们'",
+    "checked": "2026-10-28",
+    "phone": "010-81359550",
+    "phone_source": "https://www.zksps.com/ppjs"
+  },
+  {
+    "id": "uniview",
+    "name": "宇视科技",
+    "channel": "厂商官网",
+    "url": "https://cn.uniview.com/",
+    "categories": [
+      "摄像机",
+      "NVR",
+      "门禁"
+    ],
+    "procurement": "授权渠道",
+    "access": "可读",
+    "how": "页脚热线",
+    "checked": "2026-10-28",
+    "phone": "400-655-2828",
+    "phone_source": "https://cn.uniview.com/"
+  },
+  {
+    "id": "ezviz",
+    "name": "萤石（海康旗下）",
+    "channel": "官方商城 + 开放平台",
+    "url": "https://www.ys7.com/",
+    "categories": [
+      "消费级摄像机",
+      "云存储",
+      "开放平台 AI（含动火离人检测）"
+    ],
+    "procurement": "官方商城零售 / 开放平台按量计费",
+    "access": "可读",
+    "how": "适合模式 B 云对云；透明厨房方案含动火离人检测",
+    "checked": "2026-10-28",
+    "phone": "400-878-7878",
+    "phone_source": "https://www.ys7.com/"
+  },
+  {
+    "id": "pixfra",
+    "name": "华感（华感安全网）",
+    "channel": "厂商官网",
+    "url": "https://www.pixfra.com/cn/solutions/%E9%98%B2%E7%81%AB%E5%BA%94%E7%94%A8/%E5%8A%A8%E7%81%AB%E7%A6%BB%E4%BA%BA",
+    "categories": [
+      "动火离人双光谱热成像摄像机"
+    ],
+    "procurement": "厂家咨询",
+    "access": "可读",
+    "how": "动火离人方案页列出双目枪机/半球/球机，探测器 256×192，可见光 400 万；价格需询价",
+    "checked": "2026-10-28",
+    "phone": "400-995-3595",
+    "phone_source": "https://www.pixfra.com/cn/solutions/%E9%98%B2%E7%81%AB%E5%BA%94%E7%94%A8/%E5%8A%A8%E7%81%AB%E7%A6%BB%E4%BA%BA"
+  },
+  {
+    "id": "geizi",
+    "name": "戈子科技",
+    "channel": "厂商官网",
+    "url": "https://www.wggai.com/news_view-3269.html",
+    "categories": [
+      "动火离人监测摄像机",
+      "智慧食堂"
+    ],
+    "procurement": "厂家咨询",
+    "access": "可读",
+    "how": "产品为 AI 视觉双模型（离人 + 火焰）、内置声光、上传智慧食安平台；联系方式见官网",
+    "checked": "2026-10-28"
+  },
+  {
+    "id": "dongqia",
+    "name": "动恰科技",
+    "channel": "官方公众号",
+    "url": "http://www.dongqia.com",
+    "categories": [
+      "3D/双目视觉客流统计（3DV3）"
+    ],
+    "procurement": "厂家直采 / 代理",
+    "access": "公众号正文可读",
+    "how": "官网 www.dongqia.com；公众号文末有商务合作联系方式（个人联系方式存于本地联系人库）",
+    "checked": "2026-10-28"
+  },
+  {
+    "id": "jinweitec",
+    "name": "超级艾玛（成都鲸苇科技）",
+    "channel": "方案商官网（自研硬件）",
+    "url": "https://gym.jinweitec.com/",
+    "categories": [
+      "无人健身房整套：人脸门禁、AB 门防尾随、物联网关、智能电控箱、水控"
+    ],
+    "procurement": "厂家直采（软硬一体）",
+    "access": "可读",
+    "how": "设备分层与数量公式见 /guide/equipment.html；7×24 热线",
+    "checked": "2026-10-28",
+    "phone": "183-8242-6279",
+    "phone_source": "https://gym.jinweitec.com/"
+  },
+  {
+    "id": "yumiao",
+    "name": "宇淼科技（日照宇淼信息科技）",
+    "channel": "方案商（官网 + 公众号）",
+    "url": "https://www.rzymkj.cn",
+    "categories": [
+      "无人门店门禁、AB 门、电控、柜控主板、水控、网关"
+    ],
+    "procurement": "厂家直采 / OEM",
+    "access": "公众号正文可读",
+    "how": "全国服务热线 400-987-0650；售后 0633-7676045；OEM 商务 178 6231 8868；系统 6800 元/店（公众号所述）",
+    "checked": "2026-10-28",
+    "phone": "400-987-0650",
+    "phone_source": "宇淼科技公众号《24小时无人自助智能健身房解决方案V5.0》文末"
+  },
+  {
+    "id": "styd",
+    "name": "三体云动",
+    "channel": "SaaS 厂商官网（含硬件商城）",
+    "url": "https://www.styd.cn/",
+    "categories": [
+      "健身房人脸门禁（¥4800/台官方价）",
+      "智能电控",
+      "储物柜"
+    ],
+    "procurement": "官方硬件商城",
+    "access": "可读",
+    "how": "硬件商城页标价；适合已用其 SaaS 的门店",
+    "checked": "2026-10-28",
+    "phone": "400-068-0828",
+    "phone_source": "https://www.styd.cn/"
+  },
+  {
+    "id": "usr",
+    "name": "有人物联",
+    "channel": "厂商官网 + 1688 官方店",
+    "url": "https://www.usr.cn/",
+    "categories": [
+      "4G DTU",
+      "串口服务器",
+      "边缘数采网关 USR-M300",
+      "ARM 工控机",
+      "工业路由器"
+    ],
+    "procurement": "1688 官方店 / 官网",
+    "access": "可读（首页无文字电话）",
+    "how": "1688 店铺：济南有人物联网技术有限公司",
+    "checked": "2026-10-28"
+  },
+  {
+    "id": "hlk",
+    "name": "海凌科电子",
+    "channel": "厂商官网",
+    "url": "https://www.hlktech.com/",
+    "categories": [
+      "24G 毫米波人体存在雷达 LD2410/LD2454/LD2460",
+      "WiFi/蓝牙/Cat1 模组",
+      "AC-DC 电源模块"
+    ],
+    "procurement": "官网 / 电商官方店",
+    "access": "可读",
+    "how": "LD2410-AA 人体存在雷达（挂高 6 m）、LD2460 多目标轨迹；用于动火离人'有人'复核与包间存在检测",
+    "checked": "2026-10-28"
+  },
+  {
+    "id": "tuyaexpo",
+    "name": "涂鸦 TuyaExpo 选品平台",
+    "channel": "厂家选品平台（标价 + 询盘）",
+    "url": "https://www.tuyaexpo.com/cn/",
+    "categories": [
+      "涂鸦生态传感器",
+      "人体存在传感器",
+      "门窗/水浸",
+      "摄像头",
+      "智能电工"
+    ],
+    "procurement": "平台下单 / RFQ 询盘",
+    "access": "可读",
+    "how": "首页标价：Zigbee 人体存在传感器 ¥299、Zigbee 门窗传感器 ¥123、人体运动传感器 ¥99；7×24 热线",
+    "checked": "2026-10-28",
+    "phone": "400-881-8611",
+    "phone_source": "https://www.tuyaexpo.com/cn/"
+  },
+  {
+    "id": "jy-dam",
+    "name": "北京聚英翱翔",
+    "channel": "1688 厂家直营店",
+    "url": "https://detail.1688.com/offer/654563998966.html",
+    "categories": [
+      "网络继电器 DAM 系列"
+    ],
+    "procurement": "1688 下单 / 店铺联系",
+    "access": "可读",
+    "how": "DAM0888-MT ¥296、DAM1200D-MT ¥360",
+    "checked": "2026-10-28"
+  },
+  {
+    "id": "ccgp",
+    "name": "中国政府采购网",
+    "channel": "政府采购公告",
+    "url": "https://search.ccgp.gov.cn/bxsearch?searchtype=1",
+    "categories": [
+      "中标价参考",
+      "同类项目配置"
+    ],
+    "procurement": "查中标供应商 → 联系其官网",
+    "access": "可读（按标题检索，默认近 1 周）",
+    "how": "luz-crawl search ccgp '<品类>'；'明厨亮灶'近一周有 3 条，'客流统计'无；扩大时间范围需站内筛选",
+    "checked": "2026-10-28"
+  },
+  {
+    "id": "asmag",
+    "name": "a&s 安防产品库",
+    "channel": "行业产品库",
+    "url": "https://product.asmag.com.cn/",
+    "categories": [
+      "安防产品规格"
+    ],
+    "procurement": "只查参数",
+    "access": "可读",
+    "how": "停产或经销商型号的完整规格",
+    "checked": "2026-10-28"
+  },
+  {
+    "id": "1688",
+    "name": "1688",
+    "channel": "批发平台",
+    "url": "https://s.1688.com/selloffer/offer_search.htm",
+    "categories": [
+      "全品类批发价"
+    ],
+    "procurement": "在线下单 / 旺旺询价",
+    "access": "可用，需人工滑块",
+    "how": "必须用用户 Edge 配置；卡片价常为最低 SKU，取中位",
+    "checked": "2026-10-28"
+  },
+  {
+    "id": "taobao-jd",
+    "name": "淘宝 / 京东",
+    "channel": "零售平台",
+    "url": "https://www.jd.com/",
+    "categories": [
+      "零售价上限参考"
+    ],
+    "procurement": "在线下单",
+    "access": "通过必应结果页间接取价",
+    "how": "必应搜'<型号> 价格'常带淘宝/京东价格摘要；京东商品可能已下架",
+    "checked": "2026-10-28"
+  }
+]

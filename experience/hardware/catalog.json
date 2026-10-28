@@ -1,0 +1,907 @@
+[
+  {
+    "id": "hik-ds-k1t671m",
+    "category": "门禁通行",
+    "subsystem": "无人自助",
+    "brand": "海康威视",
+    "model": "DS-K1T671M",
+    "specs": {
+      "屏幕": "7 英寸触摸屏 1024×600",
+      "摄像头": "200 万双目宽动态，活体防照片视频",
+      "识别": "0.3–3 m，<0.2 s，人脸库 6000",
+      "认证": "人脸、M1 卡、二维码、PIN（MF 款带指纹）",
+      "接口": "RJ45 千兆、RS485×1、韦根×1、USB×2、报警入×2/出×1、锁控、门磁、出门按钮、防拆",
+      "供电": "12V DC 2A",
+      "防护": "IP65，-30～60℃",
+      "协议": "ISAPI（HTTP 摘要认证）、ISUP、HCNetSDK"
+    },
+    "power": "12V DC",
+    "power_w": 24,
+    "power_a": 2,
+    "sources": [
+      "https://store.jianglint.com/product/ds-k1t671tm-%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB%E7%BB%88%E7%AB%AF/",
+      "https://blog.csdn.net/weixin_29309213/article/details/165840822"
+    ],
+    "prices": [
+      {
+        "cny": 1799,
+        "url": "https://detail.1688.com/offer/626353091506.html",
+        "seller": "上海翎科自动化控制工程有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "标题含 671BM/671BMF/671TM 多款"
+      },
+      {
+        "cny": 370,
+        "url": "https://detail.1688.com/offer/658862517887.html",
+        "seller": "深圳市一志安防有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "671MF，疑似最低 SKU，不采信"
+      }
+    ],
+    "verdict": "首选",
+    "notes": "内置二维码识别，可直接扫小程序动态码，不需要另配读头；锁控输出可直驱磁力锁；ISAPI 无需 SDK，事件可 HTTP 推送到网关。老固件部分字段不识别，对接前查能力集。",
+    "image": "images/hik-ds-k1t671m.jpg",
+    "image_source": "https://cbu01.alicdn.com/img/ibank/O1CN01EWLpmY1njkyUWapdZ_!!2200788345126-0-cib.jpg"
+  },
+  {
+    "id": "hik-ds-k1t673m",
+    "category": "门禁通行",
+    "subsystem": "无人自助",
+    "brand": "海康威视",
+    "model": "DS-K1T673M（明眸）",
+    "specs": {
+      "屏幕": "7 英寸全面屏",
+      "协议": "ISAPI"
+    },
+    "prices": [
+      {
+        "cny": 1352.47,
+        "url": "https://detail.1688.com/offer/1068058392378.html",
+        "seller": "1688 品牌店",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 1650,
+        "url": "https://detail.1688.com/offer/897997380097.html",
+        "seller": "杭州星安视科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      }
+    ],
+    "verdict": "备选",
+    "notes": "是否带二维码需按子型号核对规格书；未核实前不作为扫码入场方案。"
+  },
+  {
+    "id": "zk-xface",
+    "category": "门禁通行",
+    "subsystem": "无人自助",
+    "brand": "中控智慧（熵基 ZKTeco）",
+    "model": "xFace/iFace 系列",
+    "specs": {
+      "协议": "PUSH/ADMS 云协议、PullSDK"
+    },
+    "prices": [
+      {
+        "cny": 680,
+        "url": "https://detail.1688.com/offer/799407201794.html",
+        "seller": "广州市铂普精密门控有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "xFace420"
+      },
+      {
+        "cny": 1080,
+        "url": "https://detail.1688.com/offer/706690418393.html",
+        "seller": "云通智控(深圳)科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "XFace500"
+      },
+      {
+        "cny": 1885,
+        "url": "https://detail.1688.com/offer/637163534529.html",
+        "seller": "深圳市辉沃普科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "xFace600"
+      }
+    ],
+    "verdict": "可用",
+    "notes": "8 条样本中位约 875 元；PUSH 协议设备主动连服务器，适合直连云；二维码能力按型号核对。"
+  },
+  {
+    "id": "qr-reader-wg485",
+    "category": "门禁通行",
+    "subsystem": "无人自助",
+    "brand": "深圳中研智能等",
+    "model": "二维码门禁读头（韦根26/485）",
+    "specs": {
+      "输出": "韦根26/34、RS485、部分 TCP",
+      "读卡": "IC/ID/NFC",
+      "供电": "12V"
+    },
+    "prices": [
+      {
+        "cny": 200,
+        "url": "https://detail.1688.com/offer/777435358372.html",
+        "seller": "深圳市中研智能科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 215,
+        "url": "https://detail.1688.com/offer/769852936823.html",
+        "seller": "深圳市喜视科技开发有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 115,
+        "url": "https://detail.1688.com/offer/684834705463.html",
+        "seller": "深圳市西瑞智能科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      }
+    ],
+    "verdict": "可用",
+    "notes": "18 条样本中位 195 元。动态码必须用 485/TCP 透传原始码串，韦根只能传数字，不能做服务端验签。"
+  },
+  {
+    "id": "wiegand-l02",
+    "category": "门禁通行",
+    "subsystem": "无人自助",
+    "brand": "微耕",
+    "model": "L02 双门 TCP 控制器（L01/L04 同系列）",
+    "specs": {
+      "接口": "韦根读头输入、继电器输出、门磁、出门按钮",
+      "通讯": "TCP/IP（微耕私有协议，提供 SDK）",
+      "功能": "互锁、反潜回、远程开门"
+    },
+    "power": "12V DC",
+    "power_w": 3,
+    "power_a": 0.3,
+    "prices": [
+      {
+        "cny": 135,
+        "url": "https://detail.1688.com/offer/1076409573843.html",
+        "seller": "中山云汇智能科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "L01/L02/L04 同链接，价格为最低款"
+      },
+      {
+        "cny": 190,
+        "url": "https://detail.1688.com/offer/565661824168.html",
+        "seller": "深圳市科奥特电子科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 330,
+        "url": "https://detail.1688.com/offer/565076433498.html",
+        "seller": "深圳市科奥特电子科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      }
+    ],
+    "verdict": "首选",
+    "notes": "实物图为同类双门 TCP 控制板（卡帝），非微耕原厂图",
+    "image": "images/wiegand-l02.jpg",
+    "image_source": "https://img14.360buyimg.com/n1/s720x720_jfs/t1/319767/14/6079/126798/683ec3c9F5419229e/d7c3648f952f3f09.jpg"
+  },
+  {
+    "id": "lock-280-feedback",
+    "category": "门禁通行",
+    "subsystem": "无人自助",
+    "brand": "大华 / 通用",
+    "model": "280kg 带信号反馈磁力锁（大华 DH-ASLMQ280BL-DL）",
+    "specs": {
+      "拉力": "280 kg",
+      "电压": "12V DC，约 0.3–0.5 A",
+      "断电状态": "断电开",
+      "反馈": "门状态信号输出"
+    },
+    "power": "12V DC",
+    "power_w": 5,
+    "power_a": 0.45,
+    "prices": [
+      {
+        "cny": 133,
+        "url": "https://detail.1688.com/offer/1084699989375.html",
+        "seller": "云通智控(深圳)科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "大华品牌"
+      },
+      {
+        "cny": 30,
+        "url": "https://detail.1688.com/offer/897624272059.html",
+        "seller": "中山云汇智能科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "通用带反馈款"
+      },
+      {
+        "cny": 45,
+        "url": "https://detail.1688.com/offer/988029847050.html",
+        "seller": "深圳市新嘉诚智能技术有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      }
+    ],
+    "verdict": "首选",
+    "notes": "47 条样本中位 36 元（通用款）。选带反馈款可省独立门磁；L/Z/U 支架按门型另配。",
+    "image": "images/lock-280-feedback.jpg",
+    "image_source": "https://img.alicdn.com/imgextra/i2/560385001/O1CN01sHb2yX1moVlDtzkAz_!!560385001.jpg"
+  },
+  {
+    "id": "exit-ir",
+    "category": "门禁通行",
+    "subsystem": "无人自助",
+    "brand": "通用",
+    "model": "红外非接触出门按钮（86 型）",
+    "specs": {
+      "输出": "干接点 NO/COM",
+      "供电": "12V"
+    },
+    "prices": [
+      {
+        "cny": 12,
+        "url": "https://detail.1688.com/offer/1053655915180.html",
+        "seller": "中山云汇智能科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      }
+    ],
+    "verdict": "首选",
+    "notes": "搜'出门按钮'会混入 2–5 元机械按钮与破玻；用'红外 非接触 出门开关'。",
+    "image": "images/exit-ir.jpg",
+    "image_source": "https://p0.ssl.qhimgs1.com/t04d807a9a8167adba0.png"
+  },
+  {
+    "id": "hik-ids-2cd6810f",
+    "category": "人流监控",
+    "subsystem": "人流监控",
+    "brand": "海康威视",
+    "model": "iDS-2CD6810F/C",
+    "specs": {
+      "类型": "垂直双目客流统计",
+      "镜头": "2.0 mm（水平 100°）/2.8 mm（82°）",
+      "接口": "RJ45、RS485、报警入 1/出 1",
+      "协议": "ONVIF、ISAPI、HTTP、RTSP",
+      "供电": "DC12V / PoE 802.3af，≤7 W",
+      "存储": "Micro SD 128G 断网缓存",
+      "功能": "进、出、经过计数，日周月年报表",
+      "零售参考": "必应汇总淘宝主流价约 2860 元（2026-10-28），京东显示下柜"
+    },
+    "power": "PoE",
+    "power_w": 7,
+    "sources": [
+      "https://product.asmag.com.cn/93915.html"
+    ],
+    "prices": [],
+    "verdict": "首选",
+    "notes": "1688 精确型号两次触发验证；淘宝原商品链接未取到，清单走海康渠道询价。",
+    "image": "images/hik-ids-2cd6810f.jpg",
+    "image_source": "https://img.alicdn.com/imgextra/i1/1647652347/O1CN01FLYLhX1TCyPNSKI6s_!!1647652347.jpg"
+  },
+  {
+    "id": "hik-fisheye-3955",
+    "category": "视频感知",
+    "subsystem": "无人自助",
+    "brand": "海康威视",
+    "model": "DS-2CD3955FWD-I / DS-2XA3956F-IS（500 万鱼眼）",
+    "specs": {
+      "分辨率": "500 万",
+      "视角": "360° 全景",
+      "供电": "PoE",
+      "协议": "ONVIF、RTSP、ISAPI"
+    },
+    "power": "PoE",
+    "power_w": 7,
+    "prices": [
+      {
+        "cny": 390,
+        "url": "https://detail.1688.com/offer/843919896812.html",
+        "seller": "广州泓锦电脑科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 489,
+        "url": "https://detail.1688.com/offer/898009272167.html",
+        "seller": "杭州星安视科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 515,
+        "url": "https://detail.1688.com/offer/625684176482.html",
+        "seller": "山东嘉安电子科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "3956F-IS"
+      },
+      {
+        "cny": 760,
+        "url": "https://detail.1688.com/offer/897157854735.html",
+        "seller": "杭州星安视科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "3956F-IS 拾音"
+      }
+    ],
+    "verdict": "首选",
+    "notes": "9 条样本中位 609 元；3956F-IS 带拾音。搜'鱼眼'会混入钓鱼配件，必须加品牌或'摄像头'。",
+    "image": "images/hik-fisheye-3955.jpg",
+    "image_source": "https://image.suning.cn/uimg/b2c/newcatentries/0070129293-000000000697991407_1.jpg"
+  },
+  {
+    "id": "hik-dome-1345",
+    "category": "视频感知",
+    "subsystem": "无人自助",
+    "brand": "海康威视",
+    "model": "DS-2CD1345DV2-LA（400 万双光拾音半球）",
+    "specs": {
+      "分辨率": "400 万",
+      "供电": "PoE",
+      "音频": "拾音"
+    },
+    "power": "PoE",
+    "power_w": 5,
+    "prices": [
+      {
+        "cny": 229.2,
+        "url": "https://detail.1688.com/offer/1088877211590.html",
+        "seller": "1688 店铺",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      }
+    ],
+    "verdict": "可用",
+    "notes": "门口录像用。",
+    "image": "images/hik-dome-1345.jpg",
+    "image_source": "https://p2.ssl.qhimgs1.com/sdr/400__/t04c2144e54b6ae09bc.jpg"
+  },
+  {
+    "id": "hik-nvr-7808n-8p",
+    "category": "视频感知",
+    "subsystem": "无人自助",
+    "brand": "海康威视",
+    "model": "DS-7808N-R2/8P（8 路 PoE NVR）",
+    "specs": {
+      "路数": "8",
+      "PoE": "8 口",
+      "盘位": "2",
+      "协议": "ONVIF、ISAPI、GB28181"
+    },
+    "poe_source": true,
+    "prices": [
+      {
+        "cny": 675,
+        "url": "https://detail.1688.com/offer/714973939694.html",
+        "seller": "广东众采智能网络科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 840,
+        "url": "https://detail.1688.com/offer/635158072235.html",
+        "seller": "深圳市晟鑫禄科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 985,
+        "url": "https://detail.1688.com/offer/754506409894.html",
+        "seller": "山东嘉安电子科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "Q2/8P"
+      }
+    ],
+    "verdict": "首选",
+    "notes": "13 条样本中位 620 元；总 PoE 预算按规格书核对；硬盘另购。",
+    "image": "images/hik-nvr-7808n-8p.jpg",
+    "image_source": "https://p0.ssl.qhimgs1.com/sdr/400__/t04a5f931f79962bc24.png"
+  },
+  {
+    "id": "sip-sos",
+    "category": "求助广播",
+    "subsystem": "无人自助",
+    "brand": "西安云旭等",
+    "model": "SIP 一键求助对讲终端（PoE）",
+    "specs": {
+      "协议": "SIP",
+      "供电": "PoE"
+    },
+    "power": "PoE",
+    "power_w": 6,
+    "prices": [
+      {
+        "cny": 449,
+        "url": "https://detail.1688.com/offer/617095602494.html",
+        "seller": "西安云旭网络科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "标题含'无人值守一键求助'"
+      },
+      {
+        "cny": 1429,
+        "url": "https://detail.1688.com/offer/583949996033.html",
+        "seller": "西安云旭网络科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      }
+    ],
+    "verdict": "可用",
+    "notes": "要求标准 SIP，便于接自建 SIP 服务或值班手机。",
+    "image": "images/sip-sos.jpg",
+    "image_source": "https://cbu01.alicdn.com/img/ibank/O1CN01JlRyKY29r0pTEYKMW_!!2395318120-0-cib.jpg"
+  },
+  {
+    "id": "sast-ip-speaker",
+    "category": "求助广播",
+    "subsystem": "无人自助",
+    "brand": "先科 SAST",
+    "model": "IP 网络音柱（PoE）",
+    "specs": {
+      "协议": "IP 广播 / SIP（按型号）",
+      "供电": "220V（商品图标注；PoE 款需另选型号）",
+      "尺寸": "150×105×720 mm，5.3 kg"
+    },
+    "power": "PoE",
+    "power_w": 15,
+    "prices": [
+      {
+        "cny": 499,
+        "url": "https://detail.1688.com/offer/1067515695357.html",
+        "seller": "广州市益仁电子科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 560,
+        "url": "https://detail.1688.com/offer/1068358635545.html",
+        "seller": "广州市益仁电子科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "套装"
+      }
+    ],
+    "verdict": "可用",
+    "notes": "搜'POE'会出塑料颗粒；用'网络 IP 广播 音柱'。",
+    "image": "images/sast-ip-speaker.jpg",
+    "image_source": "https://p1.ssl.qhimgs1.com/sdr/400__/t04deb23800e305765b.jpg"
+  },
+  {
+    "id": "jy-dam0888",
+    "category": "智能电控",
+    "subsystem": "无人自助",
+    "brand": "聚英翱翔",
+    "model": "DAM0888-MT / DAM1200D-MT 网络继电器",
+    "specs": {
+      "路数": "8/12 路继电器",
+      "协议": "Modbus TCP/RTU、MQTT（厂家商品图标注）、云平台",
+      "接口": "RJ45、RS485、WiFi（选配 LORA/GPRS）",
+      "输出": "8 路继电器 250V 10A"
+    },
+    "power": "12V DC",
+    "power_w": 4,
+    "prices": [
+      {
+        "cny": 296,
+        "url": "https://detail.1688.com/offer/654563998966.html",
+        "seller": "北京聚英翱翔电子有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "8 路"
+      },
+      {
+        "cny": 360,
+        "url": "https://detail.1688.com/offer/653302556129.html",
+        "seller": "北京聚英翱翔电子有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "12 路"
+      }
+    ],
+    "verdict": "首选",
+    "notes": "厂家 1688 直营店；大负载必须经接触器（现场电工）。直连自建 MQTT Broker 需向厂家确认固件。",
+    "image": "images/jy-dam0888.jpg",
+    "image_source": "https://img.alicdn.com/imgextra/i4/2938539286/O1CN01ZYMvSk2IT2YawXsqs_!!2938539286.png"
+  },
+  {
+    "id": "tuya-4g-breaker",
+    "category": "智能电控",
+    "subsystem": "无人自助",
+    "brand": "涂鸦方案（温州多厂）",
+    "model": "4G 智能断路器（计量、漏保）",
+    "specs": {
+      "通讯": "4G / WiFi，涂鸦云"
+    },
+    "prices": [
+      {
+        "cny": 215,
+        "url": "https://detail.1688.com/offer/1067233753094.html",
+        "seller": "智控(温州)物联科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 285,
+        "url": "https://detail.1688.com/offer/786851241891.html",
+        "seller": "温州市加毅电气有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      }
+    ],
+    "verdict": "备选",
+    "notes": "19 条样本中位 230 元；走涂鸦云（模式 B）；安装属强电，由电工施工。"
+  },
+  {
+    "id": "tuya-ir",
+    "category": "智能电控",
+    "subsystem": "无人自助",
+    "brand": "涂鸦方案",
+    "model": "WiFi 万能红外遥控器",
+    "specs": {
+      "通讯": "WiFi，涂鸦云"
+    },
+    "prices": [
+      {
+        "cny": 21,
+        "url": "https://detail.1688.com/offer/851315327935.html",
+        "seller": "深圳市熙永实业有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 18,
+        "url": "https://detail.1688.com/offer/1071643664779.html",
+        "seller": "深圳市文汇科技发展有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      }
+    ],
+    "verdict": "可用",
+    "notes": "47 条样本中位 25 元；只适合挂机/柜机空调，无状态反馈。",
+    "image": "images/tuya-ir.jpg",
+    "image_source": "https://p0.ssl.qhimgs1.com/t01a946c43fb3a98fc6.jpg"
+  },
+  {
+    "id": "rpi-cm5-gw",
+    "category": "边缘网关",
+    "subsystem": "通用",
+    "brand": "树莓派 CM5 工业计算机",
+    "model": "CM5 双网口工业机（可接 4G/5G 模块）",
+    "specs": {
+      "网口": "千兆 / 2.5G 双网口",
+      "扩展": "4G/5G 模块"
+    },
+    "power": "12V DC",
+    "power_w": 10,
+    "prices": [
+      {
+        "cny": 639,
+        "url": "https://detail.1688.com/offer/1037737249650.html",
+        "seller": "深圳市福田区鑫虹数码商行",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      }
+    ],
+    "verdict": "可用",
+    "notes": "门店边缘网关：对接 ISAPI/微耕 SDK/485 设备并桥接 MQTT；外接 USB-485 另配转换器。商用优先工业外壳与看门狗。；实物图为 CM 计算模块 + 工业载板（双网口、4G 模组位），整机外壳另配",
+    "image": "images/rpi-cm5-gw.jpg",
+    "image_source": "https://p2.ssl.qhimgs1.com/sdr/400__/t0409496614b8ce788c.jpg"
+  },
+  {
+    "id": "esp32-relay",
+    "category": "控制模块",
+    "subsystem": "通用",
+    "brand": "艾尔赛 / 微雪",
+    "model": "ESP32 继电器开发板（1–16 路）",
+    "specs": {
+      "通讯": "WiFi/BLE，部分有以太网/PoE",
+      "用途": "自研小控制器"
+    },
+    "prices": [
+      {
+        "cny": 47,
+        "url": "https://detail.1688.com/offer/674796192520.html",
+        "seller": "深圳市艾尔赛科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "4 路"
+      },
+      {
+        "cny": 226,
+        "url": "https://detail.1688.com/offer/925668404308.html",
+        "seller": "深圳沛源通达科技有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "微雪 S3 工业 8 路"
+      }
+    ],
+    "verdict": "可用",
+    "notes": "原型与小批量；商用需外壳、隔离与认证。"
+  },
+  {
+    "id": "usr-dtu-4g",
+    "category": "边缘网关",
+    "subsystem": "通用",
+    "brand": "有人物联",
+    "model": "USR-DR502 / G780s 4G DTU",
+    "specs": {
+      "接口": "RS485",
+      "协议": "MQTT、TCP 透传"
+    },
+    "prices": [
+      {
+        "cny": 138,
+        "url": "https://detail.1688.com/offer/644051576805.html",
+        "seller": "济南有人物联网技术有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "DR502 导轨式"
+      },
+      {
+        "cny": 238,
+        "url": "https://detail.1688.com/offer/695760317025.html",
+        "seller": "济南有人物联网技术有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": "G780s"
+      }
+    ],
+    "verdict": "首选",
+    "notes": "厂家 1688 官方店。'有人物联 DTU' 会混入化妆品（TVT），用'有人 4G DTU 485'。"
+  },
+  {
+    "id": "locker-scan",
+    "category": "业务终端",
+    "subsystem": "无人自助",
+    "brand": "洛阳/佛山柜厂",
+    "model": "扫码智能储物柜（整柜）",
+    "specs": {
+      "开柜": "扫码/密码/人脸（按型号）",
+      "锁控": "RS485 锁控板"
+    },
+    "prices": [
+      {
+        "cny": 775,
+        "url": "https://detail.1688.com/offer/1074095090027.html",
+        "seller": "洛阳星特家具有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 920.5,
+        "url": "https://detail.1688.com/offer/608837696377.html",
+        "seller": "佛山迈通达办公家具有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      },
+      {
+        "cny": 1270,
+        "url": "https://detail.1688.com/offer/807793786087.html",
+        "seller": "洛阳市宇宝办公机具有限公司",
+        "date": "2026-10-28",
+        "channel": "1688",
+        "note": ""
+      }
+    ],
+    "verdict": "可用",
+    "notes": "38 条样本中位 973 元，随门数差异大，按门数询价；要求开放锁控板协议或云 API。",
+    "image": "images/locker-scan.jpg",
+    "image_source": "https://p2.ssl.qhimgs1.com/sdr/400__/t0190920085622a7c12.jpg"
+  },
+  {
+    "id": "hik-ds-2xa8t45f-ywisp",
+    "category": "动火离人",
+    "subsystem": "动火离人",
+    "brand": "海康威视",
+    "model": "DS-2XA8T45F/YW-ISP",
+    "specs": {
+      "类型": "400 万明厨亮灶专用筒型，一体化防油污",
+      "智能": "火焰检测、动火离人、着装（口罩/厨师帽）检测",
+      "报警": "声光",
+      "算法": "H8 高性能（ISP 款）",
+      "接入": "ISAPI / GB28181 / 萤石云（按配置）"
+    },
+    "power": "PoE 或 12V DC",
+    "power_w": 8,
+    "sources": [
+      "https://www.afzhan.com",
+      "https://www.jdzj.com"
+    ],
+    "prices": [
+      {
+        "cny": 528,
+        "url": "https://www.taobao.com/list/item/T2dZQWNUSzJmblpSU3BBMnd5UFI0QT09.htm",
+        "seller": "淘宝 实体智能安防店",
+        "date": "2026-10-28",
+        "channel": "淘宝",
+        "note": "同链接含 8T45E/YW-IS（G5 低性能算法，无动火离人）与 8T45F/YW-ISP（动火离人 H8）两个 SKU"
+      }
+    ],
+    "verdict": "首选",
+    "notes": "选 F/YW-ISP 才带动火离人；E/YW-IS 为低性能算法款。一台覆盖 1–2 个灶位，对准灶眼与操作位。"
+  },
+  {
+    "id": "dahua-hy-fc443",
+    "category": "动火离人",
+    "subsystem": "动火离人",
+    "brand": "大华",
+    "model": "DH-HY-FC443LDBR1-AS",
+    "specs": {
+      "智能": "离岗监测、火焰检测"
+    },
+    "sources": [
+      "https://supply.afzhan.com"
+    ],
+    "prices": [],
+    "verdict": "备选",
+    "notes": "规格与价格需向大华渠道核对（400-672-8166）。"
+  },
+  {
+    "id": "pixfra-dual-thermal",
+    "category": "动火离人",
+    "subsystem": "动火离人",
+    "brand": "华感",
+    "model": "观测型双目海螺半球（动火离人热成像）",
+    "specs": {
+      "探测器": "256×192 热成像",
+      "可见光": "400 万",
+      "镜头": "3.5/7 mm",
+      "智能": "火点检测 + 人体检测，内置声光"
+    },
+    "sources": [
+      "https://www.pixfra.com/cn/solutions/%E9%98%B2%E7%81%AB%E5%BA%94%E7%94%A8/%E5%8A%A8%E7%81%AB%E7%A6%BB%E4%BA%BA"
+    ],
+    "prices": [],
+    "verdict": "可用",
+    "notes": "热成像判火不受蒸汽和灯光干扰，适合大型后厨与学校食堂；价格询价 400-995-3595。"
+  },
+  {
+    "id": "hlk-ld2410-aa",
+    "category": "动火离人",
+    "subsystem": "通用",
+    "brand": "海凌科",
+    "model": "HLK-LD2410-AA 24G 人体存在雷达",
+    "specs": {
+      "频段": "24 GHz",
+      "功能": "静止人体存在感应",
+      "挂高": "6 m",
+      "调参": "蓝牙 App"
+    },
+    "sources": [
+      "https://www.hlktech.com/"
+    ],
+    "prices": [],
+    "verdict": "可用",
+    "notes": "模组级，需要外壳与 MCU/网关集成；商用优先成品（涂鸦 Zigbee 人体存在传感器 ¥299，TuyaExpo）。"
+  },
+  {
+    "id": "tuya-zigbee-presence",
+    "category": "人流监控",
+    "subsystem": "通用",
+    "brand": "涂鸦生态",
+    "model": "Zigbee 人体存在传感器",
+    "specs": {
+      "通讯": "Zigbee，需涂鸦网关",
+      "接入": "涂鸦云 OpenAPI（模式 B）"
+    },
+    "prices": [
+      {
+        "cny": 299,
+        "url": "https://www.tuyaexpo.com/cn/",
+        "seller": "TuyaExpo",
+        "date": "2026-10-28",
+        "channel": "厂家选品平台"
+      }
+    ],
+    "verdict": "可用",
+    "notes": "包间/后厨'有人'复核；需配涂鸦 Zigbee 网关。"
+  },
+  {
+    "id": "foorir-fp221",
+    "category": "人流监控",
+    "subsystem": "人流监控",
+    "brand": "FOORIR",
+    "model": "FP221 TOF 客流统计设备",
+    "specs": {
+      "技术": "TOF 飞行时间 3D"
+    },
+    "sources": [
+      "https://www.foorir.cn"
+    ],
+    "prices": [],
+    "verdict": "备选",
+    "notes": "仅见白皮书；参数与价格未核实。"
+  },
+  {
+    "id": "dongqia-3dv3",
+    "category": "人流监控",
+    "subsystem": "人流监控",
+    "brand": "动恰",
+    "model": "3DV3 视觉客流统计摄像机",
+    "specs": {
+      "传感器": "400 万星光 CMOS，0.0002 lux，120 dB 宽动态",
+      "准确率": "厂商称 99.1%",
+      "功能": "本地 AI 去重、员工/外卖过滤、进店率、驻留时长"
+    },
+    "sources": [
+      "http://www.dongqia.com"
+    ],
+    "prices": [],
+    "verdict": "可用",
+    "notes": "连锁门店客流运营型方案（自带客流管家云）；接口与 API 需向厂家确认；联系见 suppliers.dongqia。"
+  },
+  {
+    "id": "styd-face-ultra",
+    "category": "门禁通行",
+    "subsystem": "无人自助",
+    "brand": "三体云动",
+    "model": "智能门禁 Ultra（壁挂/闸机款）",
+    "specs": {
+      "识别": "双目红外 + 双目 RGB，0.2 s",
+      "接口": "RJ45、继电器、RS485、韦根、USB",
+      "开门": "人脸、IC 卡、小程序二维码、远程"
+    },
+    "prices": [
+      {
+        "cny": 4800,
+        "url": "https://www.styd.cn/",
+        "seller": "三体云动硬件商城",
+        "date": "2026-10-27",
+        "channel": "官方商城",
+        "note": "官方统一售价"
+      }
+    ],
+    "verdict": "备选",
+    "notes": "原生对接三体 SaaS；自研后台对接能力需确认。"
+  },
+  {
+    "id": "seagate-skyhawk-8tb",
+    "category": "视频感知",
+    "subsystem": "无人自助",
+    "brand": "希捷",
+    "model": "酷鹰 SkyHawk 8TB",
+    "specs": {
+      "类型": "监控级硬盘，7×24 写入",
+      "接口": "SATA"
+    },
+    "prices": [],
+    "verdict": "可用",
+    "notes": "按 4 路 4 Mbps × 30 天约 5.2 TB 选 8 TB；价格未核实，走希捷官网或京东自营",
+    "image": "images/seagate-skyhawk-8tb.jpg",
+    "image_source": "https://image1.suning.cn/uimg/b2c/newcatentries/0000000000-000000010000186312_1_800x800.jpg"
+  }
+]

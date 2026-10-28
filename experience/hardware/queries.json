@@ -1,0 +1,387 @@
+[
+  {
+    "platform": "1688",
+    "query": "健身房人脸识别门禁 二维码",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "可用，混入考勤机与闸机"
+  },
+  {
+    "platform": "1688",
+    "query": "海康威视 人脸识别门禁一体机 DS-K1T",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "拿到多款海康型号与价格"
+  },
+  {
+    "platform": "1688",
+    "query": "中控智慧 人脸识别 门禁一体机",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": ""
+  },
+  {
+    "platform": "1688",
+    "query": "二维码扫码门禁读头 韦根 485",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": ""
+  },
+  {
+    "platform": "1688",
+    "query": "微耕 门禁控制器 TCP 单门",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "混入门禁卡、复卡器，按标题含'微耕'过滤"
+  },
+  {
+    "platform": "1688",
+    "query": "电磁锁 280kg 磁力锁",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": ""
+  },
+  {
+    "platform": "1688",
+    "query": "出门按钮 紧急破玻 门禁",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "多为 2–5 元机械按钮/破玻；改用'红外 非接触 出门开关'"
+  },
+  {
+    "platform": "1688",
+    "query": "双向客流统计 摄像头 人数统计",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "几乎全是车载/家用摄像头"
+  },
+  {
+    "platform": "1688",
+    "query": "海康 iDS-2CD6810F 客流",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "两次触发验证未取到；查官网/a&s 产品库"
+  },
+  {
+    "platform": "1688",
+    "query": "海康 鱼眼摄像头 全景 POE",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": ""
+  },
+  {
+    "platform": "1688",
+    "query": "海康 DS-2CD3956 鱼眼",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "大量钓鱼'鱼眼挡珠'"
+  },
+  {
+    "platform": "1688",
+    "query": "海康 DS-K1T671M 人脸 二维码",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "精确型号搜索混入平板、面具；用'海康 人脸识别门禁一体机 DS-K1T'"
+  },
+  {
+    "platform": "1688",
+    "query": "海康 网络硬盘录像机 8路 POE",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": ""
+  },
+  {
+    "platform": "1688",
+    "query": "网络IP广播音柱 POE 对讲",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "'POE' 搜出塑料颗粒；去掉 POE"
+  },
+  {
+    "platform": "1688",
+    "query": "一键报警 SOS求助按钮 可视对讲",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "混入老人呼叫器与无关商品，加'SIP'"
+  },
+  {
+    "platform": "1688",
+    "query": "4G智能断路器 远程控制 空开",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": ""
+  },
+  {
+    "platform": "1688",
+    "query": "网络继电器 MQTT 4路 485",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": ""
+  },
+  {
+    "platform": "1688",
+    "query": "WiFi红外遥控器 空调 涂鸦",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": ""
+  },
+  {
+    "platform": "1688",
+    "query": "智能储物柜 扫码 健身房",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": ""
+  },
+  {
+    "platform": "1688",
+    "query": "4G DTU 有人物联 485 MQTT",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "混入化妆品（TVT）；用'有人 4G DTU 485'"
+  },
+  {
+    "platform": "1688",
+    "query": "树莓派 4B 工业 边缘网关",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "多为涂鸦网关与配件，挑 CM5 工业机"
+  },
+  {
+    "platform": "1688",
+    "query": "ESP32 开发板 继电器",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": ""
+  },
+  {
+    "platform": "1688",
+    "query": "企业路由器 双WAN 4G 备份",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "现场条件，仅备查"
+  },
+  {
+    "platform": "1688",
+    "query": "POE交换机 8口 千兆",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "现场条件，仅备查"
+  },
+  {
+    "platform": "1688",
+    "query": "UPS 不间断电源 1KVA 在线式",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "现场条件，仅备查"
+  },
+  {
+    "platform": "1688",
+    "query": "温湿度 烟感 无线 报警",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "烟感属消防现场条件"
+  },
+  {
+    "platform": "1688",
+    "query": "共享健身房 智能硬件 套装",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "全是电子元件，1688 没有'套装'品类"
+  },
+  {
+    "platform": "wechat",
+    "query": "24小时无人自助健身房 硬件布局 AB门 智能电控",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "宇淼科技两篇方案"
+  },
+  {
+    "platform": "wechat",
+    "query": "无人健身房 硬件 清单 成本 多少钱",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "多为白皮书和无关文章"
+  },
+  {
+    "platform": "web",
+    "query": "海康威视 DS-K1T671M 人脸识别门禁 技术参数",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "经销商规格页参数完整"
+  },
+  {
+    "platform": "web",
+    "query": "海康 ISAPI 门禁 远程开门 接口 二次开发",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "CSDN 实战两篇"
+  },
+  {
+    "platform": "web",
+    "query": "海康 iDS-2CD6810F 双目客流统计 参数",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "a&s 产品库参数完整"
+  },
+  {
+    "platform": "web",
+    "query": "微耕 门禁控制器 通讯协议 远程开门 SDK",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "CSDN 资源介绍"
+  },
+  {
+    "platform": "web",
+    "query": "海康 明厨亮灶 摄像机 动火离人 型号",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "得到 DS-2XA8T45F/YW-ISP 与淘宝价"
+  },
+  {
+    "platform": "web",
+    "query": "大华 动火离人 智能分析 摄像机",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "得到 DH-HY-FC443LDBR1-AS、优信无限算法盒方案"
+  },
+  {
+    "platform": "web",
+    "query": "3D TOF 客流计数器 门店 型号",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "讯鹏、FOORIR、恒华等厂家"
+  },
+  {
+    "platform": "web",
+    "query": "海康 iDS-2CD6810F 价格",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "必应摘要给出淘宝约 2860 元"
+  },
+  {
+    "platform": "web",
+    "query": "动火离人 算法 摄像头 报警 原理 无人看管",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "戈子科技、华感方案页"
+  },
+  {
+    "platform": "wechat",
+    "query": "动火离人 报警器 燃气 自动切断 餐饮",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "原理文章：微波/热成像/复合探测 + 控制箱 + 切断阀"
+  },
+  {
+    "platform": "wechat",
+    "query": "动火离人 检测 AI 摄像头 厨房 方案",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "萤石透明厨房、智慧食堂"
+  },
+  {
+    "platform": "wechat",
+    "query": "客流统计 双目 3D 精度 门店 方案 对比",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "动恰 3DV3 方案文，含联系方式"
+  },
+  {
+    "platform": "ccgp",
+    "query": "明厨亮灶",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "近一周 3 条，含中标金额与主要标的"
+  },
+  {
+    "platform": "ccgp",
+    "query": "客流统计",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "近一周 0 条；需放宽时间或改'人流量统计'"
+  },
+  {
+    "platform": "hikvision.com",
+    "query": "客流统计",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "站内搜索未取到结果；直接 capture where-to-buy 或产品页"
+  },
+  {
+    "platform": "dahuatech.com",
+    "query": "人脸门禁",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "Navigation rejected；直接 capture 首页"
+  },
+  {
+    "platform": "web",
+    "query": "中控智慧 熵基 官网 人脸识别门禁 产品",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "两个官网：zkteco.com/cn（熵基）与 zksps.com（北京中控智慧，带线上商城）"
+  },
+  {
+    "platform": "web",
+    "query": "涂鸦 智能 硬件 采购 方案商 平台",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "TuyaExpo 选品平台有标价"
+  },
+  {
+    "platform": "capture",
+    "query": "https://www.wggai.com/",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "戈子科技首页 capture 失败；新闻页 news_view-3269.html 可读"
+  },
+  {
+    "platform": "capture",
+    "query": "https://www.wiegand.com.cn",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "失败（URL 不被接受），微耕官网域名待核实；渠道先用 1688"
+  },
+  {
+    "platform": "web",
+    "query": "动恰科技 官网 3DV3 客流统计 摄像机",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "找到官网"
+  },
+  {
+    "platform": "web",
+    "query": "海凌科 LD2410 毫米波 人体存在 价格",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "失败；模组价格去淘宝官方店或 1688 搜'海凌科 LD2410'"
+  },
+  {
+    "platform": "web",
+    "query": "燃气紧急切断阀 控制器 干接点 餐饮 厂家",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "未取到正文；燃气阀由燃气公司或厨房灭火装置厂家成套提供"
+  },
+  {
+    "platform": "bing-images",
+    "query": "<品牌 型号>（图片搜索）",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "快照里 murl 字段是原图地址；一次 capture 会嵌入几十张缩略图，按域名占用 LuzCrawl 预算（cn.bing.com 已放宽到 100/10 分钟，代码上限 100）"
+  },
+  {
+    "platform": "so360-images",
+    "query": "<品牌 型号>（图片搜索）",
+    "useful": true,
+    "date": "2026-10-28",
+    "note": "image.so.com 快照里 p*.ssl.qhimgs*.com/sdr/400__ 为 400px 缩略图，够做卡片；与必应轮换可加倍吞吐"
+  },
+  {
+    "platform": "http",
+    "query": "直接请求必应图片结果页",
+    "useful": false,
+    "date": "2026-10-28",
+    "note": "第一次能取到，随后返回固定图库图（pixnio）或空结果，判为机器人；不可批量"
+  }
+]

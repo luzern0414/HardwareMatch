@@ -1,0 +1,7 @@
+{"queries":[
+ {"platform":"capture","query":"https://www.wggai.com/","useful":false,"date":"2026-10-28","note":"戈子科技首页 capture 失败；新闻页 news_view-3269.html 可读"},
+ {"platform":"capture","query":"https://www.wiegand.com.cn","useful":false,"date":"2026-10-28","note":"失败（URL 不被接受），微耕官网域名待核实；渠道先用 1688"},
+ {"platform":"web","query":"动恰科技 官网 3DV3 客流统计 摄像机","useful":true,"date":"2026-10-28","note":"找到官网"},
+ {"platform":"web","query":"海凌科 LD2410 毫米波 人体存在 价格","useful":false,"date":"2026-10-28","note":"失败；模组价格去淘宝官方店或 1688 搜'海凌科 LD2410'"},
+ {"platform":"web","query":"燃气紧急切断阀 控制器 干接点 餐饮 厂家","useful":false,"date":"2026-10-28","note":"未取到正文；燃气阀由燃气公司或厨房灭火装置厂家成套提供"}
+]}

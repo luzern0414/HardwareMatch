@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.env.*
+!.env.example
+.DS_Store
+.tmp-*/
+
+# Individuals' contacts (mobile numbers, WeChat IDs) stay on this machine
+experience/hardware/contacts.local.json
+# Third-party product photos stay local (copyright); rendering still uses them on this machine
+experience/hardware/images/

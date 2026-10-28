@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>硬件设计规范</title>
+  <link rel="stylesheet" href="guidelines.css">
+</head>
+<body>
+<main id="main" aria-label="硬件设计规范">
+    <h1>硬件设计规范</h1>
+<!-- SECTION:scope:START id=scope data-rule-id=hardware-scope -->
+<section id="scope" data-rule-id="hardware-scope" aria-labelledby="scope-heading">
+<h2 id="scope-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><circle cx="12" cy="12" r="3"/></svg><span>适用范围</span></h2>
+<p>适用于系统设计中的硬件部分：无人健身房、无人超市、自助包间、人流与客流监控、动火离人、明厨亮灶等需要现场设备的系统。只要硬件的项目单独建会话；软件与硬件都要的项目在同一个会话里完成，硬件方案与系统架构互相引用。</p>
+</section>
+<!-- SECTION:scope:END -->
+
+<!-- SECTION:workflow:START id=workflow data-rule-id=hardware-workflow -->
+<section id="workflow" data-rule-id="hardware-workflow" aria-labelledby="workflow-heading">
+<h2 id="workflow-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h5a3 3 0 0 1 3 3v1M16 18h-5a3 3 0 0 1-3-3v-1"/><path d="m13 8 3 2 3-2M11 16l-3-2-3 2"/></svg><span>工作流程</span></h2>
+<ol class="steps">
+<li>记录需求：规模、运营模式、已有设备或指定品牌、预算、后台自研或第三方、现场已有什么；缺少会改变选型的关键信息时先问。</li>
+<li>查硬件经验库，读对应场景的业务逻辑。</li>
+<li>写系统方案故事板，再按“设备与连接”选型。</li>
+<li>用真实浏览器调研型号、价格与渠道，补齐经验库没有的部分。</li>
+<li>写方案数据，校验零错误后生成硬件选型清单网页，并用视觉技能的文件检查脚本验收。</li>
+<li>沉淀经验，交付清单；同时有软件设计时，把设备与集成写进系统架构。</li>
+</ol>
+</section>
+<!-- SECTION:workflow:END -->
+
+<!-- SECTION:rules:START id=rules data-rule-id=hardware-rules -->
+<section id="rules" data-rule-id="hardware-rules" aria-labelledby="rules-heading">
+<h2 id="rules-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 5 6v5c0 4.5 2.8 7.8 7 10 4.2-2.2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg><span>核心规则</span></h2>
+<h3 class="layer">一、设计架构</h3>
+<p>硬件设计回答三件事：这个业务怎么运转 → 每个环节由哪台设备承接 → 设备之间、设备与后台怎么连。软件与硬件在同一个系统里设计：系统架构里的外部集成、状态与流程，与硬件方案里的设备、链路、兜底一一对应。</p>
+<div class="table-wrap"><table><thead><tr><th>负责（给出型号与价格或渠道）</th><th>不负责（现场条件，只提需求）</th></tr></thead><tbody>
+<tr><td>门禁通行、防尾随、客流与在场人数、动火离人、明厨亮灶识别、智能电控（网络继电器、智能空开、红外）、求助与广播、储物、边缘网关与数据传输终端</td><td>消防系统、强电与配电、综合布线与基础网络、装修施工；由设备反推对现场的需求：以太网供电口数与功率、12 伏电流、220 伏点位、上行带宽、消防联动接点</td></tr>
+</tbody></table></div>
+<h3 class="layer">二、功能架构</h3>
+<ul>
+<li>先写系统方案故事板：部署配置 → 核心用户完整旅程（购买、授权、到店、进入、使用、求助、离开、最后一人离开后的环境联动）→ 运营与值班（看板、告警、喊话、远程开门、纠正数据、取证）→ 异常兜底（断网、停电、火警联动、设备离线、门未关、计数漂移）。</li>
+<li>反向检查：每个步骤都有硬件承接或明确是纯线上；每台要买的设备都出现在某一步里。说不出用在哪一步的设备不买，找不到承接硬件的步骤就是选型缺口。</li>
+<li>业务判断（资格、扣次、容量、在场、动火离人规则）在后台或边缘网关执行，设备只负责识别与执行；断网时边缘本地兜底，恢复后补传。</li>
+</ul>
+<h3 class="layer">三、设备与连接</h3>
+<ol class="steps">
+<li>环节 → 设备：每台设备能说出它承接哪个环节。</li>
+<li>设备 → 接口：输出与输入匹配（韦根只传数字、动态码要透传码串、锁控继电器容量、报警输出接控制器输入），先查经验库的匹配规则。</li>
+<li>接口 → 协议 → 后台：每台联网设备定接入方式，写明上报什么、下发什么、用什么协议；连接图每条线都有介质与协议，不出现没有协议的“联网”“对接”。</li>
+<li>兜底：断网时本地网关或设备继续开门、提醒、切断；设备离线有心跳告警。</li>
+<li>现场条件：消防、供电、网络画成现场节点，只写需求，脚本自动汇总供电与网口需求。</li>
+<li>价格或渠道：每台采购设备有“单价加出处链接”或“联系方式”至少一项。</li>
+</ol>
+<h3 class="layer">四、调研与经验</h3>
+<ul>
+<li>先查硬件经验库：库里结论为首选或可用、价格在 180 天内的产品直接用；只调研库里没有或过期的部分；搜索词先看效果记录，无用的不再用。</li>
+<li>型号与接口查厂商官网、规格书与行业产品库；价格查批发平台（下限）、京东自营或官方商城（零售上限）、政府采购中标价（真实成交），同型号三个以上样本取中位。</li>
+<li>拿不到价格时，记录厂商官网“联系我们”、页脚热线、官方公众号等公开渠道；个人手机号与微信只存本地联系人库，不进仓库。</li>
+<li>每次交付前把新产品、价格样本、匹配规则、采购渠道、搜索词效果和流程经验写回经验库；不沉淀不算交付。</li>
+</ul>
+<h3 class="layer">五、安全与合规</h3>
+<ul>
+<li>门锁必须断电开，出门按钮不经网络；人脸识别必须同时提供二维码等替代方式。</li>
+<li>更衣室、淋浴间、卫生间内部不装摄像头；摄像与人脸数据的采集告知、存储与删除写进系统设计的隐私与合规部分。</li>
+<li>驱动 220 伏大负载必须经接触器，由电工施工，作为现场条件提出。</li>
+</ul>
+<h3 class="layer">六、清单版式</h3>
+<div class="table-wrap"><table><thead><tr><th>模块</th><th>呈现</th><th>文字上限</th></tr></thead><tbody>
+<tr><td>方案总览</td><td>合计金额、设备台数、业务模块数、询价数四个指标卡</td><td>结论一句</td></tr>
+<tr><td>系统方案</td><td>按阶段与角色的故事板，每步一行：编号、操作、响应、异常、参与硬件缩略图、功能标签；末尾设备与阶段对照矩阵</td><td>操作不超过二十字</td></tr>
+<tr><td>系统连接图</td><td>自动布局矢量图：现场 → 边缘 → 云端 → 使用端，线带编号，链路说明放折叠区</td><td>结论一句</td></tr>
+<tr><td>设备清单</td><td>按业务模块分组，每台设备一张卡片：实物图、名称、型号、用途、价格、规格与接口标签、采购渠道按钮</td><td>用途不超过十字</td></tr>
+<tr><td>现场条件</td><td>供电、网口、接点指标卡加要点卡</td><td>每条要点不超过二十字</td></tr>
+<tr><td>预算</td><td>分级金额卡加按模块降序的单色条形图</td><td>结论一句</td></tr>
+<tr><td>附录（折叠）</td><td>通信时序、链路说明、接入方式、安装点位、风险与合规、容量计算</td><td>表格</td></tr>
+</tbody></table></div>
+<p>版式底线遵循视觉技能的视觉设计规范与文件设计规范：唯一主标题、单一字体族、浅色、一个主色、无副标题与自我说明。实物图为白底方图，不用海报文字区、场景效果图或错型号；找不到时用模块图标占位并在交付时列出缺图设备。</p>
+</section>
+<!-- SECTION:rules:END -->
+
+<!-- SECTION:platform-matrix:START id=platform-matrix data-rule-id=hardware-platform-matrix -->
+<section id="platform-matrix" data-rule-id="hardware-platform-matrix" aria-labelledby="platform-matrix-heading">
+<h2 id="platform-matrix-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="6" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/></svg><span>平台矩阵</span></h2>
+<div class="table-wrap"><table><thead><tr><th>场景</th><th>核心设备</th><th>接入要点</th></tr></thead><tbody>
+<tr><td>无人健身房</td><td>人脸与扫码门禁、门禁控制器、电锁、客流相机、边缘网关、智能电控</td><td>资格与扣次在后台判断，门禁离线时本地白名单兜底</td></tr>
+<tr><td>人流与客流监控</td><td>双目或三维客流相机、鱼眼相机、边缘网关</td><td>进出计数与在场人数校准，漂移告警</td></tr>
+<tr><td>动火离人</td><td>热成像或智能摄像机、网络继电器、声光报警</td><td>离人超时规则在边缘执行，联动切断燃气需电工施工</td></tr>
+<tr><td>明厨亮灶</td><td>智能摄像机、录像机、平台接入</td><td>按监管平台要求的协议上报</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:platform-matrix:END -->
+
+<!-- SECTION:examples:START id=examples data-rule-id=hardware-examples -->
+<section id="examples" data-rule-id="hardware-examples" aria-labelledby="examples-heading">
+<h2 id="examples-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m4 17 5-5 3 3 2-2 6 6"/></svg><span>案例样本</span></h2>
+<h3>无人健身房</h3>
+<p>入口用人脸加二维码双通道门禁，门禁控制器经继电器驱动断电开电锁；客流相机统计在馆人数；边缘网关缓存会员名单，断网时继续核验并在恢复后补传；空调、灯光由智能电控按在场人数联动；现场条件汇总为以太网供电口数、12 伏电流与 220 伏点位。完整示例见技能目录的示例方案。</p>
+</section>
+<!-- SECTION:examples:END -->
+
+<!-- SECTION:output-contract:START id=output-contract data-rule-id=hardware-output-contract -->
+<section id="output-contract" data-rule-id="hardware-output-contract" aria-labelledby="output-contract-heading">
+<h2 id="output-contract-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>输出契约</span></h2>
+<div class="table-wrap"><table><thead><tr><th>位置</th><th>职责</th><th>通过条件</th></tr></thead><tbody>
+<tr><td>会话的硬件需求文件</td><td>记录规模、运营、预算与现场条件</td><td>会改变选型的关键信息齐全</td></tr>
+<tr><td>会话的硬件方案数据</td><td>故事板、设备、链路、现场条件、价格与渠道</td><td>方案校验零错误</td></tr>
+<tr><td>会话的硬件选型清单网页</td><td>图文清单与连接图</td><td>文件检查脚本通过；只做硬件时发布为会话唯一的最终网页</td></tr>
+<tr><td>硬件经验库</td><td>产品、匹配规则、渠道、搜索词、流程经验</td><td>本次新结论已入库</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:output-contract:END -->
+
+<!-- SECTION:quality-gates:START id=quality-gates data-rule-id=hardware-quality-gates -->
+<section id="quality-gates" data-rule-id="hardware-quality-gates" aria-labelledby="quality-gates-heading">
+<h2 id="quality-gates-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h5M15 7h5M9 7a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM4 17h10M18 17h2M14 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg><span>质量门禁</span></h2>
+<ul>
+<li>有设备说不出承接哪个环节，或某个环节没有承接设备：退回设计。</li>
+<li>连接图有线没有介质或协议、门锁不是断电开、出门按钮经过网络、人脸没有替代方式：退回设计。</li>
+<li>型号没有出处、价格没有链接与日期、拿不到价格又没有联系渠道：退回调研。</li>
+<li>把消防、强电、布线当成选型内容，或没有汇总对现场的需求：退回设计。</li>
+<li>经验库没有更新，或把个人手机号、微信写进会进仓库的文件：不算交付。</li>
+</ul>
+</section>
+<!-- SECTION:quality-gates:END -->
+
+<!-- SECTION:handoff:START id=handoff data-rule-id=hardware-handoff -->
+<section id="handoff" data-rule-id="hardware-handoff" aria-labelledby="handoff-heading">
+<h2 id="handoff-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h12M13 4l3 3-3 3M20 17H8M11 14l-3 3 3 3"/></svg><span>交接规则</span></h2>
+<p>设备清单、链路与协议、接入方式、通信时序和现场条件交给后端技能实现设备接入与后台对接；系统架构中的集成项与硬件方案的设备编号保持一致。</p>
+</section>
+<!-- SECTION:handoff:END -->
+
+</main>
+</body>
+</html>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Luz System"
+  short_description: "Approval-gated system design: software, product UI, prototypes and hardware"
+  default_prompt: "Design the whole system with Luz System: start product interfaces from references/ui-standards.html layer by layer, then the surface page (admin-design, miniprogram-design, agent-design, website-design); use system-design.html for architecture and prototypes and hardware-design.html for on-site devices; take visual standards from Luz-Design visual-design.html; preserve numbered sessions in D:/Codes/skill输出/Luz-System, human approval gates, evidence and browser verification."
