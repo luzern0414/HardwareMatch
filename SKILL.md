@@ -96,12 +96,15 @@ Login, password field, inputs, pickers, dates, money, search, admin lists, switc
 
 ## 每次调用后沉淀
 
-Mandatory on every call, not only at delivery.
+Mandatory on every call, not only at delivery. One store, `experience/notes.json`, with the same shape and commands in Luz-System, Luz-Design, Luz-Dev and Luz-Writing:
 
-- **Start**: run `py -X utf8 scripts/experience.py search --text "<关键词>"` (preferences, lessons and facts are listed first) and apply what matches; hardware calls also run `hw_experience.py search / compat / queries`.
-- **Before finishing**, record with `experience.py note --kind preference|lesson|fact --key <主题> --text "<一句话原则>" [--why "<依据>"]`: (a) any preference the user stated or corrected; (b) any route, source or parameter that worked or failed; (c) any rule correction. Record the general principle, not task trivia.
-- **Replace, not append**: one key per topic. Writing an existing key replaces its text in place (the old text is kept once as `previous`); a contradicting rule replaces the old one. Caps: preferences 60, lessons 120, facts 120; `prune` drops the oldest, least-used entries; `check` fails on duplicate keys, near-duplicate texts and overflow. Hardware products merge by brand and model, keep the latest 5 price samples, and queries merge by platform and text.
-- **Privacy**: the repository is public — no personal names, phone numbers, WeChat IDs, client or company names, private paths or credentials in notes. Personal contacts go only to `experience/hardware/contacts.local.json`.
+- **Start:** `py -X utf8 scripts/experience.py search <关键词> [--kind preference|lesson|fact]` and apply what matches.
+- **Before finishing:** `py -X utf8 scripts/experience.py note --kind preference|lesson|fact --key <主题> --text "<一句话原则>" [--why "<依据>"]` — preference: what the user stated or corrected; fact: a route, source or parameter that worked or failed; lesson: a rule correction or fix. The general principle, not task trivia.
+- **Fields:** `key`, `kind`, `text`, `why` (optional), `uses`, `first_seen`, `last_confirmed` (YYYY-MM-DD), `previous` (`{text, replaced_at}`, only after a replacement).
+- **Replace, never pile up:** the same key replaces the text (one `previous` kept, `uses` +1); the same statement under another key confirms that note. Caps: preference 60, lesson 120, fact 120; over a cap the fewest uses, then the oldest confirmation, go first. `list [--kind]` shows notes; `prune` enforces caps and lists notes unconfirmed for 180 days; `check` fails on duplicate keys or statements, missing fields, overflow and private data.
+- **Public repository:** no phone numbers, emails, WeChat IDs, user-home paths, credentials, personal or client names; `note` refuses them.
+
+Here also: hardware calls run `hw_experience.py search / compat / queries`; products merge by brand and model (latest 5 price samples), queries by platform and text; personal contacts go only to `experience/hardware/contacts.local.json`.
 
 ## Session sequence
 

@@ -34,7 +34,7 @@ class NotesTest(unittest.TestCase):
         self.tmp.cleanup()
 
     def notes(self) -> list[dict]:
-        return experience.load(experience.NOTES, "notes")["notes"]
+        return experience.load_notes(experience.NOTES)["notes"]
 
     def test_same_key_replaces_and_keeps_one_previous(self) -> None:
         self.assertEqual(experience.note("preference", "表头对齐", "表头左对齐")[0], "added")
@@ -43,44 +43,72 @@ class NotesTest(unittest.TestCase):
         notes = self.notes()
         self.assertEqual(len(notes), 1)
         self.assertEqual(notes[0]["text"], "表头与短数据居中，长文本左对齐")
-        self.assertEqual(notes[0]["previous"]["text"], "表头与数据居中")
+        self.assertEqual(notes[0]["previous"], {"text": "表头与数据居中", "replaced_at": notes[0]["last_confirmed"]})
         self.assertEqual(notes[0]["uses"], 3)
         self.assertIn("表头与短数据居中", experience.CATALOG.read_text(encoding="utf-8"))
 
     def test_same_statement_under_new_key_confirms_instead_of_adding(self) -> None:
         experience.note("lesson", "drawer", "详情用居中悬浮面板。")
         action, entry = experience.note("lesson", "panel", "详情用居中悬浮面板")
-        self.assertEqual((action, entry["key"]), ("confirmed", "drawer"))
+        self.assertEqual((action, entry["key"], entry["uses"]), ("confirmed", "drawer", 2))
         self.assertEqual(len(self.notes()), 1)
 
-    def test_cap_prunes_least_used_oldest(self) -> None:
+    def test_cap_drops_fewest_uses_then_oldest(self) -> None:
         with mock.patch.dict(experience.NOTE_CAPS, {"preference": 3}):
             for i in range(3):
                 experience.note("preference", f"p{i}", f"偏好 {i}")
-            experience.note("preference", "p1", "偏好 1 再确认")
-            experience.note("preference", "p2", "偏好 2 再确认")
-            doc = experience.load(experience.NOTES, "notes")
-            doc["notes"][0]["last_confirmed"] = "2020-01-01"
-            experience.save(experience.NOTES, doc)
+            doc = experience.load_notes(experience.NOTES)
+            for n in doc["notes"]:
+                n["last_confirmed"] = {"p0": "2026-01-02", "p1": "2026-01-01", "p2": "2026-01-03"}[n["key"]]
+            doc["notes"][2]["uses"] = 5
+            experience.save_notes(experience.NOTES, doc)
             experience.note("preference", "p3", "偏好 3")
             keys = sorted(n["key"] for n in self.notes())
-        self.assertEqual(keys, ["p1", "p2", "p3"])
+        self.assertEqual(keys, ["p0", "p2", "p3"])
 
-    def test_check_finds_duplicates_near_duplicates_overflow_and_private_data(self) -> None:
+    def test_check_finds_duplicates_overflow_bad_shape_and_private_data(self) -> None:
         base = {"kind": "fact", "first_seen": "2026-01-01", "last_confirmed": "2026-01-01", "uses": 1}
-        notes = [{**base, "key": "a", "text": "一条事实"}, {**base, "key": "a", "text": "另一条"},
-                 {**base, "key": "b", "text": "一条 事实！"}, {**base, "key": "c", "text": "电话 13812345678"}]
-        errors = "\n".join(experience.check_notes(notes))
+        doc = {**experience.new_notes_doc(), "notes": [
+            {**base, "key": "a", "text": "一条事实"}, {**base, "key": "a", "text": "另一条"},
+            {**base, "key": "b", "text": "一条 事实！"}, {**base, "key": "c", "text": "电话 13812345678"},
+            {**base, "key": "d", "text": "路径", "id": "X-1", "created": "2026-01-01T00:00:00"}]}
+        errors = "\n".join(experience.check_notes(doc))
         self.assertIn("duplicate note key a", errors)
-        self.assertIn("near-duplicates", errors)
-        self.assertIn("mobile number", errors)
+        self.assertIn("repeats the statement of a", errors)
+        self.assertIn("phone number", errors)
+        self.assertIn("unknown fields created, id", errors)
         with mock.patch.dict(experience.NOTE_CAPS, {"fact": 2}):
-            self.assertTrue(any("exceed the cap" in e for e in experience.check_notes(notes)))
+            self.assertTrue(any("exceed the cap" in e for e in experience.check_notes(doc)))
 
     def test_note_refuses_private_data(self) -> None:
-        with self.assertRaises(SystemExit):
-            experience.note("fact", "contact", "联系人微信号: abc_12345")
+        for text in ("联系人微信号: abc_12345", "发到 someone@example.com", r"方案在 C:\Users\me\plan.html", "token: abc123"):
+            with self.assertRaises(SystemExit, msg=text):
+                experience.note("fact", "contact", text)
         self.assertEqual(self.notes(), [])
+
+
+class SharedNotesSpecTest(unittest.TestCase):
+    """experience/notes.json has the shape shared by Luz-System, Luz-Design, Luz-Dev and Luz-Writing."""
+
+    def test_committed_notes_file_matches_shared_spec(self) -> None:
+        path = Path(__file__).resolve().parents[1] / "experience" / "notes.json"
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(list(doc), ["schema_version", "caps", "notes"])
+        self.assertEqual(doc["schema_version"], "1.0")
+        self.assertEqual(doc["caps"], {"preference": 60, "lesson": 120, "fact": 120})
+        allowed = {"key", "kind", "text", "why", "uses", "first_seen", "last_confirmed", "previous"}
+        for n in doc["notes"]:
+            self.assertLessEqual({"key", "kind", "text", "uses", "first_seen", "last_confirmed"}, set(n), n.get("key"))
+            self.assertLessEqual(set(n), allowed, n.get("key"))
+            self.assertIn(n["kind"], ("preference", "lesson", "fact"))
+            self.assertRegex(n["first_seen"], r"^\d{4}-\d{2}-\d{2}$")
+            self.assertRegex(n["last_confirmed"], r"^\d{4}-\d{2}-\d{2}$")
+            if "previous" in n:
+                self.assertEqual(set(n["previous"]), {"text", "replaced_at"})
+        self.assertEqual(len({n["key"] for n in doc["notes"]}), len(doc["notes"]))
+        self.assertEqual(experience.check_notes(doc), [])
+        self.assertFalse((path.parent / "preferences.json").exists() or (path.parent / "lessons.json").exists()
+                         or (path.parent / "experience.json").exists())
 
 
 class HardwareMergeTest(unittest.TestCase):

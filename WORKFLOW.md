@@ -10,10 +10,10 @@ Read `experience/catalog.md` and search it with `scripts/experience.py search`; 
 
 Every call, including short questions and fixes that create no session:
 
-1. At the start, run `py -X utf8 scripts/experience.py search --text "<关键词>"` and apply the matching preferences, lessons and facts.
+1. At the start, run `py -X utf8 scripts/experience.py search <关键词> [--kind preference|lesson|fact]` and apply the matching preferences, lessons and facts.
 2. Before finishing, record what was learned with `py -X utf8 scripts/experience.py note --kind preference|lesson|fact --key <主题> --text "<一句话原则>" [--why "<依据>"]`: preferences the user stated or corrected, routes, sources or parameters that worked or failed, and rule corrections. Write the general principle, not task details.
-3. One key per topic: a note on an existing key replaces its text (one `previous` is kept for audit), never adds a second entry. Caps are 60 preferences, 120 lessons and 120 facts; `experience.py prune` removes the oldest, least-used entries and `experience.py check` fails on duplicate keys, near-duplicate texts and overflow. Hardware products merge by brand and model, keep the latest 5 price samples, and queries merge by platform and text.
-4. No personal names, phone numbers, WeChat IDs, client or company names, private paths or credentials in notes; personal contacts stay in the git-ignored `experience/hardware/contacts.local.json`.
+3. The store is `experience/notes.json` (same shape in all four Luz skills; see SKILL.md). One key per topic: a note on an existing key replaces its text (one `previous` kept), the same statement under another key only confirms that note. Caps are 60 preferences, 120 lessons and 120 facts; `prune` drops the fewest uses, then the oldest confirmation, and lists notes unconfirmed for 180 days; `check` fails on duplicate keys or statements, missing fields, overflow and private data. Hardware products merge by brand and model, keep the latest 5 price samples, and queries merge by platform and text.
+4. No phone numbers, emails, WeChat IDs, user-home paths, credentials, personal or client names in notes; personal contacts stay in the git-ignored `experience/hardware/contacts.local.json`.
 
 ## 1 Requirement ledger
 

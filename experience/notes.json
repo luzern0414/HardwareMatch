@@ -1,198 +1,221 @@
 {
   "schema_version": "1.0",
+  "caps": {
+    "preference": 60,
+    "lesson": 120,
+    "fact": 120
+  },
   "notes": [
     {
-      "key": "扁平线性风格",
+      "key": "admin-density-14px",
       "kind": "preference",
-      "text": "界面用扁平线性风格：纯色或白底线稿，不用立体、渐变、纹理与发光",
-      "why": "用户多次纠正",
+      "text": "后台正文与表格 14 像素、行高 22，辅助说明 12 像素只给时间、单位等次要信息；表格行高 44–48，1440×900 首屏至少 10 行，统计卡不高于 112",
+      "why": "用户 2026-10-28 反馈字太小、留白多、密度低；参考 Ant Design、TDesign、Carbon",
+      "uses": 1,
       "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "后台浅底",
-      "kind": "preference",
-      "text": "管理后台底色用极浅灰或白，卡片白底，层次靠留白与细线而不是深色块",
-      "why": "用户偏好",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "单一字体栈",
-      "kind": "preference",
-      "text": "一个产出只用一条字体栈，界面文字不小于 12 像素（网站与阅读页 14），禁用斜体",
-      "why": "用户偏好",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "一物一图",
-      "kind": "preference",
-      "text": "不同对象不共用同一个图标，同一对象在全系统用同一个图标；菜单与功能按钮配线性图标",
-      "why": "用户纠正",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "默认头像",
-      "kind": "preference",
-      "text": "无照片时用按用户标识固定的卡通动物，未登录或系统用户用线性图标；严禁首字母、姓氏等文字头像",
-      "why": "用户纠正",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "居中悬浮面板",
-      "kind": "preference",
-      "text": "详情、编辑、确认用居中悬浮面板，不用贴右侧的抽屉，视觉重心在中间",
-      "why": "用户纠正",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "驾驶舱按价值排序",
-      "kind": "preference",
-      "text": "数据驾驶舱按价值排序：经营结果、增长、活跃在前，效率与风险其次，退款等负向数据和长期变化小的指标放最后",
-      "why": "用户纠正",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "一个入口",
-      "kind": "preference",
-      "text": "同一页面通向同一目的地只放一个入口；功能分核心、信息、营销、辅助四层；同一事实在卡片与页面内只说一次",
-      "why": "用户纠正",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "配置闭环",
-      "kind": "preference",
-      "text": "小程序展示的所有运营内容（横幅、套餐、公告、活动等）都要在后台完整增删改排序，不写死，数据只存一份",
-      "why": "用户要求",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "表格居中",
-      "kind": "preference",
-      "text": "表格对齐与缩进：表头居中；单元格左右内边距不小于 16 像素；长文本左对齐并收紧列宽落在表头下方；状态、日期、负责人、操作等短值居中；金额右对齐、等宽数字、单位写在表头",
-      "why": "用户 2026-10-28 纠正，替换原“表头与数据全部居中”",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 2,
-      "previous": {
-        "text": "表头与数字、金额、状态、日期等短数据居中，只有会换行的长文本左对齐；组合单元格居中后左对齐",
-        "replaced_at": "2026-10-28"
-      }
-    },
-    {
-      "key": "低操作成本",
-      "kind": "preference",
-      "text": "降低操作成本：行内开关、即输即查、表头筛选；只有影响用户、金额或不可撤销的修改才确认",
-      "why": "用户偏好",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "卡片等高",
-      "kind": "preference",
-      "text": "同一行卡片等高，内容填满或垂直居中，不留大块底部空白；指标名大于图标",
-      "why": "用户纠正",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "规范页技术记号",
-      "kind": "lesson",
-      "text": "规范页正文用中文，99+、Esc、YYYY-MM-DD 等技术记号放进 code 或 kbd 元素；“不要字母”指的是不用文字头像，不是页面里禁止一切拉丁字母",
-      "why": "用户澄清，validate_skill.py 已改为只放行 code 与 kbd",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "default-view-important-first",
-      "kind": "preference",
-      "text": "每个列表写明默认视图并先显示最需要处理或最有价值的子集（订单已支付、线索待跟进、工单待处理、会员有效、评价待回复），“全部”作可选项；状态标签按处理顺序排列，0 数量弱化，终态排后",
-      "why": "用户 2026-10-28 要求，商机雷达后台实测",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "no-title-repeat-nav",
-      "kind": "preference",
-      "text": "页面顶部不放与导航高亮项同名的标题，顶部留给操作与筛选；导航分组不与唯一子项同名；卡片不复述页面标题与时间范围",
-      "why": "用户 2026-10-28 要求",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
-    },
-    {
-      "key": "drop-empty-columns",
-      "kind": "preference",
-      "text": "当前数据下整列为空的列默认隐藏到列设置，每行相同的列改为在筛选摘要写一次，不放“—”占位副标题；没有信息量的元素删除或收起",
-      "why": "用户 2026-10-28 要求",
-      "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
+      "last_confirmed": "2026-10-28"
     },
     {
       "key": "dashboard-computed-metrics",
       "kind": "preference",
       "text": "驾驶舱先分运营型与分析型，指标给计算后的变化、比率、排名与异常，长期为 0 的指标合并为一行状态，数据少于 3 个点不画折线、1 类不画环图，卡片时间范围服从页面",
       "why": "用户 2026-10-28 要求",
+      "uses": 1,
       "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "default-view-important-first",
+      "kind": "preference",
+      "text": "每个列表写明默认视图并先显示最需要处理或最有价值的子集（订单已支付、线索待跟进、工单待处理、会员有效、评价待回复），“全部”作可选项；状态标签按处理顺序排列，0 数量弱化，终态排后",
+      "why": "用户 2026-10-28 要求，商机雷达后台实测",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "drop-empty-columns",
+      "kind": "preference",
+      "text": "当前数据下整列为空的列默认隐藏到列设置，每行相同的列改为在筛选摘要写一次，不放“—”占位副标题；没有信息量的元素删除或收起",
+      "why": "用户 2026-10-28 要求",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
     },
     {
       "key": "export-cleaned-chinese",
       "kind": "preference",
       "text": "导出的是清洗归类后的中文数据：中文业务表头、枚举翻译、统一日期与金额格式、去掉内部编号与空列，范围等于当前筛选，文件名写中文标题与范围，版式按表格文件规范",
       "why": "用户 2026-10-28 要求",
+      "uses": 1,
       "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
+      "last_confirmed": "2026-10-28"
     },
     {
-      "key": "admin-density-14px",
+      "key": "no-title-repeat-nav",
       "kind": "preference",
-      "text": "后台正文与表格 14 像素、行高 22，辅助说明 12 像素只给时间、单位等次要信息；表格行高 44–48，1440×900 首屏至少 10 行，统计卡不高于 112",
-      "why": "用户 2026-10-28 反馈字太小、留白多、密度低；参考 Ant Design、TDesign、Carbon",
+      "text": "页面顶部不放与导航高亮项同名的标题，顶部留给操作与筛选；导航分组不与唯一子项同名；卡片不复述页面标题与时间范围",
+      "why": "用户 2026-10-28 要求",
+      "uses": 1,
       "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
+      "last_confirmed": "2026-10-28"
     },
     {
       "key": "research-component-libraries",
       "kind": "preference",
       "text": "设计后台、小程序、网站界面前用 Luz-Crawl 查开源与大厂组件库（Ant Design、TDesign、Arco、Semi、Element Plus、Vant、NutUI、Carbon、Polaris、NN/g 等）的规范页与组件页，写明参考了哪家的哪个组件",
       "why": "用户 2026-10-28 要求",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "一个入口",
+      "kind": "preference",
+      "text": "同一页面通向同一目的地只放一个入口；功能分核心、信息、营销、辅助四层；同一事实在卡片与页面内只说一次",
+      "why": "用户纠正",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "一物一图",
+      "kind": "preference",
+      "text": "不同对象不共用同一个图标，同一对象在全系统用同一个图标；菜单与功能按钮配线性图标",
+      "why": "用户纠正",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "低操作成本",
+      "kind": "preference",
+      "text": "降低操作成本：行内开关、即输即查、表头筛选；只有影响用户、金额或不可撤销的修改才确认",
+      "why": "用户偏好",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "单一字体栈",
+      "kind": "preference",
+      "text": "一个产出只用一条字体栈，界面文字不小于 12 像素（网站与阅读页 14），禁用斜体",
+      "why": "用户偏好",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "卡片等高",
+      "kind": "preference",
+      "text": "同一行卡片等高，内容填满或垂直居中，不留大块底部空白；指标名大于图标",
+      "why": "用户纠正",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "后台浅底",
+      "kind": "preference",
+      "text": "管理后台底色用极浅灰或白，卡片白底，层次靠留白与细线而不是深色块",
+      "why": "用户偏好",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "居中悬浮面板",
+      "kind": "preference",
+      "text": "详情、编辑、确认用居中悬浮面板，不用贴右侧的抽屉，视觉重心在中间",
+      "why": "用户纠正",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "扁平线性风格",
+      "kind": "preference",
+      "text": "界面用扁平线性风格：纯色或白底线稿，不用立体、渐变、纹理与发光",
+      "why": "用户多次纠正",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "表格居中",
+      "kind": "preference",
+      "text": "表格对齐与缩进：表头居中；单元格左右内边距不小于 16 像素；长文本左对齐并收紧列宽落在表头下方；状态、日期、负责人、操作等短值居中；金额右对齐、等宽数字、单位写在表头",
+      "why": "用户 2026-10-28 纠正，替换原“表头与数据全部居中”",
+      "uses": 2,
       "first_seen": "2026-10-28",
       "last_confirmed": "2026-10-28",
-      "uses": 1
+      "previous": {
+        "text": "表头与数字、金额、状态、日期等短数据居中，只有会换行的长文本左对齐；组合单元格居中后左对齐",
+        "replaced_at": "2026-10-28"
+      }
+    },
+    {
+      "key": "配置闭环",
+      "kind": "preference",
+      "text": "小程序展示的所有运营内容（横幅、套餐、公告、活动等）都要在后台完整增删改排序，不写死，数据只存一份",
+      "why": "用户要求",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "驾驶舱按价值排序",
+      "kind": "preference",
+      "text": "数据驾驶舱按价值排序：经营结果、增长、活跃在前，效率与风险其次，退款等负向数据和长期变化小的指标放最后",
+      "why": "用户纠正",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "默认头像",
+      "kind": "preference",
+      "text": "无照片时用按用户标识固定的卡通动物，未登录或系统用户用线性图标；严禁首字母、姓氏等文字头像",
+      "why": "用户纠正",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "arch-html-inline-style",
+      "kind": "lesson",
+      "text": "架构等审阅页不要写内联 style：校验器把多个内联样式拼接后按 font 声明检查，会把 margin、padding 误判为字号；数据字段名避开 更新时间、生成时间、SHA-256、示例数据 等被 check_document 拦截的元数据词",
+      "why": "008 会话架构页首次校验失败",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "reuse-knowledge-only-sources",
+      "kind": "lesson",
+      "text": "experience.py reuse 遇到只有 Luz-Crawl 原始路径、没有会话快照的来源（如 SRC-078/079/106）会中断整批，复用前先确认 snapshot 带 session 字段，并分小批复用",
+      "why": "008 会话复用时 KeyError session",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "规范页技术记号",
+      "kind": "lesson",
+      "text": "规范页正文用中文，99+、Esc、YYYY-MM-DD 等技术记号放进 code 或 kbd 元素；“不要字母”指的是不用文字头像，不是页面里禁止一切拉丁字母",
+      "why": "用户澄清，validate_skill.py 已改为只放行 code 与 kbd",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
     },
     {
       "key": "component-library-reference",
       "kind": "fact",
       "text": "组件库参考清单在 references/ui-standards.html“参考组件库”；2026-10-28 已采集 Ant Design 字体与数据格式、Arco、TDesign 字体与表格、Semi、Element Plus、Carbon、Polaris、Atlassian 表格及 NN/g 数据表格、驾驶舱、筛选共 16 页（LuzCrawl 批次 batch-f38ef88f）",
       "why": "Luz-Crawl 调研 009",
+      "uses": 1,
       "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28",
-      "uses": 1
+      "last_confirmed": "2026-10-28"
     }
   ]
 }
