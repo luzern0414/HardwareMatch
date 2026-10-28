@@ -1404,6 +1404,111 @@ def prototype_ui_findings(root: Node) -> tuple[list[str], list[str]]:
     return list(dict.fromkeys(errors)), list(dict.fromkeys(warnings))
 
 
+# List pagination (admin-design.html 分页), the browser-tab icon and the header brand mark (ui-standards.html 页头;
+# Luz-Design visual-design.html 网页图标与品牌标识). The same checks run in Luz-Design check_document.py --allow interface.
+PAGER_CLASS_RE = re.compile(r"pagination|pager", re.I)
+LIST_CLASS_RE = re.compile(r"list|table", re.I)
+PAGE_SIZE_TEXT_RE = re.compile(r"(\d+)\s*条\s*/\s*页")
+TOTAL_TEXT_RE = re.compile(r"共\s*[\d,]+\s*条")
+SKIP_TABLE_RE = re.compile(r"skeleton|loading|export|modal|dialog|detail|popover|tooltip|legend", re.I)
+SHELL_CLASS_RE = re.compile(r"(?:^|[-_\s])(?:header|topbar|top-bar|navbar|nav-bar|appbar|app-bar|masthead|sidebar|side-bar|"
+                            r"site-head|site-header|admin|console)(?:$|[-_\s])", re.I)
+PHONE_CLASS_RE = re.compile(r"(?:^|[-_\s])(?:mp|phone|mobile|miniprogram|mini-program|wx|device|screen-phone)(?:$|[-_\s])", re.I)
+BRAND_CLASS_RE = re.compile(r"logo|brand", re.I)
+ICON_DRAWING_RE = re.compile(r"<(?:path|rect|circle|line|polyline|polygon|ellipse)\b", re.I)
+DEFAULT_PAGE_SIZE = 20
+
+
+def tab_icon_errors(root: Node, label: str) -> list[str]:
+    """Every delivered HTML carries an inline browser-tab icon; missing, empty or an unfilled placeholder is an error."""
+    from base64 import b64decode
+    from urllib.parse import unquote
+    hint = ('add <link rel="icon" href="data:image/svg+xml,..."> (py -X utf8 scripts/new_session.py icon <system name>; '
+            "Luz-Design visual-design.html 网页图标与品牌标识)")
+    links = [n.get("href").strip() for n in iter_nodes(root) if n.tag == "link" and "icon" in n.get("rel").lower()]
+    if not links:
+        return [f"{label} has no browser-tab icon: {hint}"]
+    for href in links:
+        if not href or href in {"#", "about:blank"} or "{{" in href or re.fullmatch(r"data:[^,]*,\s*", href, re.I):
+            continue
+        if href.lower().startswith("data:") and "svg" in href.split(",", 1)[0].lower():
+            meta, payload = href[5:].split(",", 1)
+            try:
+                svg = b64decode(payload).decode("utf-8", "replace") if ";base64" in meta.lower() else unquote(payload)
+            except ValueError:
+                svg = ""
+            if not ICON_DRAWING_RE.search(svg):
+                continue
+        return []
+    return [f"{label} browser-tab icon is empty or an unfilled placeholder: {hint}"]
+
+
+def _default_page_size(scope: Node) -> int | None:
+    for node in [scope, *iter_nodes(scope)]:
+        for attr in ("data-page-size", "data-default-size", "data-size"):
+            if node.get(attr).strip().isdigit():
+                return int(node.get(attr).strip())
+    for select in (n for n in iter_nodes(scope) if n.tag == "select"):
+        options = [o for o in iter_nodes(select) if o.tag == "option"]
+        sized = [o for o in options if PAGE_SIZE_TEXT_RE.search(text_content(o)) or o.get("value").strip() in {"10", "20", "50", "100"}]
+        if not sized:
+            continue
+        chosen = next((o for o in sized if "selected" in o.attrs), sized[0])
+        if chosen.get("value").strip().isdigit():
+            return int(chosen.get("value").strip())
+        match = PAGE_SIZE_TEXT_RE.search(text_content(chosen))
+        if match:
+            return int(match.group(1))
+    match = PAGE_SIZE_TEXT_RE.search(text_content(scope))
+    return int(match.group(1)) if match else None
+
+
+def prototype_list_brand_findings(root: Node) -> list[str]:
+    """Warnings: a list table without pagination, a default page size other than 20, an admin or website header without a
+    graphic brand mark. Only the static DOM is seen; a list that can never exceed one page carries data-pagination="none"."""
+    warnings: list[str] = []
+    body = first(root, "body") or root
+    nodes = [n for n in iter_nodes(body) if not any(a.tag in {"template", "script"} for a in ancestors(n))]
+
+    def chain(node: Node) -> list[Node]:
+        return [node, *ancestors(node)]
+
+    def data_rows(table: Node) -> int:
+        return sum(1 for tr in iter_nodes(table) if tr.tag == "tr"
+                   and next((a for a in ancestors(tr) if a.tag == "table"), None) is table
+                   and not any(a.tag == "thead" for a in ancestors(tr))
+                   and any(isinstance(c, Node) and c.tag == "td" for c in tr.children))
+
+    lists = []
+    for table in (n for n in nodes if n.tag == "table"):
+        if any(a.get("data-pagination").lower() in {"none", "off", "false"} or "data-state-kind" in a.attrs
+               or "data-export-preview" in a.attrs or "hidden" in a.attrs or SKIP_TABLE_RE.search(_classes(a)) for a in chain(table)):
+            continue
+        parent_class = _classes(table.parent) if table.parent is not None else ""
+        if LIST_CLASS_RE.search(_classes(table)) or LIST_CLASS_RE.search(parent_class) or data_rows(table) >= 10:
+            lists.append(table)
+    pagers = [n for n in nodes if PAGER_CLASS_RE.search(_classes(n))]
+    page_text = text_content(body)
+    text_pager = bool(TOTAL_TEXT_RE.search(page_text) and PAGE_SIZE_TEXT_RE.search(page_text))
+    if lists and not pagers and not text_pager:
+        sample = _classes(lists[0]) or (_classes(lists[0].parent) if lists[0].parent is not None else "")
+        warnings.append(f"interactive-prototype list table without pagination ({len(lists)} list table(s)"
+                        f"{', e.g. class ' + repr(sample) if sample else ''}): add 共 N 条, a 10/20/50/100 条/页 selector and page "
+                        'numbers below the table, default 20; mark a list that can never exceed one page with data-pagination="none"')
+    sizes = {_default_page_size(p) for p in pagers} if pagers else ({_default_page_size(body)} if text_pager else set())
+    for size in sorted(s for s in sizes if s is not None and s != DEFAULT_PAGE_SIZE):
+        warnings.append(f"interactive-prototype pagination defaults to {size} 条/页: default to {DEFAULT_PAGE_SIZE} "
+                        "(options 10/20/50/100) and remember the user's choice")
+    shells = [n for n in nodes if (n.tag in {"header", "aside"} or SHELL_CLASS_RE.search(_classes(n)))
+              and not any(PHONE_CLASS_RE.search(_classes(a)) for a in chain(n))]
+    if shells:
+        holders = [n for n in nodes if n.tag == "header" or BRAND_CLASS_RE.search(_classes(n))]
+        if not any(h.tag in {"svg", "img"} or any(d.tag in {"svg", "img"} for d in iter_nodes(h)) for h in holders):
+            warnings.append("interactive-prototype admin or website header without a graphic brand mark: put the tab-icon "
+                            "pictogram (svg or img) beside the system name in a header, logo or brand element, never a letter tile")
+    return warnings
+
+
 def validate_prototype(
     session: Path,
     modules: list[str],
@@ -1460,6 +1565,7 @@ def validate_prototype(
     errors.extend(ui_errors)
     if warnings is not None:
         warnings.extend(ui_warnings)
+        warnings.extend(prototype_list_brand_findings(root))
 
 def validate(
     session: Path,
@@ -1520,6 +1626,9 @@ def validate(
                 errors.append(f"{final.name} differs from its published hash; republish it with scripts/publish.py")
             elif not source.is_file() or sha256_file(source) != actual:
                 errors.append(f"{final.name} no longer matches its source {record.get('source')}; republish it")
+            final_root = parse_html(final, errors)
+            if final_root is not None:
+                errors.extend(tab_icon_errors(final_root, final.name))
         elif record:
             errors.append(f"MANIFEST.json records a final HTML but {final.name} is missing")
         expected_title = folder.name.split("-", 1)[1] if "-" in folder.name else ""

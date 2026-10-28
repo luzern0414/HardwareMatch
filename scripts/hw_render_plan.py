@@ -17,6 +17,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hw_plan_lib as pl  # noqa: E402
+from new_session import pick_icon, tab_icon_href  # noqa: E402
 
 E = lambda s: html.escape(str(s if s is not None else ""), quote=True)  # noqa: E731
 
@@ -566,7 +567,10 @@ def render(plan: dict) -> str:
     if apx:
         out.append('<section id="appendix"><h2>附录</h2>' + "".join(apx) + "</section>")
 
-    return PAGE.format(title=E(plan["title"]), body="".join(out), **ACCENT)
+    # Tab icon: the system's pictogram in its theme colour; a hardware plan with no subject keyword gets the chip.
+    pictogram = pick_icon(plan["title"])
+    tab_icon = tab_icon_href(plan["title"], icon="chip" if pictogram == "grid" else pictogram)
+    return PAGE.format(title=E(plan["title"]), tab_icon=E(tab_icon), body="".join(out), **ACCENT)
 
 
 PAGE = """<!doctype html>
@@ -575,6 +579,7 @@ PAGE = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
+<link rel="icon" href="{tab_icon}">
 <style>
 :root{{color-scheme:light;--ink:#1F1F1F;--muted:#595959;--line:#E8E8E8;--line2:#D9D9D9;--soft:#FAFAFA;--brand:{brand};--tint:{tint};--bl:{line}}}
 *{{box-sizing:border-box}}

@@ -14,7 +14,7 @@ SCRIPTS = ROOT / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
 from add_mode import add_mode
-from new_session import read_template, create_session
+from new_session import read_template, create_session, fill_icon_slots
 from validate_session import parse_html, validate, validate_html_top_contract
 from validate_skill import validate_rule_page
 
@@ -121,7 +121,7 @@ def write_research(session: Path, *, omit_tasks: bool = False) -> None:
 
 def write_architecture(session: Path) -> None:
     text = read_template(ROOT, "system-architecture.html")
-    text = text.replace("{{SYSTEM_NAME}}", SYSTEM_NAME).replace("{{MODULE}}", MODULES[0])
+    text = fill_icon_slots(text, SYSTEM_NAME).replace("{{SYSTEM_NAME}}", SYSTEM_NAME).replace("{{MODULE}}", MODULES[0])
     extras = []
     for index, (req, module) in enumerate(zip(REQUIREMENTS[1:], MODULES[1:]), 2):
         extras.append(f'<div class="node" data-function-id="F-{index:03d}" data-module="{module}" data-source="用户要求" data-req-ids="{req}">{module}功能</div>')
@@ -139,7 +139,7 @@ def write_system_design(session: Path) -> None:
 <div class="module-grid"><article class="metric" data-module="{module}"><strong>—</strong></article></div>
 </section>''')
     template = read_template(ROOT, "system-design.html")
-    body = template.replace("{{SYSTEM_NAME}}", SYSTEM_NAME).replace("{{MODULE_SECTIONS}}", "\n".join(sections))
+    body = fill_icon_slots(template, SYSTEM_NAME).replace("{{SYSTEM_NAME}}", SYSTEM_NAME).replace("{{MODULE_SECTIONS}}", "\n".join(sections))
     body = body.replace("<main>", '<main data-artifact="system-design">', 1)
     (session / "raw" / "01-system" / "04-system-design.html").write_text(body, encoding="utf-8")
 

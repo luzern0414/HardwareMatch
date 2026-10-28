@@ -15,6 +15,7 @@ from validate_session import (
     VISUAL_PATH,
     final_html,
     sha256_file,
+    tab_icon_errors,
     validate_light_html,
     work_dir,
 )
@@ -37,7 +38,10 @@ def publish(folder: Path, stage: str) -> Path:
         raise FileNotFoundError(f"missing stage artifact: raw/{STAGE_PATHS[stage]}")
     errors: list[str] = []
     # Prototypes render real interfaces with a 12px floor (Luz-Design visual-design.html 字体与字号); reading pages keep 14px.
-    validate_light_html(source, errors, min_px=12.0 if stage == "prototype" else 14.0)
+    root = validate_light_html(source, errors, min_px=12.0 if stage == "prototype" else 14.0)
+    # Every published page carries its own browser-tab icon (Luz-Design visual-design.html 网页图标与品牌标识).
+    if root is not None:
+        errors.extend(tab_icon_errors(root, source.name))
     if errors:
         raise ValueError("stage artifact fails the HTML contract: " + "; ".join(errors))
     for item in folder.iterdir():

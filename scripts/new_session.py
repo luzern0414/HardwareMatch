@@ -35,6 +35,79 @@ HW_REQUIREMENTS = """# 硬件需求
 POSTER_TASK_RE = re.compile(r"海报|poster", re.I)
 SESSION_KINDS = ("general", "system")
 
+# Tab icon and brand mark (Luz-Design references/visual-design.html 网页图标与品牌标识; ui-standards.html 页头):
+# one flat line pictogram of the system's subject, primary-colour strokes on a rounded square in the theme's lightest
+# tint, 32×32, at most three shapes, no text. The same icon is the browser-tab icon of every page and the header brand mark.
+TAB_ICONS = {
+    "dumbbell": '<path d="M9 11v10M23 11v10M6 14v4M26 14v4M9 16h14"/>',
+    "megaphone": '<path d="M8 13v6h4l8 5V8l-8 5z"/><path d="M24 13a4 4 0 0 1 0 6"/>',
+    "radar": '<circle cx="16" cy="16" r="8.5"/><path d="M16 16l5.5-5.5M16 11.5a4.5 4.5 0 1 0 4.5 4.5"/>',
+    "chip": '<rect x="10" y="10" width="12" height="12" rx="2"/><path d="M13.5 7v3M18.5 7v3M13.5 22v3M18.5 22v3M7 13.5h3M7 18.5h3M22 13.5h3M22 18.5h3"/>',
+    "ledger": '<rect x="9" y="7" width="14" height="18" rx="2"/><path d="M13 12h6M13 16h6M13 20h3"/>',
+    "store": '<path d="M7.5 13l2-5h13l2 5zM9 13v11h14V13"/><path d="M14 24v-5h4v5"/>',
+    "grid": '<path d="M9 9h5v5H9zM18 9h5v5h-5zM9 18h5v5H9zM18 18h5v5h-5z"/>',
+}
+# First match wins; the system name is matched case-insensitively.
+ICON_KEYWORDS = (
+    (("健身", "gym", "运动馆", "健身房"), "dumbbell"),
+    (("采购", "招标", "投标", "公告"), "megaphone"),
+    (("获客", "线索", "商机", "雷达"), "radar"),
+    (("硬件", "芯片", "物联", "设备"), "chip"),
+    (("财务", "账本", "账务", "记账", "会计", "发票"), "ledger"),
+    (("门店", "零售", "店铺", "商城"), "store"),
+)
+THEME_KEYWORDS = ((("健身", "gym", "运动馆"), "fitness-gym"),)
+THEMES_JSON = SKILL_ROOT.parent / "Luz-Design" / "references" / "themes.json"
+# Ant Design blue-7 on blue-1: the neutral fallback when no industry theme matches.
+FALLBACK_COLORS = ("#0958D9", "#E6F4FF")
+
+
+def pick_icon(subject: str) -> str:
+    lowered = subject.casefold()
+    return next((icon for words, icon in ICON_KEYWORDS if any(w in lowered for w in words)), "grid")
+
+
+def theme_colors(subject: str, theme: str | None = None, themes_json: Path = THEMES_JSON) -> tuple[str, str]:
+    """(primary, lightest tint) of the theme named or matched from the subject; neutral blue when none matches."""
+    try:
+        themes = json.loads(themes_json.read_text(encoding="utf-8")).get("themes", {})
+    except (OSError, ValueError):
+        return FALLBACK_COLORS
+    lowered = subject.casefold()
+    key = theme or next((k for words, k in THEME_KEYWORDS if any(w in lowered for w in words)), None)
+    if key is None:
+        for name, data in themes.items():
+            tokens = re.split(r"[\s/、，,]+", f"{data.get('label', '')}、{data.get('subtype', '')}")
+            if any(len(t) >= 2 and t.casefold() in lowered for t in tokens):
+                key = name
+                break
+    data = themes.get(key or "", {})
+    if data.get("action") and data.get("actionTint"):
+        return data["action"], data["actionTint"]
+    return FALLBACK_COLORS
+
+
+def tab_icon_svg(subject: str, *, icon: str | None = None, theme: str | None = None, attrs: str = "") -> str:
+    primary, tint = theme_colors(subject, theme)
+    shapes = TAB_ICONS[icon or pick_icon(subject)]
+    head = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"{attrs}>'
+    return (head + f'<rect width="32" height="32" rx="8" fill="{tint}"/>'
+            f'<g fill="none" stroke="{primary}" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round">{shapes}</g></svg>')
+
+
+def tab_icon_href(subject: str, **options) -> str:
+    from urllib.parse import quote
+    return "data:image/svg+xml," + quote(tab_icon_svg(subject, **options).replace('"', "'"), safe=" =:/,;'.-")
+
+
+def brand_mark_svg(subject: str, **options) -> str:
+    return tab_icon_svg(subject, attrs=' class="brand-mark" width="28" height="28" aria-hidden="true" focusable="false"', **options)
+
+
+def fill_icon_slots(text: str, subject: str, **options) -> str:
+    """Fill {{TAB_ICON}} (the href of <link rel="icon">) and {{BRAND_MARK}} (the inline header mark) in a template."""
+    return text.replace("{{TAB_ICON}}", tab_icon_href(subject, **options)).replace("{{BRAND_MARK}}", brand_mark_svg(subject, **options))
+
 _ICONS = [
     '<path d="M12 3l8 4v10l-8 4-8-4V7l8-4z"/><path d="M8 12h8M12 8v8"/>',
     '<path d="M6 3h12v18H6z"/><path d="M9 8h6M9 12h6M9 16h4"/>',
@@ -121,7 +194,17 @@ def module_items(modules: list[str]) -> str:
 def render_module_intake(skill_root: Path, system_name: str, modules: list[str]) -> str:
     text = read_template(skill_root, "module-intake.html")
     safe_system = html.escape(system_name)
+    text = fill_icon_slots(text, system_name)
     return text.replace("{{SYSTEM_NAME}}", safe_system).replace("{{MODULE_ITEMS}}", module_items(modules))
+
+
+def session_subject(session: Path) -> str:
+    """The name the tab icon is chosen from: the manifest's system name, else the session title."""
+    try:
+        manifest = json.loads((session / "99-delivery" / "MANIFEST.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        manifest = {}
+    return str(manifest.get("system_name") or manifest.get("title") or session.parent.name.split("-", 1)[-1])
 
 
 def init_mode(skill_root: Path, session: Path, mode: str, *, system_name: str | None = None, modules: list[str] | None = None) -> None:
@@ -149,7 +232,7 @@ def init_mode(skill_root: Path, session: Path, mode: str, *, system_name: str | 
                 page_ids = re.findall(r'data-page-id="(P-\d{3,})"', architecture.read_text(encoding="utf-8"))
                 if page_ids:
                     page_id = page_ids[0]
-        board = board.replace("{{PAGE_ID}}", page_id)
+        board = fill_icon_slots(board.replace("{{PAGE_ID}}", page_id), session_subject(session))
         write_if_missing(base / "visual-board.html", board)
     elif mode == "prototype":
         base = session / "03-prototype"
@@ -165,7 +248,7 @@ def init_mode(skill_root: Path, session: Path, mode: str, *, system_name: str | 
         architecture_hash = hashlib.sha256(architecture.read_bytes()).hexdigest()
         prototype = read_template(skill_root, "interactive-prototype.html")
         manifest = json.loads((session / "99-delivery" / "MANIFEST.json").read_text(encoding="utf-8"))
-        prototype = (prototype
+        prototype = (fill_icon_slots(prototype, session_subject(session))
             .replace("{{SYSTEM_NAME}}", html.escape(str(manifest.get("system_name", "交互原型"))))
             .replace("{{ARCHITECTURE_SHA256}}", architecture_hash)
             .replace("{{ACTION_ID}}", action_ids[0])
@@ -291,8 +374,24 @@ def create_session(
     return folder
 
 
+def print_icon(argv: list[str]) -> int:
+    """`new_session.py icon NAME [--icon KEY] [--theme KEY]`: print the tab-icon link and the header brand mark."""
+    parser = argparse.ArgumentParser(prog="new_session.py icon", description="Print the tab icon and brand mark for a system name.")
+    parser.add_argument("name", help="System name; the pictogram and theme colour are chosen from its keywords")
+    parser.add_argument("--icon", choices=sorted(TAB_ICONS), help="Override the pictogram")
+    parser.add_argument("--theme", help="Override the theme key in Luz-Design references/themes.json")
+    args = parser.parse_args(argv)
+    options = {"icon": args.icon, "theme": args.theme}
+    print(f'<link rel="icon" href="{tab_icon_href(args.name, **options)}">')
+    print(brand_mark_svg(args.name, **options))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Create the next Luz System session folder.")
+    argv = sys.argv[1:] if argv is None else argv
+    if argv[:1] == ["icon"]:
+        return print_icon(argv[1:])
+    parser = argparse.ArgumentParser(description="Create the next Luz System session folder; `icon NAME` prints the tab icon and brand mark.")
     parser.add_argument("--name", required=True, help="Readable session title")
     parser.add_argument("--modes", default="", help="system, hardware (system,hardware for both), or none; visual and prototype are added later with add_mode.py")
     parser.add_argument("--session-kind", choices=SESSION_KINDS, default="general")

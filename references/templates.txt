@@ -98,6 +98,7 @@ Minimum gate: at least 12 unique URLs across 5 registrable domains, with at leas
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{SYSTEM_NAME}}</title>
+  <link rel="icon" href="{{TAB_ICON}}">
   <style>
     :root {
       color-scheme: light;
@@ -172,6 +173,7 @@ Minimum gate: at least 12 unique URLs across 5 registrable domains, with at leas
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{SYSTEM_NAME}}</title>
+<link rel="icon" href="{{TAB_ICON}}">
 <style>
 :root{color-scheme:light;--canvas:#fff;--surface:#f8fafc;--ink:#172033;--muted:#526071;--line:#d9e2eb;--accent:#245b83}
 *{box-sizing:border-box}body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.55 "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif}main{width:min(1180px,calc(100% - 40px));margin:0 auto;padding:44px 0 72px}h1{margin:0 0 28px;font-size:34px}h2{margin:0 0 14px;font-size:23px}h3{margin:20px 0 8px;font-size:18px}section{margin:0 0 22px;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:10px;border:1px solid var(--line);text-align:left}th{background:#eef4f8}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.node{padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff}@media(max-width:720px){main{width:min(100% - 28px,1180px);padding-top:28px}.grid{grid-template-columns:1fr}h1{font-size:28px}}
@@ -203,6 +205,7 @@ Minimum gate: at least 12 unique URLs across 5 registrable domains, with at leas
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{SYSTEM_NAME}}</title>
+  <link rel="icon" href="{{TAB_ICON}}">
   <style>
     :root {
       color-scheme: light;
@@ -281,6 +284,7 @@ Minimum gate: at least 12 unique URLs across 5 registrable domains, with at leas
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>视觉方案总览</title>
+<link rel="icon" href="{{TAB_ICON}}">
 <style>
 :root{color-scheme:light;--canvas:#fff;--surface:#f7f9fc;--line:#d9e2eb;--ink:#172033;--muted:#526071;--accent:#235b8a;--tint:#e8f1f8}
 *{box-sizing:border-box}html,body{background:var(--canvas)}body{margin:0;color:var(--ink);font:16px/1.55 "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif}
@@ -316,19 +320,34 @@ main{width:min(1120px,calc(100% - 40px));margin:0 auto;padding:48px 0 72px}h1{ma
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{SYSTEM_NAME}}</title>
+<link rel="icon" href="{{TAB_ICON}}">
 <style>
 :root{color-scheme:light;--canvas:#f7f9fc;--surface:#fff;--ink:#172033;--muted:#526071;--line:#d9e2eb;--accent:#245b83;--soft:#e8f1f8}
-*{box-sizing:border-box}body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.55 "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif}main{width:min(980px,calc(100% - 40px));margin:0 auto;padding:44px 0}h1{margin:0 0 28px;font-size:34px}h2{margin:0 0 14px;font-size:23px}section{margin:0 0 18px;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}button{min-height:44px;padding:10px 16px;border:0;border-radius:9px;background:var(--accent);color:#fff;font:inherit;cursor:pointer}[disabled]{background:#d5dde5;color:#5b6672;cursor:not-allowed}.view{padding:16px;border:1px solid var(--line);border-radius:10px;background:var(--canvas)}.state{display:inline-block;margin:5px;padding:5px 9px;border:1px solid var(--line);border-radius:99px;background:#fff}@media(max-width:720px){main{width:min(100% - 28px,980px)}h1{font-size:28px}}
+*{box-sizing:border-box}body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.55 "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif}main{width:min(980px,calc(100% - 40px));margin:0 auto;padding:44px 0}h1{margin:0 0 28px;font-size:32px}h2{margin:0 0 14px;font-size:22px}section{margin:0 0 18px;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}button{min-height:44px;padding:10px 16px;border:0;border-radius:9px;background:var(--accent);color:#fff;font:inherit;cursor:pointer}[disabled]{background:#d5dde5;color:#4a5562;cursor:not-allowed}.view{padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--canvas)}.state{display:inline-block;margin:5px;padding:5px 9px;border:1px solid var(--line);border-radius:99px;background:#fff}@media(max-width:720px){main{width:min(100% - 28px,980px)}h1{font-size:28px}}
+.brand{display:flex;align-items:center;gap:12px}.brand-mark{flex:0 0 auto;width:32px;height:32px}section>svg{display:block;width:24px;height:24px;margin-bottom:12px;color:var(--accent)}
+.table-wrap{max-height:520px;margin-top:12px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+.list-table{width:100%;border-collapse:collapse;font-size:14px;line-height:22px}.list-table th,.list-table td{padding:11px 16px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}.list-table td:first-child{text-align:left}.list-table th{position:sticky;top:0;background:var(--soft);font-weight:600}
+.pagination{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px;margin:12px 0 16px;font-size:14px}.pagination button{min-height:32px;min-width:32px;padding:0 8px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font-size:14px}.pagination button[aria-current="page"]{border-color:var(--accent);background:var(--accent);color:#fff;font-weight:600}.pagination button[disabled]{background:#fff;color:#6b7785}.pagination select,.pagination input{height:32px;padding:0 8px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font:inherit}.pg-pages{display:flex;gap:8px}.pg-gap{min-width:32px;text-align:center;color:var(--muted)}.pg-jump input{width:64px;margin:0 6px}
 </style>
 </head>
 <body>
 <main data-artifact="interactive-prototype" data-architecture-sha256="{{ARCHITECTURE_SHA256}}">
-<h1>{{SYSTEM_NAME}}</h1>
+<h1 class="brand">{{BRAND_MARK}}{{SYSTEM_NAME}}</h1>
 <section id="prototype-main">
 <h2>交互原型</h2>
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16M12 4v16"/></svg>
 <nav data-navigation-id="N-001"><a href="#view-1" data-page-id="{{PAGE_ID}}">已批准页面</a></nav>
-<div class="view" id="view-1" data-page-id="{{PAGE_ID}}" data-fixture-id="DEMO-001">模拟数据与页面内容</div>
+<div class="view" id="view-1" data-page-id="{{PAGE_ID}}" data-fixture-id="DEMO-001">
+<div class="table-wrap" id="list-wrap"><table class="list-table" data-page-id="{{PAGE_ID}}"><thead><tr><th>名称</th><th>状态</th><th>负责人</th></tr></thead><tbody id="list-rows"></tbody></table></div>
+<div class="pagination" data-page-size="20" aria-label="分页">
+<span class="pg-total">共 <span id="pg-total">0</span> 条</span>
+<select id="pg-size" aria-label="每页条数"><option value="10">10 条/页</option><option value="20" selected>20 条/页</option><option value="50">50 条/页</option><option value="100">100 条/页</option></select>
+<button type="button" id="pg-prev" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" aria-label="上一页">‹</button>
+<span class="pg-pages" id="pg-pages"></span>
+<button type="button" id="pg-next" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" aria-label="下一页">›</button>
+<label class="pg-jump" id="pg-jump">跳至<input type="number" min="1" id="pg-jump-input" aria-label="页码">页</label>
+</div>
+</div>
 <button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">继续</button>
 <button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" data-state-kind="加载">加载</button>
 <button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" data-state-kind="空">空结果</button>
@@ -337,6 +356,84 @@ main{width:min(1120px,calc(100% - 40px));margin:0 auto;padding:48px 0 72px}h1{ma
 <button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" data-state-kind="禁用" disabled>禁用</button>
 </section>
 </main>
+<script>
+// List pagination (admin-design.html 分页): default 20, 10/20/50/100 条/页, page and page_size kept in the address,
+// the chosen page size remembered on this device, back to page 1 after a size change, more than 7 pages fold into an ellipsis.
+(function () {
+  var SIZES = [10, 20, 50, 100], total = 86, states = ["待处理", "进行中", "已完成"], owners = ["张敏", "李强", "王芳", "赵磊"], data = [];
+  for (var i = 1; i <= total; i++) {
+    data.push(["示例记录 " + String(i).padStart(3, "0"), states[i % 3], owners[i % 4]]);
+  }
+  var rows = document.getElementById("list-rows"), wrap = document.getElementById("list-wrap");
+  var sizeSelect = document.getElementById("pg-size"), pages = document.getElementById("pg-pages");
+  var prev = document.getElementById("pg-prev"), next = document.getElementById("pg-next");
+  var jump = document.getElementById("pg-jump"), jumpInput = document.getElementById("pg-jump-input");
+  var params = new URLSearchParams(location.search), stored = null;
+  try { stored = localStorage.getItem("list_page_size"); } catch (e) {}
+  var size = Number(params.get("page_size") || stored);
+  if (SIZES.indexOf(size) < 0) { size = 20; }
+  var page = Math.max(1, parseInt(params.get("page"), 10) || 1);
+  function count() { return Math.max(1, Math.ceil(total / size)); }
+  function numbers(last) {
+    if (last <= 7) { return Array.from({ length: last }, function (_, k) { return k + 1; }); }
+    var start = Math.max(2, page - 2), end = Math.min(last - 1, page + 2), list = [1];
+    if (page <= 4) { start = 2; end = 5; }
+    if (page >= last - 3) { start = last - 4; end = last - 1; }
+    if (start > 2) { list.push("…"); }
+    for (var n = start; n <= end; n++) { list.push(n); }
+    if (end < last - 1) { list.push("…"); }
+    list.push(last);
+    return list;
+  }
+  function pageButton(n) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = n;
+    b.dataset.actionId = prev.dataset.actionId;
+    b.dataset.pageId = prev.dataset.pageId;
+    if (n === page) { b.setAttribute("aria-current", "page"); }
+    b.addEventListener("click", function () { go(n); });
+    return b;
+  }
+  function render() {
+    var last = count();
+    page = Math.min(page, last);
+    rows.innerHTML = "";
+    data.slice((page - 1) * size, page * size).forEach(function (row) {
+      var tr = document.createElement("tr");
+      row.forEach(function (value) { var td = document.createElement("td"); td.textContent = value; tr.appendChild(td); });
+      rows.appendChild(tr);
+    });
+    document.getElementById("pg-total").textContent = total;
+    pages.innerHTML = "";
+    numbers(last).forEach(function (n) {
+      if (n === "…") { var gap = document.createElement("span"); gap.className = "pg-gap"; gap.textContent = "…"; pages.appendChild(gap); }
+      else { pages.appendChild(pageButton(n)); }
+    });
+    // One page keeps 共 N 条 and hides the page controls; more than five pages add 跳至.
+    prev.hidden = next.hidden = pages.hidden = last === 1;
+    jump.hidden = last <= 5;
+    prev.disabled = page === 1;
+    next.disabled = page === last;
+    sizeSelect.value = String(size);
+    params.set("page", page);
+    params.set("page_size", size);
+    try { history.replaceState(null, "", "?" + params.toString() + location.hash); } catch (e) {}
+  }
+  function go(n) { page = Math.min(Math.max(1, n), count()); render(); wrap.scrollTop = 0; }
+  sizeSelect.addEventListener("change", function () {
+    size = Number(sizeSelect.value);
+    try { localStorage.setItem("list_page_size", size); } catch (e) {}
+    page = 1;
+    render();
+    wrap.scrollTop = 0;
+  });
+  prev.addEventListener("click", function () { go(page - 1); });
+  next.addEventListener("click", function () { go(page + 1); });
+  jumpInput.addEventListener("change", function () { var n = parseInt(jumpInput.value, 10); if (n) { go(n); } jumpInput.value = ""; });
+  render();
+})();
+</script>
 </body>
 </html>
 === end ===

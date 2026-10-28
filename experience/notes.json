@@ -52,6 +52,24 @@
       "last_confirmed": "2026-10-28"
     },
     {
+      "key": "html-tab-icon-required",
+      "kind": "preference",
+      "text": "每个交付的网页都要有浏览器标签页图标（内联 SVG，主题图案 + 主色线稿 + 圆角浅底，无文字），后台与网站页头放同一图案的图形品牌标识加系统名，不用字母方块；模板与生成脚本内置图标参数",
+      "why": "用户要求（2026-10-28）",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "list-pagination-default-20",
+      "kind": "preference",
+      "text": "后台与网站里可能超过一页的列表都要分页：默认每页 20 条，可选 10/20/50/100 条/页，分页条在表格下方靠右（共 N 条、条/页、上一页、页码、下一页，超过 7 页折叠），页码与条数写进地址并记住用户选择；小程序与移动端滚动加载，每批 20 条",
+      "why": "用户要求（2026-10-28）；依据 Element Plus、Ant Design、TDesign 分页组件与 NN/g 分页偏好研究",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
       "key": "no-title-repeat-nav",
       "kind": "preference",
       "text": "页面顶部不放与导航高亮项同名的标题，顶部留给操作与筛选；导航分组不与唯一子项同名；卡片不复述页面标题与时间范围",
@@ -195,6 +213,15 @@
       "kind": "lesson",
       "text": "experience.py reuse 遇到只有 Luz-Crawl 原始路径、没有会话快照的来源（如 SRC-078/079/106）会中断整批，复用前先确认 snapshot 带 session 字段，并分小批复用",
       "why": "008 会话复用时 KeyError session",
+      "uses": 1,
+      "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "system-design-table-cells",
+      "kind": "lesson",
+      "text": "系统设计页模块内容区按标签规则逐格检查：表头加 cell-label，单元格加 cell-value，长文本按分号拆成不超过 30 字的 line-value 行，避免 详情、原因、步骤、提示、流程、指南、备注、点击查看 等词，内容区外层用 module-content",
+      "why": "008 会话系统设计页多轮校验失败后归纳",
       "uses": 1,
       "first_seen": "2026-10-28",
       "last_confirmed": "2026-10-28"

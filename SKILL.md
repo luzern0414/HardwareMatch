@@ -126,7 +126,10 @@ py -X utf8 scripts/add_mode.py "<会话目录>" visual
 py -X utf8 scripts/add_mode.py "<会话目录>" prototype
 py -X utf8 scripts/hw_build.py "<会话目录>"
 py -X utf8 scripts/publish.py "<会话目录>" prototype
+py -X utf8 scripts/new_session.py icon "<系统名>"
 ~~~
+
+Every published page carries an inline SVG tab icon and admin or website prototypes a graphic brand mark of the same pictogram (ui-standards.html 页头与品牌标识): templates fill `{{TAB_ICON}}` and `{{BRAND_MARK}}` from the system name, `new_session.py icon` prints both for hand-made pages, and `publish.py` and `validate_session.py` reject a final HTML without the icon. List tables paginate with 20 rows by default (admin-design.html 分页); the prototype template ships a working pager and `validate_session.py` warns when one is missing or defaults to another size.
 
 Every approval records status, artifact path, SHA-256, time, approver and note in `raw/99-delivery/APPROVALS.json`. Scripts and the model never approve.
 
