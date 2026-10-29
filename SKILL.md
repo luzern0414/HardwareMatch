@@ -45,6 +45,7 @@ D:\Codes\Luz-System\                   the skill (rules, templates, knowledge, s
     function-list-design.html          系统功能列表规范
     commerce-design.html               交易与营销界面规范
     ui-recipes.html                    界面实现参考
+    config-design.html                 远程配置规范
     system-design.html                 系统设计规范 (gates, architecture and system-design HTML, prototype panel, phone operability)
     hardware-design.html               硬件设计规范 (business flow → devices → interfaces → protocols → backend; site requirements; list layout)
     hardware\                          hardware knowledge: device categories, protocols, scenarios, research playbook, plan schema
@@ -76,6 +77,7 @@ Never write outputs into the skill, and never put rules, templates or scripts in
 | Architecture, system-design HTML, prototype panel | [system-design.html](references/system-design.html) | Requirement IDs, exact modules, module approval, research, then architecture approval |
 | Function list | [function-list-design.html](references/function-list-design.html) | Approved functions, pages, actions, states |
 | Ordering, retail, membership, promotions (prices, coupons, cart, checkout, popups and notices) | [commerce-design.html](references/commerce-design.html) | Transaction model and price rules known; card `commerce` |
+| Remote configuration and hot updates (limits, timeouts, switches, minimum versions, config centre, code updates) | [config-design.html](references/config-design.html) | Card `remote-config`; every system with a client |
 | How to build the effects (struck prices, corner badges, coupon notches, irregular and breakout cards, sticky rails, safe-area bars) | [ui-recipes.html](references/ui-recipes.html) | Card `ui-recipes`; skeleton `commerce-kit.html`, example `examples/commerce-kit/` |
 | On-site hardware | [hardware-design.html](references/hardware-design.html) and `references/hardware/` | Scale, operation model, budget and site facts recorded |
 | Colour, type, icons, corners, motion, spacing | Luz-Design `references/visual-design.html` | — |

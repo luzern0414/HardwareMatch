@@ -271,6 +271,28 @@
         "手机宽度浏览器逐屏截图核对：价格不换行、角标不遮主体、出框元素只在营销区、悬浮栏不被安全区遮挡"
       ]
     },
+    "remote-config": {
+      "title": "远程配置与热更新（参数、开关、最低版本、配置中心、代码更新）",
+      "summary": "会变的数字、开关与名单进后台配置中心：清单字段、前后端共用一份、校验灰度回滚审计、客户端拉取与兜底、小程序与 App 代码更新边界、配置中心页面",
+      "keywords": ["配置", "远程配置", "热更新", "配置中心", "开关", "灰度", "回滚", "超时", "上传", "最低版本", "更新", "写死"],
+      "sections": [
+        {"page": "config-design.html", "title": "远程配置规范", "path": ["工作流程"]},
+        {"page": "config-design.html", "title": "远程配置规范", "path": ["核心规则"]},
+        {"page": "config-design.html", "title": "远程配置规范", "path": ["平台矩阵"]},
+        {"page": "config-design.html", "title": "远程配置规范", "path": ["案例样本"]},
+        {"page": "config-design.html", "title": "远程配置规范", "path": ["输出契约"]},
+        {"page": "config-design.html", "title": "远程配置规范", "path": ["质量门禁"]},
+        {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "二、功能架构", "内容来源与维护闭环"]}
+      ],
+      "tools": [
+        "架构里写配置清单表；服务端实现交给 Luz-Dev（模块详设 config 与规则 OPS-005、REL-003）",
+        "调研来源：Luz-Crawl 任务 028（微信小程序更新机制与 UpdateManager、Firebase 远程配置、Apollo、Nacos、功能开关、苹果审核指南 2.5.2）"
+      ],
+      "checks": [
+        "`py -X utf8 scripts/validate_session.py <会话目录>` 零 ERROR",
+        "原型里改一项配置后，前端显示与后台执行都跟着变；断网或拉取失败时用默认值照常使用"
+      ]
+    },
     "agent-ui": {
       "title": "智能体界面",
       "summary": "能力清单、追问、步骤卡与审批、七种运行状态、耗时分段、引用与记忆、错误呈现",

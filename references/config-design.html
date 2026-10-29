@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>远程配置规范</title>
+  <link rel="stylesheet" href="guidelines.css">
+</head>
+<body>
+<main id="main" aria-label="远程配置规范">
+    <h1>远程配置规范</h1>
+<!-- SECTION:scope:START id=scope data-rule-id=config-scope -->
+<section id="scope" data-rule-id="config-scope" aria-labelledby="scope-heading">
+<h2 id="scope-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><circle cx="12" cy="12" r="3"/></svg><span>适用范围</span></h2>
+<p>小程序、<code>App</code>、<code>H5</code>、后台与服务端的运行参数和功能开关：会变的数字、开关与名单在后台配置中心维护，改了不用发版就能生效。运营内容（公告、横幅、券、奖品）的维护见界面通用规范“内容来源与维护闭环”；本页管参数与开关，以及小程序和 <code>App</code> 代码本身怎样更新。</p>
+</section>
+<!-- SECTION:scope:END -->
+
+<!-- SECTION:workflow:START id=workflow data-rule-id=config-workflow -->
+<section id="workflow" data-rule-id="config-workflow" aria-labelledby="workflow-heading">
+<h2 id="workflow-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h5a3 3 0 0 1 3 3v1M16 18h-5a3 3 0 0 1-3-3v-1"/><path d="m13 8 3 2 3-2M11 16l-3-2-3 2"/></svg><span>工作流程</span></h2>
+<ol>
+<li>设计时把每个可能要调的数字、开关和名单列进配置清单，不写进代码。</li>
+<li>每项定好：键、类型、默认值、范围与单位、作用范围（全局、门店、渠道、客户端版本）、生效方式（立即或下次启动）、谁能读（服务端或客户端）、谁能改、风险级别。</li>
+<li>后台配置中心按分组维护，发布有版本号，可灰度、可回滚、有审计。</li>
+<li>客户端启动时拉取，拉不到用上次有效值或安装包里的默认值；原型演示配置中心页面与客户端的兜底表现。</li>
+</ol>
+</section>
+<!-- SECTION:workflow:END -->
+
+<!-- SECTION:rules:START id=rules data-rule-id=config-rules -->
+<section id="rules" data-rule-id="config-rules" aria-labelledby="rules-heading">
+<h2 id="rules-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 5 6v5c0 4.5 2.8 7.8 7 10 4.2-2.2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg><span>核心规则</span></h2>
+<h3>哪些要可配置</h3>
+<div class="table-wrap"><table><thead><tr><th>分组</th><th>配置项举例</th></tr></thead><tbody>
+<tr><td>上传与媒体</td><td>允许的类型、文档类的大小上限、单次张数、后台压缩的长边与质量（照片不限大小，见上传规则）</td></tr>
+<tr><td>网络与超时</td><td>接口超时、重试次数与退避、轮询间隔、事件流重连间隔与心跳、长任务最长等待</td></tr>
+<tr><td>交易参数</td><td>待支付自动关闭时间、限购、退款时限；起送价与配送费按门店</td></tr>
+<tr><td>功能开关</td><td>模块显示与隐藏、新功能灰度、第三方能力的降级开关、维护模式</td></tr>
+<tr><td>版本与更新</td><td>最低可用版本、更新提示文案与更新说明</td></tr>
+<tr><td>列表与展示</td><td>默认分页条数、缓存时长、首页模块顺序</td></tr>
+<tr><td>智能体</td><td>模型与回退顺序、轮次与工具次数上限、各类超时（与开发技能智能体底座的上限总表一一对应）</td></tr>
+<tr><td>触达</td><td>弹窗频率上限、订阅消息模板开关</td></tr>
+</tbody></table></div>
+<ul>
+<li>不能放进配置：密钥与证书不下发到客户端；权限判断、金额计算、库存扣减只在服务端按代码执行；协议与隐私政策按版本发布并记录同意，不当作配置随改。</li>
+</ul>
+<h3>一份配置，前后端共用</h3>
+<ul>
+<li>同一个参数全系统只存一份：客户端只用它来显示与预检查，服务端按同一个值执行。例如文档上传上限，前端显示“不超过 <code>20 MB</code>”，后台按同一个配置拒收超限文件。</li>
+<li>配置分“只给服务端”和“下发客户端”两类；下发的只包含客户端需要的键，不带内部地址与密钥。</li>
+</ul>
+<h3>安全地改</h3>
+<ul>
+<li>保存前按类型与范围校验，显示与线上值的差异；风险高的项（支付相关、上传上限、维护模式）二次确认或两人审批。</li>
+<li>先灰度再全量：按百分比、门店、用户组或客户端版本推给一部分人，观察错误率与转化后再扩大；每次发布有版本号，一键回滚到任一版本。</li>
+<li>每次修改记录谁、何时、改了什么、为什么；发布开关在全量后按期清理，不长期堆在代码里。</li>
+</ul>
+<h3>客户端怎么拉、怎么用</h3>
+<ul>
+<li>安装包内置一份默认值。启动时先用上次缓存的有效值，立即可用；同时异步拉取新值，带配置版本号，没变化不重复下载；回到前台超过 5 分钟再拉一次。</li>
+<li>按生效方式激活：开关与文案立即生效；影响布局或流程的等下次冷启动；结算、支付与表单填写进行中不切换。</li>
+<li>拉取失败或值非法时用上次有效值或默认值，不报错、不挡住使用；每个请求带当前配置版本，便于排查。</li>
+</ul>
+<h3>代码本身怎么更新</h3>
+<ul>
+<li>小程序：冷启动时微信异步检查新版本，新版本下次冷启动才生效；用 <code>wx.getUpdateManager</code> 在 <code>onUpdateReady</code> 时提示“新版本已准备好，重启后使用”，用户确认后 <code>applyUpdate</code>，不在填写或支付中打断；必须修复的问题在微信后台设最低可用版本。</li>
+<li><code>App</code>：启动时检查最新版本与最低可用版本，低于最低版本时引导去应用商店更新；热更新只更新资源与配置，不下载执行会新增或改变功能的代码（苹果审核指南 2.5.2）。</li>
+<li>网页与后台：发布后提示刷新，见网页管理后台设计规范“版本信息”。</li>
+</ul>
+<h3>后台配置中心页面</h3>
+<ul>
+<li>按分组列出：名称、当前值、默认值、单位、作用范围、生效方式、最近修改人与时间；搜索键与名称。</li>
+<li>编辑在居中面板，按类型给控件：数字带范围与单位、开关、枚举、时长；超出范围不能保存并写明允许范围。</li>
+<li>发布区：草稿与线上的差异、灰度规则、发布、回滚到指定版本；历史版本与审计记录可查。</li>
+</ul>
+<h3>依据</h3>
+<div class="table-wrap"><table><thead><tr><th>来源</th><th>结论</th><th>用在</th></tr></thead><tbody>
+<tr><td>微信小程序“运行机制 · 更新机制”与 <code>UpdateManager</code></td><td>冷启动异步检查更新，新版本下次冷启动生效；可用更新管理器提示重启；后台可设最低可用版本</td><td>小程序代码更新</td></tr>
+<tr><td><code>Firebase</code> 远程配置：概览、加载策略、发布</td><td>应用内设默认值；启动时激活上次提取的值、异步提取新值、下次启动激活，避免界面跳变；按百分比发布并监控后扩大或回滚</td><td>客户端拉取与灰度</td></tr>
+<tr><td>携程 <code>Apollo</code> 配置中心</td><td>修改后约 1 秒推送生效；每次发布有版本可回滚；支持灰度；权限与审核</td><td>配置中心与安全变更</td></tr>
+<tr><td>阿里 <code>Nacos</code></td><td>配置版本跟踪、金丝雀发布、一键回滚与客户端更新状态跟踪</td><td>版本与回滚</td></tr>
+<tr><td><code>Martin Fowler</code>“功能开关”</td><td>开关分发布、运维、权限、实验四类；发布开关是临时的，要及时清理</td><td>功能开关</td></tr>
+<tr><td>苹果《<code>App Store</code> 审核指南》2.5.2</td><td>不得下载、安装或执行会新增或改变应用功能的代码</td><td><code>App</code> 热更新边界</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:rules:END -->
+
+<!-- SECTION:platform-matrix:START id=platform-matrix data-rule-id=config-platform-matrix -->
+<section id="platform-matrix" data-rule-id="config-platform-matrix" aria-labelledby="platform-matrix-heading">
+<h2 id="platform-matrix-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="6" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/></svg><span>平台矩阵</span></h2>
+<div class="table-wrap"><table><thead><tr><th>端</th><th>做法</th></tr></thead><tbody>
+<tr><td>小程序</td><td>启动读缓存、异步拉新；代码更新用 <code>wx.getUpdateManager</code> 与后台最低可用版本</td></tr>
+<tr><td><code>App</code></td><td>同样的配置拉取；版本检查与最低版本引导；热更新只限资源与配置</td></tr>
+<tr><td>网页、<code>H5</code> 与后台</td><td>页面加载时拉配置；发布后提示刷新</td></tr>
+<tr><td>服务端</td><td>读配置走缓存，发布后失效并通知；按同一份配置执行校验</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:platform-matrix:END -->
+
+<!-- SECTION:examples:START id=examples data-rule-id=config-examples -->
+<section id="examples" data-rule-id="config-examples" aria-labelledby="examples-heading">
+<h2 id="examples-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m4 17 5-5 3 3 2-2 6 6"/></svg><span>案例样本</span></h2>
+<h3>文档上传上限改为配置</h3>
+<p>写死在前端的 <code>10 MB</code> 改为配置项“文档上传上限”，前端显示与后台拒收读同一个值；照片不设上限，后台统一压缩。</p>
+<h3>接口变慢时临时放宽超时</h3>
+<p>第三方接口变慢，运维把“外部接口超时”从 5 秒调到 8 秒，先灰度 10% 门店，错误率下降后全量，一周后回滚到原值。</p>
+</section>
+<!-- SECTION:examples:END -->
+
+<!-- SECTION:output-contract:START id=output-contract data-rule-id=config-output-contract -->
+<section id="output-contract" data-rule-id="config-output-contract" aria-labelledby="output-contract-heading">
+<h2 id="output-contract-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>输出契约</span></h2>
+<ul>
+<li>系统架构有配置清单表：键、名称、分组、类型、默认值、范围与单位、作用范围、生效方式、可见端、谁能改、风险级别。</li>
+<li>原型有后台配置中心页面（分组列表、编辑面板、差异与发布、历史与回滚），并演示客户端拉取失败时用默认值照常使用。</li>
+</ul>
+</section>
+<!-- SECTION:output-contract:END -->
+
+<!-- SECTION:quality-gates:START id=quality-gates data-rule-id=config-quality-gates -->
+<section id="quality-gates" data-rule-id="config-quality-gates" aria-labelledby="quality-gates-heading">
+<h2 id="quality-gates-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h5M15 7h5M9 7a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM4 17h10M18 17h2M14 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg><span>质量门禁</span></h2>
+<ul>
+<li>会变的数字或开关写死在前端，或前后端各存一份：退回设计。</li>
+<li>配置没有默认值、没有类型与范围校验、不能回滚、没有审计：失败。</li>
+<li>密钥下发到客户端，或热更新下载执行会改变功能的代码：失败。</li>
+<li>结算或支付进行中切换配置，或更新提示打断填写与支付：退回修改。</li>
+</ul>
+</section>
+<!-- SECTION:quality-gates:END -->
+
+<!-- SECTION:handoff:START id=handoff data-rule-id=config-handoff -->
+<section id="handoff" data-rule-id="config-handoff" aria-labelledby="handoff-heading">
+<h2 id="handoff-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h12M13 4l3 3-3 3M20 17H8M11 14l-3 3 3 3"/></svg><span>交接规则</span></h2>
+<p>交给开发技能：配置注册表（键、类型、默认、范围、作用范围、生效方式、可见端、风险）、客户端下发接口与版本号、发布版本与灰度规则、回滚、缓存失效与变更通知、审计。</p>
+</section>
+<!-- SECTION:handoff:END -->
+
+</main>
+</body>
+</html>
