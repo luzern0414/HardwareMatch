@@ -478,6 +478,25 @@ class RuleAndCheckAgreementTests(unittest.TestCase):
         self.assertEqual(errors, [])
         self.assertTrue(warnings, warnings)
 
+    def test_dialog_submit_repeats_the_opening_action(self) -> None:
+        from check_interaction import prototype_interaction_findings
+        trigger = '<button data-action-id="A-136" data-page-id="P-012">编辑</button>'
+        step = '<button data-action-id="A-136" data-page-id="P-012">保存</button>'
+        for dialog in (f"<dialog>{step}</dialog>", f"<dialog open>{step}</dialog>",
+                       f'<div role="dialog" aria-modal="true">{step}</div>', f'<div role="alertdialog">{step}</div>'):
+            with self.subTest(dialog=dialog[:24]):
+                errors, warnings = prototype_interaction_findings(parse(trigger + dialog))
+                self.assertEqual((errors, warnings), ([], []))
+        # Two entries on the page, or the same submit twice in one dialog, are still two entries.
+        errors, _ = prototype_interaction_findings(parse(trigger + trigger.replace("编辑", "修改")))
+        self.assertTrue(any("A-136 2 times on P-012;" in e for e in errors), errors)
+        errors, _ = prototype_interaction_findings(parse(trigger + f"<dialog>{step}{step}</dialog>"))
+        self.assertTrue(any("2 times on P-012 in one dialog" in e for e in errors), errors)
+        # Generic labels inside different dialogs are not page-level look-alikes.
+        other = '<button data-action-id="A-220" data-page-id="P-012">新增</button><dialog><button data-action-id="A-220" data-page-id="P-012">保存</button></dialog>'
+        _, warnings = prototype_interaction_findings(parse(trigger + f"<dialog>{step}</dialog>" + other))
+        self.assertEqual(warnings, [])
+
     def test_names_ending_in_a_descriptive_word_are_labels(self) -> None:
         from validate_session import chart_label_is_allowed
         for name in ("会议详情", "Demo 详情", "AI 会议详情", "审批流程", "退款原因", "使用指南"):

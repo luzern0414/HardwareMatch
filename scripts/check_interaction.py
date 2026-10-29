@@ -747,10 +747,12 @@ def prototype_interaction_findings(root) -> tuple[list[str], list[str]]:
     """One visible entry per action and page: the same data-action-id twice on one page is an error unless the copies
     sit in repeated list rows or in alternative scenario states (data-state-kind, data-scenario, or one of the agent
     run states in data-state); two different actions with the same text on one page are a warning (the DOM cannot
-    tell which dialogs are open)."""
+    tell which dialogs are open). A button inside a dialog (<dialog>, role=dialog or alertdialog) is a step of the
+    action that opened it, such as the 保存 of an edit dialog bound to the edit action: it is counted within its
+    dialog, not as a second entry on the page."""
     errors: list[str] = []
     warnings: list[str] = []
-    per_page: dict[tuple[str, str], int] = {}
+    per_page: dict[tuple, int] = {}
     labels: dict[tuple[str, str], set[str]] = {}
     for node in _iter(root):
         aid = node.get("data-action-id").strip()
@@ -769,13 +771,15 @@ def prototype_interaction_findings(root) -> tuple[list[str], list[str]]:
         param = next((node.get(a).strip() for a in PARAM_ATTRS if node.get(a).strip()), "")
         if not param and node.get("role") in OPTION_ROLES:
             param = text
-        per_page[(pid, aid, param)] = per_page.get((pid, aid, param), 0) + 1
-        if text:
+        dialog = next((a for a in chain[1:] if a.tag == "dialog" or a.get("role") in {"dialog", "alertdialog"}), None)
+        scope = id(dialog) if dialog is not None else 0
+        per_page[(pid, aid, param, scope)] = per_page.get((pid, aid, param, scope), 0) + 1
+        if text and dialog is None:
             labels.setdefault((pid, text), set()).add(aid)
-    for (pid, aid, param), count in sorted(per_page.items()):
+    for (pid, aid, param, scope), count in sorted(per_page.items()):
         if count > 1:
-            errors.append(f"interactive-prototype shows {aid}{' (' + param + ')' if param else ''} {count} times on {pid}; "
-                          "one visible entry per action (list rows excepted)")
+            errors.append(f"interactive-prototype shows {aid}{' (' + param + ')' if param else ''} {count} times on {pid}"
+                          f"{' in one dialog' if scope else ''}; one visible entry per action (list rows excepted)")
     for (pid, text), ids in sorted(labels.items()):
         if len(ids) > 1:
             warnings.append(f"interactive-prototype {pid} has buttons with the same text “{text}” for different actions: "

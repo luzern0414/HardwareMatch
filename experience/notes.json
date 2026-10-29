@@ -291,8 +291,8 @@
     {
       "key": "prototype-non-action-controls",
       "kind": "lesson",
-      "text": "确认框与弹层自己的确认、取消、关闭、完成键用 button 元素加 data-control（confirm、cancel、close、done），放在 dialog 元素或 role=dialog 容器里，属于打开它的动作、不另编动作号；不要改用 a role=button 绕开，没有动作编号的 role=button 会给警告。控件能否用实色按元素认定，类名随意",
-      "why": "旧版校验只认选择器里的 button 字样，迫使对话框按键改成 a[role=button]；已改为按元素认定并加 data-control",
+      "text": "对话框放在 dialog 元素或 role=dialog 容器里：提交这一动作的按键（编辑框的保存、生成框的生成）绑打开它的动作号，不算同页第二个入口；通用确认框的确认，以及取消、关闭、完成这类只收起对话框的按键，用 button 加 data-control（confirm、cancel、close、done）；导航用链接。不要改用 a role=button 绕开，没有动作编号的 role=button 会给警告；控件能否用实色按元素认定，类名随意",
+      "why": "008 原型用 a[role=button] 绕开旧校验，逐条核对后多数是动作在弹层里的第二步提交；旧版一入口检查把对话框里的同号按键算成第二个入口，已改",
       "uses": 2,
       "first_seen": "2026-10-29",
       "last_confirmed": "2026-10-29",

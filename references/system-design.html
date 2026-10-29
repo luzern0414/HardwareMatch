@@ -97,7 +97,7 @@
 <tr><td>流程</td><td><code>data-success</code></td><td>成功终点页面或状态</td><td>页面编号必须存在；没写给警告</td></tr>
 <tr><td>组件</td><td><code>data-display</code></td><td>只读展示的用途</td><td>无动作又没标展示给警告</td></tr>
 </tbody></table></div>
-<p>严重程度：任一页面写了 <code>data-entry</code>、<code>data-exit</code> 或 <code>data-primary-action</code>，就按契约检查整份架构，缺项、孤岛页与重复入口报错；没写的旧架构只给警告。原型里同一动作编号在同一页可见两次报错，列表行、带参数的标签与开关、<code>data-state-kind</code> 与 <code>data-scenario</code> 场景、智能体运行状态块除外；智能体原型缺少七种运行状态给警告。原型里每个 <code>&lt;button&gt;</code> 带已批准的动作编号；确认框与弹层自己的确认、取消、关闭、完成键属于打开它的动作，放在 <code>&lt;dialog&gt;</code> 或 <code>role="dialog"</code> 容器里，写 <code>data-control</code>（<code>confirm</code>、<code>cancel</code>、<code>close</code>、<code>done</code>），不另编动作号，也不改用 <code>&lt;a role="button"&gt;</code> 绕开；没有动作编号的 <code>role="button"</code> 元素给警告。架构模板已按本表写好示例。</p>
+<p>严重程度：任一页面写了 <code>data-entry</code>、<code>data-exit</code> 或 <code>data-primary-action</code>，就按契约检查整份架构，缺项、孤岛页与重复入口报错；没写的旧架构只给警告。原型里同一动作编号在同一页可见两次报错，列表行、带参数的标签与开关、<code>data-state-kind</code> 与 <code>data-scenario</code> 场景、智能体运行状态块除外，对话框里的按键是打开它的动作的下一步，也不算第二个入口；智能体原型缺少七种运行状态给警告。原型里每个 <code>&lt;button&gt;</code> 带已批准的动作编号；对话框放在 <code>&lt;dialog&gt;</code> 或 <code>role="dialog"</code> 容器里：提交这一动作的按键（编辑框的保存、生成框的生成）绑打开它的动作号；通用确认框的确认，以及取消、关闭、完成这类只收起对话框的按键，写 <code>data-control</code>（<code>confirm</code>、<code>cancel</code>、<code>close</code>、<code>done</code>），不另编动作号；导航用链接，也不改用 <code>&lt;a role="button"&gt;</code> 绕开；没有动作编号的 <code>role="button"</code> 元素给警告。架构模板已按本表写好示例。</p>
 <h3>原型配置面板</h3>
 <p>可操作原型旁边放配置面板，用来切换演示数据与场景，让评审者看到每个页面的所有状态。</p>
 <ul>
