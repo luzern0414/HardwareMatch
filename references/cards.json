@@ -20,7 +20,6 @@
         {"page": "system-design.html", "title": "系统设计规范", "path": ["质量门禁"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "一、设计架构", "设计原则"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "二、功能架构", "入口与内容分层"]},
-        {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "二、功能架构", "功能闭环"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "二、功能架构", "内容来源与维护闭环"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "二、功能架构", "权限与角色"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "二、功能架构", "状态体系"]},
@@ -207,18 +206,44 @@
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "五、组件", "头像"]},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "配色"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "主题色系统", "主色按行业气质选择"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "字体族必须统一"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "七级字体角色"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
+        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "字体族必须统一"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
       ],
       "tools": [
         "动手前用 Luz-Crawl 查微信小程序设计指南与 Vant、NutUI、TDesign 小程序组件的默认值与状态，写明跟随哪一家",
         "行业主题与主色见 Luz-Design `references/themes.json`；官方色板取阶，不凭感觉调深调浅",
-        "原型里手机框与后台共用一套演示数据；从 `references/templates.txt` 的 interactive-prototype.html 起步，模板只是骨架"
+        "原型里手机框与后台共用一套演示数据；从 `references/templates.txt` 的 interactive-prototype.html 起步，模板只是骨架",
+        "点单、电商、会员、营销活动、弹窗与公告另读 `py -X utf8 scripts/context.py commerce`"
       ],
       "checks": [
         "`py -X utf8 scripts/validate_session.py <会话目录>` 零 ERROR",
         "`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\check_document.py <页面.html> --allow interface` 零 ERROR",
         "浏览器在 390 宽逐个标签与二级页走一遍：只有标签栏切换标签、各标签保留自己的页面栈、二级页返回打开它的页面"
+      ]
+    },
+    "commerce": {
+      "title": "交易与营销界面（点单、电商、会员、活动、弹窗与公告）",
+      "summary": "价格与划线价、促销标签、优惠券、点单菜单、规格选择、购物车与结算、订单与取餐、会员资产、弹窗与公告、门店、营销区排版与合规底线",
+      "keywords": ["点单", "电商", "商城", "价格", "划线价", "折扣", "优惠券", "满减", "活动", "购物车", "结算", "订单", "会员", "积分", "弹窗", "公告", "门店"],
+      "sections": [
+        {"page": "commerce-design.html", "title": "交易与营销界面规范", "path": ["工作流程"]},
+        {"page": "commerce-design.html", "title": "交易与营销界面规范", "path": ["核心规则"]},
+        {"page": "commerce-design.html", "title": "交易与营销界面规范", "path": ["案例样本"]},
+        {"page": "commerce-design.html", "title": "交易与营销界面规范", "path": ["输出契约"]},
+        {"page": "commerce-design.html", "title": "交易与营销界面规范", "path": ["质量门禁"]},
+        {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "五、组件", "浮层与反馈"]},
+        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "主题色系统", "价格色与营业状态"]}
+      ],
+      "tools": [
+        "价格色用主题共用色 `price`（#D9001B）与 `priceTint`（#FFF1F0），见 Luz-Design `references/themes.json`；与品牌色无关，对白底与浅底都过 4.5:1",
+        "商品图、入口图标、活动主视觉与弹窗主视觉可用 Imagegen 生成（Luz-Design visual-design.html 图像生成：风格由用户在视觉稿里选定，优先 4×4 拼板切图）；控件图标仍用线性矢量",
+        "组件骨架：`references/templates.txt` 的 commerce-kit.html（菜单页门店栏、公告条、券条、分类栏与商品行、悬浮购物车栏、规格弹层、券面、结算明细、领券弹窗、强公告、取餐号），已通过 check_document 与会话字号检查；换成会话主题色后按需取用，商品图换成实拍或生成的抠图",
+        "原型的模拟数据要像真的：售价、划线价与说明、规格加价、售罄、限购、费用与优惠明细；用 `data-state-kind` 或 `data-scenario` 演示每种异常",
+        "调研来源：Luz-Crawl 任务 026（组件库、体验研究与价格法规、作品视觉）与用户提供的咖啡、茶饮点单小程序录屏"
+      ],
+      "checks": [
+        "`py -X utf8 scripts/validate_session.py <会话目录>` 与 `check_interaction.py` 零 ERROR",
+        "`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\check_document.py <页面.html> --allow interface` 零 ERROR",
+        "浏览器里完整下一单：多规格加价、售罄、未达起送、券不可用、价格变化、支付失败都能看到对应界面，金额前后一致"
       ]
     },
     "agent-ui": {
@@ -249,7 +274,6 @@
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "五、组件", "浮层与反馈"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "七、文案", "界面文案"]},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "字体族必须统一"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "七级字体角色"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "图形：一套线性图标"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
       ],
       "tools": [

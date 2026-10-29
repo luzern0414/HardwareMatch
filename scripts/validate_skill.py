@@ -80,6 +80,7 @@ RULE_PAGES = [
     ("agent-design.html", "agent", "智能体设计规范"),
     ("website-design.html", "website", "网站设计规范"),
     ("function-list-design.html", "flist", "系统功能列表规范"),
+    ("commerce-design.html", "commerce", "交易与营销界面规范"),
     ("hardware-design.html", "hardware", "硬件设计规范"),
 ]
 TEMPLATE_NAMES = ("brief.md", "research.md", "module-intake.html", "system-architecture.html", "system-design.html", "visual-board.html", "interactive-prototype.html", "approvals.json", "manifest.json",)

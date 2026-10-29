@@ -550,6 +550,308 @@ main{width:min(1120px,calc(100% - 40px));margin:0 auto;padding:48px 0 72px}h1{ma
 === end ===
 
 
+=== template: commerce-kit.html ===
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{SYSTEM_NAME}}</title>
+<link rel="icon" href="{{TAB_ICON}}">
+<style>
+/* Commerce kit (commerce-design.html): replace the brand tokens with the session theme; price and priceTint stay. */
+:root{color-scheme:light;--canvas:#F5F5F5;--surface:#FFFFFF;--ink:#2B2326;--ink2:#6E6064;--line:#EEEEEE;
+--action:#6B4A34;--action-press:#573B2A;--action-tint:#F1E8DF;--accent:#C58A4F;--accent-tint:#F6EBDD;
+--price:#D9001B;--price-tint:#FFF1F0;--success:#18794E;--photo:#EBDCD6;
+--e1:0 1px 2px rgba(43,35,38,.06),0 2px 8px rgba(43,35,38,.06);--e2:0 2px 4px rgba(43,35,38,.08),0 8px 24px rgba(43,35,38,.1);
+--e4:0 8px 16px rgba(43,35,38,.12),0 24px 48px rgba(43,35,38,.16)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--canvas);color:var(--ink);font:14px/22px "PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+main{width:min(390px,100%);margin:0 auto;padding:16px 12px 96px}
+h1{display:flex;align-items:center;gap:8px;margin:0 0 16px;font-size:18px;line-height:26px;font-weight:600}
+h1 svg{width:24px;height:24px;flex:0 0 auto}
+h3{font-weight:600}
+h2{margin:24px 4px 8px;font-size:16px;line-height:24px;font-weight:600}
+.icon{width:16px;height:16px;flex:0 0 auto;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--e1)}
+/* Store bar and pickup switch */
+.store{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px}
+.store-name{font-size:16px;line-height:24px;font-weight:600}
+.store-meta{display:flex;align-items:center;gap:8px;color:var(--ink2);font-size:12px;line-height:18px}
+.queue{display:inline-flex;align-items:center;gap:4px;color:var(--success)}
+.queue::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--success)}
+.switch{display:inline-flex;padding:2px;border-radius:999px;background:var(--canvas)}
+.switch button{min-width:52px;min-height:30px;padding:0 12px;border:0;border-radius:999px;background:transparent;color:var(--ink2);font:inherit;font-size:14px;line-height:22px}
+.switch button[aria-pressed="true"]{background:var(--action);color:#fff}
+/* Notice bar and coupon strip */
+.notice{display:flex;align-items:center;gap:8px;margin:8px 0;padding:8px 12px;border-radius:8px;background:var(--accent-tint);color:var(--ink)}
+.notice-caption{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:12px;line-height:18px}
+.notice .notice-hint{color:var(--action-press);font-size:12px;line-height:18px;text-decoration:none}
+.coupon-strip{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px}
+.chip{display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;padding:4px 8px;border:1px solid #F5C6CB;border-radius:4px;background:var(--price-tint);color:var(--price);font-size:12px;line-height:18px;white-space:nowrap}
+.chip b{font-size:14px;line-height:22px;font-weight:600}
+.chip .chip-use{padding-left:6px;border-left:1px dashed #F5C6CB}
+/* Menu: category rail and goods rows */
+.menu{display:grid;grid-template-columns:84px 1fr;overflow:hidden}
+.rail{background:var(--canvas)}
+.rail a{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 4px;color:var(--ink2);text-decoration:none;font-size:14px;line-height:22px}
+.rail a[aria-current="true"]{background:var(--surface);color:var(--ink);font-weight:600}
+.rail a[aria-current="true"]::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--action)}
+.rail .tag{position:static;padding:0 4px;border-radius:4px;background:var(--price-tint);color:var(--price);font-size:12px;line-height:16px;font-weight:400}
+.goods-list{padding:8px 12px}
+.group-title{margin:4px 0 8px;font-size:14px;line-height:22px;font-weight:600}
+.group-title .meta{margin-left:6px;font-weight:400}
+.goods{display:grid;grid-template-columns:80px 1fr;gap:12px;padding:8px 0 12px}
+.goods + .goods{border-top:1px solid var(--line)}
+.thumb{position:relative;display:grid;place-items:center;width:80px;height:80px;border-radius:8px;background:var(--photo);color:var(--action)}
+.thumb svg{width:40px;height:40px;stroke-width:2}
+.corner{position:absolute;left:0;top:0;padding:0 6px;border-radius:8px 0 8px 0;background:var(--price);color:#fff;font-size:12px;line-height:18px}
+.goods-name{margin:0;font-size:14px;line-height:22px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0}
+.tag{padding:0 4px;border:1px solid #F5C6CB;border-radius:4px;color:var(--price);font-size:12px;line-height:16px}
+.tag.member{border-color:#E6D3BF;color:var(--action-press)}
+.meta{color:var(--ink2);font-size:12px;line-height:18px}
+.desc{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.buy-row{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:4px}
+.buy-row .price{flex-wrap:wrap;min-width:0}
+.add{flex:0 0 auto}
+/* Price: number 16–18/600 in the price colour, currency and decimals 12, struck price 12 grey */
+.price{display:inline-flex;align-items:baseline;gap:4px;color:var(--price);white-space:nowrap}
+.price .amount{display:inline-flex;align-items:baseline}
+.price .num{font-size:16px;line-height:22px;font-weight:600}
+.price .unit{font-size:12px;line-height:18px;font-weight:600}
+.price .meta{color:var(--ink2);font-weight:400}
+.price .was{text-decoration:line-through}
+.price-tag{padding:0 4px;border-radius:4px;background:var(--price-tint);color:var(--price);font-size:12px;line-height:16px}
+.add{display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:var(--action);color:#fff}
+.add svg{width:16px;height:16px}
+.spec-btn{flex:0 0 auto;white-space:nowrap;min-height:30px;padding:0 12px;border:0;border-radius:999px;background:var(--action);color:#fff;font:inherit;font-size:14px;line-height:22px}
+.goods.sold-out .thumb,.goods.sold-out .goods-name,.goods.sold-out .price{opacity:.45}
+.sold-badge{min-height:28px;padding:4px 10px;border-radius:999px;background:var(--canvas);color:var(--ink2);font-size:12px;line-height:18px}
+.limit-hint{color:var(--price);font-size:12px;line-height:18px}
+/* Floating cart bar */
+.cart-bar{display:flex;align-items:center;gap:12px;height:52px;margin-top:12px;padding:0 6px 0 16px;border-radius:999px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--e2)}
+.bag{position:relative;display:grid;place-items:center;flex:0 0 auto;width:40px;height:40px;margin-top:-16px;padding:0;border:0;border-radius:50%;background:var(--action);color:#fff;box-shadow:var(--e2)}
+.bag svg{width:22px;height:22px}
+.bag .badge{position:absolute;right:-2px;top:-2px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--price);color:#fff;font-size:12px;line-height:18px;text-align:center}
+.cart-sum{flex:1;min-width:0}
+.cart-sum .meta{display:block}
+.checkout{min-height:40px;padding:0 20px;border:0;border-radius:999px;background:var(--action);color:#fff;font:inherit;font-weight:600}
+.progress-hint{margin:8px 4px 0;color:var(--ink2);font-size:12px;line-height:18px}
+.progress-hint b{color:var(--price);font-weight:600}
+/* Spec sheet */
+.sheet{padding:16px;border-radius:16px 16px 12px 12px}
+.sheet-name{margin:0;font-size:16px;line-height:24px;font-weight:600}
+.spec-group{margin-top:12px}
+.spec-label{margin:0 0 8px;color:var(--ink2);font-size:14px;line-height:22px;font-weight:600}
+.options{display:flex;flex-wrap:wrap;gap:8px}
+.opt{min-height:32px;padding:5px 12px;border:1px solid var(--line);border-radius:8px;background:var(--canvas);color:var(--ink);font:inherit;font-size:14px;line-height:20px}
+.opt[aria-pressed="true"]{border-color:var(--action);background:var(--action-tint);color:var(--action-press);font-weight:600}
+.opt .unit{margin-left:4px;color:var(--price)}
+.opt:disabled{color:var(--ink2);text-decoration:line-through}
+.opt .meta{margin-left:4px;text-decoration:none}
+.addon{display:grid;grid-template-columns:36px 1fr auto 28px;align-items:center;gap:8px;padding:6px 0}
+.addon .thumb{width:36px;height:36px;border-radius:8px}
+.addon .thumb svg{width:20px;height:20px}
+.ghost{display:grid;place-items:center;width:28px;height:28px;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--action)}
+.ghost svg{width:16px;height:16px}
+.summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.stepper{display:inline-flex;align-items:center;gap:12px}
+.stepper span{min-width:16px;text-align:center}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.actions button{min-height:44px;border-radius:999px;font:inherit;font-weight:600}
+.btn-soft{border:1px solid var(--action);background:var(--surface);color:var(--action)}
+.btn-solid{border:0;background:var(--action);color:#fff}
+/* Coupons */
+.coupon{display:grid;grid-template-columns:96px 1fr;overflow:hidden;margin-bottom:10px}
+.coupon-value{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:12px 4px;background:var(--price-tint);color:var(--price);border-right:1px dashed #F5C6CB}
+.coupon-value .num{font-size:28px;line-height:36px;font-weight:700}
+.coupon-value .unit{font-size:12px;line-height:18px}
+.coupon-body{position:relative;display:grid;gap:2px;padding:12px}
+.coupon-name{margin:0;font-size:14px;line-height:22px;font-weight:600}
+.coupon-foot{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.coupon-foot .rule-hint{color:var(--ink2);font-size:12px;line-height:18px;text-decoration:none}
+.use{min-height:30px;padding:0 14px;border:0;border-radius:999px;background:var(--price);color:#fff;font:inherit;font-size:14px;line-height:22px}
+.badge{position:absolute;right:0;top:0;padding:0 6px;border-radius:0 12px 0 8px;background:var(--action-tint);color:var(--action-press);font-size:12px;line-height:18px}
+.expire{color:var(--price)}
+.coupon.unavailable .coupon-value{background:var(--canvas);color:var(--ink2);border-right-color:var(--line)}
+.coupon.unavailable .coupon-name{color:var(--ink2)}
+/* Settlement bar and breakdown */
+.breakdown{padding:12px 16px}
+.row{display:flex;justify-content:space-between;padding:4px 0}
+.row .minus{color:var(--price)}
+.total{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+/* Promo popup and notice dialog */
+.popup{position:relative;width:82%;margin:56px auto 0;padding:20px 16px 16px;border-radius:16px;background:var(--surface);text-align:center;box-shadow:var(--e4)}
+.popup-art{display:grid;place-items:center;height:96px;margin:-44px auto 8px;width:96px;border-radius:50%;background:var(--accent-tint);color:var(--action)}
+.popup-art svg{width:48px;height:48px}
+.popup-title{margin:0;font-size:16px;line-height:24px;font-weight:600}
+.popup-value{display:flex;align-items:baseline;justify-content:center;gap:4px;margin:8px 0;color:var(--price)}
+.popup-value .num{font-size:32px;line-height:40px;font-weight:700}
+.popup .btn-solid{width:100%;min-height:44px;margin-top:8px;border-radius:999px;font:inherit;font-weight:600}
+.close{display:grid;place-items:center;width:32px;height:32px;margin:16px auto 0;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--ink2)}
+.close svg{width:16px;height:16px}
+.dialog{width:86%;margin:8px auto 0;padding:20px 16px 16px;border-radius:12px;background:var(--surface);box-shadow:var(--e4)}
+.dialog-title{margin:0 0 8px;font-size:16px;line-height:24px;font-weight:600;text-align:center}
+.dialog p{margin:0 0 4px}
+/* Pickup code */
+.pickup{padding:20px 16px;text-align:center}
+.pickup-status{margin:0;color:var(--success);font-size:14px;line-height:22px;font-weight:600}
+.pickup-code{margin:4px 0;font-size:28px;line-height:36px;font-weight:700;letter-spacing:0}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:12px}
+.steps .step-caption{padding-top:8px;border-top:3px solid var(--line);color:var(--ink2);font-size:12px;line-height:18px}
+.steps .step-caption[aria-current="step"],.steps .step-caption.done{border-color:var(--action);color:var(--ink)}
+</style>
+</head>
+<body>
+<main>
+<h1>{{BRAND_MARK}}{{SYSTEM_NAME}}</h1>
+
+<section aria-labelledby="menu-h">
+<h2 id="menu-h">菜单页</h2>
+<div class="card store">
+  <div>
+    <div class="store-name">滨江万象店</div>
+    <div class="store-meta"><span class="meta">距您 130 米</span><span class="queue meta">前方 2 杯制作中</span></div>
+  </div>
+  <div class="switch" role="group" aria-label="取餐方式"><button type="button" aria-pressed="true">自取</button><button type="button" aria-pressed="false">外送</button></div>
+</div>
+<div class="notice"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg><span class="notice-caption">新店试业全场 8 折，加入茶友群领 32 元新人券包</span><a class="notice-hint" href="#activity">查看</a></div>
+<div class="coupon-strip">
+  <span class="chip"><b>5.5</b>折 · 折扣券<span class="chip-use">使用</span></span>
+  <span class="chip"><b>10.9</b>元 · 饮品兑换券<span class="chip-use">使用</span></span>
+</div>
+<div class="card menu">
+  <nav class="rail" aria-label="商品分类">
+    <a href="#hot" aria-current="true"><span class="tag">爆品</span>人气推荐</a>
+    <a href="#new"><span class="tag">上新</span>当季新品</a>
+    <a href="#latte">拿铁家族</a>
+    <a href="#tea">果茶</a>
+  </nav>
+  <div class="goods-list">
+    <div class="group-title">人气推荐<span class="meta">必喝爆款，无限回购</span></div>
+    <article class="goods">
+      <div class="thumb"><span class="corner">开业限定</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l-1.5 12h-9z"/><path d="M5 8h14M9 4h6"/></svg></div>
+      <div>
+        <h3 class="goods-name">生椰拿铁（原创）</h3>
+        <div class="tags"><span class="tag">8 折</span><span class="tag member">会员专享</span></div>
+        <div class="meta desc">椰浆与浓缩，冰饮更顺</div>
+        <div class="buy-row">
+          <span class="price"><span class="amount"><span class="unit">¥</span><span class="num">10</span><span class="unit">.9</span></span><span class="price-tag">预估到手</span><span class="meta was">¥20</span></span>
+          <button class="spec-btn" type="button">选规格</button>
+        </div>
+        <div class="limit-hint">每日限购 1 件</div>
+      </div>
+    </article>
+    <article class="goods">
+      <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9h10v9a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3z"/><path d="M17 11h1.5a2 2 0 0 1 0 4H17"/></svg></div>
+      <div>
+        <h3 class="goods-name">标准美式</h3>
+        <div class="meta desc">单一产地，坚果香</div>
+        <div class="buy-row">
+          <span class="price"><span class="amount"><span class="unit">¥</span><span class="num">12</span></span><span class="meta">起</span></span>
+          <button class="add" type="button" aria-label="加入购物车"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+      </div>
+    </article>
+    <article class="goods sold-out">
+      <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l1 5H7z"/><path d="M7 8l1 13h8l1-13"/></svg></div>
+      <div>
+        <h3 class="goods-name">桂花酒酿拿铁</h3>
+        <div class="meta desc">季节限定</div>
+        <div class="buy-row"><span class="price"><span class="amount"><span class="unit">¥</span><span class="num">16</span></span></span><span class="sold-badge">已售罄</span></div>
+      </div>
+    </article>
+  </div>
+</div>
+<div class="cart-bar">
+  <button class="bag" type="button" aria-label="购物车，2 件"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12l-1 12H7z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg><span class="badge">2</span></button>
+  <span class="cart-sum"><span class="price"><span class="amount"><span class="unit">¥</span><span class="num">22</span><span class="unit">.9</span></span></span><span class="meta">已优惠 ¥9.1 · 另需配送费 ¥3</span></span>
+  <button class="checkout" type="button">去结算</button>
+</div>
+<p class="progress-hint">再买 <b>¥7.1</b> 可减 ¥5</p>
+</section>
+
+<section aria-labelledby="spec-h">
+<h2 id="spec-h">规格弹层</h2>
+<div class="card sheet">
+  <h3 class="sheet-name">生椰拿铁（原创）</h3>
+  <div class="tags"><span class="tag">8 折</span><span class="tag member">会员专享</span></div>
+  <div class="spec-group"><p class="spec-label">杯型</p><div class="options"><button class="opt" type="button" aria-pressed="true">大杯</button><button class="opt" type="button" aria-pressed="false">超大杯<span class="unit">+¥3</span></button></div></div>
+  <div class="spec-group"><p class="spec-label">甜度</p><div class="options"><button class="opt" type="button" aria-pressed="true">7 分糖（推荐）</button><button class="opt" type="button" aria-pressed="false">5 分糖</button><button class="opt" type="button" aria-pressed="false">3 分糖（不推荐）</button></div></div>
+  <div class="spec-group"><p class="spec-label">温度</p><div class="options"><button class="opt" type="button" aria-pressed="true">冰</button><button class="opt" type="button" disabled>热<span class="meta">售罄</span></button></div></div>
+  <div class="spec-group"><p class="spec-label">加料</p>
+    <div class="addon"><span class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="6"/></svg></span><span>椰果</span><span class="price"><span class="amount"><span class="unit">¥</span><span class="num">1</span></span></span><button class="ghost" type="button" aria-label="加椰果"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div>
+  </div>
+  <div class="summary">
+    <div><span class="price"><span class="amount"><span class="unit">¥</span><span class="num">10</span><span class="unit">.9</span></span><span class="meta was">¥20</span></span><div class="meta">大杯，7 分糖，冰</div></div>
+    <div class="stepper"><button class="ghost" type="button" aria-label="减少"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button><span>1</span><button class="ghost" type="button" aria-label="增加"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div>
+  </div>
+  <div class="actions"><button class="btn-soft" type="button">立即购买</button><button class="btn-solid" type="button">加入购物车</button></div>
+</div>
+</section>
+
+<section aria-labelledby="coupon-h">
+<h2 id="coupon-h">优惠券</h2>
+<div class="card coupon">
+  <div class="coupon-value"><span><span class="num">5</span><span class="unit">元</span></span><span class="unit">满 30 可用</span></div>
+  <div class="coupon-body"><span class="badge">共 2 张</span><h3 class="coupon-name">满 30 减 5 元券（新人礼）</h3><span class="meta">自取与外送可用</span><span class="meta expire">08 时 29 分后失效</span><div class="coupon-foot"><a class="rule-hint" href="#rules">使用规则</a><button class="use" type="button">去使用</button></div></div>
+</div>
+<div class="card coupon">
+  <div class="coupon-value"><span><span class="num">7.0</span><span class="unit">折</span></span><span class="unit">饮品券</span></div>
+  <div class="coupon-body"><h3 class="coupon-name">饮品折扣券</h3><span class="meta">有效期至 2026-11-12</span><div class="coupon-foot"><a class="rule-hint" href="#rules">使用规则</a><button class="use" type="button">去使用</button></div></div>
+</div>
+<div class="card coupon unavailable">
+  <div class="coupon-value"><span><span class="num">10</span><span class="unit">元</span></span><span class="unit">满 50 可用</span></div>
+  <div class="coupon-body"><h3 class="coupon-name">满 50 减 10 元券</h3><span class="meta">未满足使用门槛，还差 ¥27.1</span><div class="coupon-foot"><a class="rule-hint" href="#rules">使用规则</a></div></div>
+</div>
+</section>
+
+<section aria-labelledby="pay-h">
+<h2 id="pay-h">结算明细</h2>
+<div class="card breakdown">
+  <div class="row"><span>商品金额</span><span>¥32.0</span></div>
+  <div class="row"><span>包装费</span><span>¥1.0</span></div>
+  <div class="row"><span>配送费</span><span>¥3.0</span></div>
+  <div class="row"><span>会员折扣</span><span class="minus">-¥6.4</span></div>
+  <div class="row"><span>优惠券（已选最优）</span><span class="minus">-¥5.0</span></div>
+  <div class="total"><div><span class="price"><span class="meta">实付</span><span class="amount"><span class="unit">¥</span><span class="num">24</span><span class="unit">.6</span></span></span><div class="meta">已优惠 ¥11.4</div></div><button class="checkout" type="button">去支付</button></div>
+</div>
+</section>
+
+<section aria-labelledby="pop-h">
+<h2 id="pop-h">领券弹窗与公告</h2>
+<div class="popup">
+  <div class="popup-art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h16v11H4z"/><path d="M12 9v11M4 13h16"/><path d="M12 9c-2-4-6-4-6-1s6 1 6 1 6 2 6-1-4-3-6 1"/></svg></div>
+  <h3 class="popup-title">新人礼已到账</h3>
+  <div class="popup-value"><span class="amount"><span class="unit">¥</span><span class="num">32</span></span><span class="meta">新人券包</span></div>
+  <div class="meta">共 4 张，7 天内有效</div>
+  <button class="btn-solid" type="button">立即领取</button>
+</div>
+<button class="close" type="button" aria-label="关闭"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+<div class="dialog" role="alertdialog" aria-labelledby="notice-h">
+  <h3 class="dialog-title" id="notice-h">门店今日 15:00 起暂停营业</h3>
+  <p>设备检修，已下单的订单照常制作。</p>
+  <p class="meta">预计明日 07:00 恢复营业，可切换附近门店。</p>
+  <div class="actions"><button class="btn-soft" type="button">切换门店</button><button class="btn-solid" type="button">知道了</button></div>
+</div>
+</section>
+
+<section aria-labelledby="order-h">
+<h2 id="order-h">取餐号</h2>
+<div class="card pickup">
+  <div class="pickup-status">制作中</div>
+  <div class="pickup-code">T236</div>
+  <div class="meta">前方 2 杯，预计 5 分钟</div>
+  <div class="steps"><span class="step-caption done">已下单</span><span class="step-caption" aria-current="step">制作中</span><span class="step-caption">待取餐</span><span class="step-caption">已完成</span></div>
+</div>
+</section>
+</main>
+</body>
+</html>
+=== end ===
+
+
 === template: approvals.json ===
 {
   "schema_version": "2.0",

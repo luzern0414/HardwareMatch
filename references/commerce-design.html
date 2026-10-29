@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>交易与营销界面规范</title>
+  <link rel="stylesheet" href="guidelines.css">
+</head>
+<body>
+<main id="main" aria-label="交易与营销界面规范">
+    <h1>交易与营销界面规范</h1>
+<!-- SECTION:scope:START id=scope data-rule-id=commerce-scope -->
+<section id="scope" data-rule-id="commerce-scope" aria-labelledby="scope-heading">
+<h2 id="scope-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><circle cx="12" cy="12" r="3"/></svg><span>适用范围</span></h2>
+<p>点单（茶饮、咖啡、快餐、烘焙）、零售电商、会员与积分、营销活动的小程序、<code>App</code> 与 <code>H5</code> 界面，以及后台里与之对应的商品、价格、活动、优惠券、弹窗与公告配置。本页写交易与营销的界面细节；页面骨架与七层规则见界面通用规范，各端参数见小程序、网站与后台规范，配色、字体、图标与插画见视觉规范。</p>
+<p>目标是可以直接上线的商用界面：价格算得清、优惠看得懂、下单少一步、活动不打扰，每个状态都有设计，金额与法规一致。</p>
+</section>
+<!-- SECTION:scope:END -->
+
+<!-- SECTION:workflow:START id=workflow data-rule-id=commerce-workflow -->
+<section id="workflow" data-rule-id="commerce-workflow" aria-labelledby="workflow-heading">
+<h2 id="workflow-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h5a3 3 0 0 1 3 3v1M16 18h-5a3 3 0 0 1-3-3v-1"/><path d="m13 8 3 2 3-2M11 16l-3-2-3 2"/></svg><span>工作流程</span></h2>
+<ol>
+<li>先定交易模型：取餐方式（自取、外送、堂食）、门店维度、营业时间、起送价、配送费与包装费、售罄与限购、支付方式。</li>
+<li>再定价格体系：售价、划线价的来源与说明、会员价、优惠券、满减与折扣的叠加和互斥、预估到手价的算法；菜单、购物车、结算与订单详情用同一套算法。</li>
+<li>按本页逐页设计：首页与营销区、菜单、商品详情与规格、购物车、结算、订单与取餐、会员与资产、优惠券、弹窗与公告、门店选择。</li>
+<li>原型用像真的模拟数据跑完整下单：多规格加价、售罄、未达起送、券不可用、超出配送范围、门店休息、价格或库存在结算时变化、支付失败，每种都有界面。</li>
+<li>后台配置闭环：商品、价格、活动、券、弹窗、公告、门店都在后台增删改与排期，前台不写死。</li>
+</ol>
+</section>
+<!-- SECTION:workflow:END -->
+
+<!-- SECTION:rules:START id=rules data-rule-id=commerce-rules -->
+<section id="rules" data-rule-id="commerce-rules" aria-labelledby="rules-heading">
+<h2 id="rules-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 5 6v5c0 4.5 2.8 7.8 7 10 4.2-2.2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg><span>核心规则</span></h2>
+<h3>价格展示</h3>
+<ul>
+<li>价格结构固定为：现价、可选的“起”、可选的划线价、可选的价格标签。现价用价格色（主题共用色 <code>price</code>，与品牌色无关），数字 16–18 加粗，货币符号与小数 12；“起”12 次要灰；划线价 12 次要灰加删除线，放在现价右侧，基线对齐。</li>
+<li>一个价格位只有一个强调价。有预估到手价、券后价或会员价时，它是现价，售价改为划线价，并在旁边写“预估到手”“券后”“会员价”标签；不同时出现两个红色价格。</li>
+<li>预估到手价旁放说明图标，点开是明细：售价、会员折扣、优惠券、满减，逐项相减；菜单、详情、购物车与结算的明细同一算法，结算金额不得高于前面显示的到手价，变化时先提示再支付。</li>
+<li>有规格价差时显示最低价加“起”；选择规格后价格实时变化。整数不带小数，非整数最多两位并去掉末尾零；同一列表口径一致；价格不换行，数字等宽。</li>
+<li>划线价只能是有依据的被比较价格，并在详情页或规则页写“价格说明”：划线价是什么价、未划线价是什么价。不写“原价”二字，除非它确是促销前的成交价（见“合规底线”）。</li>
+</ul>
+<h3>促销标签与活动露出</h3>
+<ul>
+<li>商品卡上最多三层营销信息：图片角标一个（新品、爆品、联名、开业限定）；名称下标签最多两个（折扣、满减、限时、会员专享、限购）；价格下活动行一条（例如“新店试业全场 8 折”）。超出的放进详情或活动弹层。</li>
+<li>标签 12 号字，高 16–18，圆角 2–4，用价格色浅底配价格色字，或 1 像素描边；同一屏的标签同一样式，不用渐变与阴影。</li>
+<li>限时用倒计时数字块（<code>HH:MM:SS</code>，等宽数字），结束后自动换成结束状态；限购写在价格旁（“每日限购 1 件”）；销量与评价用真实数据取整（“已售 100+”）。不做重置的假倒计时和虚构库存。</li>
+<li>满减在购物车栏写进度：“再买 ¥8 减 ¥5”，达成后写“已减 ¥5”。</li>
+<li>菜单顶部一行公告或活动条，写最重要的一条，右侧“查看”打开活动弹层：门店公告、优惠活动、门店信息与资质。</li>
+</ul>
+<h3>优惠券</h3>
+<ul>
+<li>券面左右两栏：左侧是价值（金额大号数字加“元”，或折扣数字加“折”，或“兑换”二字）与门槛小字（“满 30 可用”）；右侧是券名、适用范围、有效期与按钮。临期 24 小时内的有效期用价格色并写剩余时间（“08 时 29 分后失效”）。</li>
+<li>使用规则默认收起，点“使用规则”展开；同类多张合并并加“共 2 张”角标；状态分可用、不可用、已使用、已过期，不可用的灰化并写原因（未满门槛、不在适用门店、不适用该商品）。</li>
+<li>入口三处同时存在：菜单顶部横向券条（“5.5 折 折扣券 使用”）、购物车栏左侧“优惠券 3 张可用”、结算页优惠栏。结算页自动选最优组合并写“已选最优”，可手动改。</li>
+<li>券列表按券类分页签，顶部有兑换码输入和临期提醒开关，底部有历史券与无效券入口；领券后原地显示“领取成功”并给“去使用”，不跳走。</li>
+</ul>
+<h3>点单菜单页</h3>
+<ul>
+<li>顶部依次：取餐方式切换（自取、外送）；门店名、距离与排队信息（“前方 2 杯制作中”），点门店名换店；收藏、拼单、搜索入口；一行公告或活动条；菜单分组页签（经典菜单、主题活动、我的常点）。</li>
+<li>左侧分类栏宽 80–88，每项图标加名称，可挂“上新”“爆品”小标签；选中项白底加左侧主色竖条。右侧列表与左侧联动，分组标题吸顶并带一句副标题，组首可放横幅。</li>
+<li>商品行：方形商品图 72–88（抠图配浅底或统一角度的实拍）、名称 14 加粗最多两行、标签、描述 12 次要灰一行、价格行。单规格用圆形加号直接加购，多规格用“选规格”胶囊按钮；已加购的显示数量角标或步进器；售罄整行灰化并写“已售罄”或“补货中”，不可加购。</li>
+<li>主题页可切双列卡片：图片在上、名称与价格在下，同一行等高。</li>
+<li>底部悬浮购物车栏高 48–52、胶囊形、离底部标签栏 8：左侧购物袋图标与数量角标，中间合计与“已优惠”或“预估到手”，右侧“去结算”；空时写“暂无商品，请先选购”，未达起送写“还差 ¥8 起送”，并显示配送费。点开是购物车清单弹层：规格、数量、清空。加购时商品图飞入购物袋并让角标跳动一次。</li>
+</ul>
+<h3>商品详情与规格选择</h3>
+<ul>
+<li>规格少用底部弹层，内容多用整页详情。头部是商品图，下面依次：名称 16 加粗、卖点标签、描述（超过三行收起并给“展开”）、规格组、加料、汇总行与按钮。</li>
+<li>规格组名 12 加粗次要灰；选项为胶囊或带图标的选项卡片，选中项主色描边加主色浅底；加价写“+¥3”；推荐项写“（推荐）”并加星标，不推荐的直接写明；售罄选项灰化并标“售罄”，不可点；默认选中最常用组合。</li>
+<li>加料一行一项：小图、名称、单价、加号，可多选并有上限。</li>
+<li>汇总行写已选规格（“中杯，冰沙，7 分糖”）、实时价格与划线价、步进器，可“保存口味”。底部两个等宽胶囊按钮：“加入购物车”与“立即购买”，一个实色一个浅色。</li>
+<li>套餐写“已包含”的子项，每项可单独定制，并给“恢复默认”。详情页底部有购买须知、主要原料、价格说明与交易保障。</li>
+</ul>
+<h3>购物车与结算</h3>
+<ul>
+<li>结算页按决策顺序：门店或地址与取餐方式（立即取餐或预约时间）、商品清单（超过三件收起）、优惠（会员折扣、优惠券、满减、积分抵扣）、费用（商品金额、包装费、配送费、优惠合计）、备注与餐具、支付方式；底部固定栏写实付与已优惠金额，右侧“去支付”。</li>
+<li>配送费、包装费在菜单页购物车栏就写出，不在最后一步第一次出现；所有费用逐项列出，不合并成一个模糊的“服务费”。</li>
+<li>提交前校验库存、价格、券与营业状态；有变化时弹确认说明变化项，用户确认后才支付。不默认勾选加购、保险或会员。</li>
+</ul>
+<h3>订单与取餐</h3>
+<ul>
+<li>订单列表按类型分页签（全部、门店、卡券、商城），卡片写取餐方式标签、门店、状态、商品缩略与规格、时间、件数与合计；按状态给操作：再来一单、开发票、评价、取消、申请售后。</li>
+<li>订单详情顶部是状态与取餐号（28 加粗，每屏一个大数字）和进度（已下单、制作中、待取餐、已完成，附“前方 2 杯”）；随后是门店电话与导航、商品与优惠明细（“已优惠 ¥14，实付 ¥0”）、用餐信息、订单信息（编号可复制、时间、支付方式），最后是反馈入口。</li>
+</ul>
+<h3>会员与资产</h3>
+<ul>
+<li>我的页：卡通头像、昵称、等级与成长进度（“再获得 30 成长值升级”）；资产四格（优惠券带“即将过期”角标、券卡、积分、余额），点开各自列表；最近一单与“再来一单”；功能宫格超过两行收起为“展开全部”；活动卡与品牌横幅放在功能之后。</li>
+<li>付费会员与次卡：权益逐条写清；方案卡并排对比价格与划线价；自动续费写续费价、周期与“可随时取消”，开通前勾选服务协议与自动续费说明，默认不勾选。</li>
+<li>积分商城：顶部积分余额与明细、规则、兑换记录；签到与抽奖入口；商品卡写积分价、剩余库存与已兑换数。生日、签到、勋章、消费日历等情感化模块按品牌需要选用。</li>
+</ul>
+<h3>弹窗与公告</h3>
+<ul>
+<li>类型与优先级从高到低：隐私与授权；强公告（门店暂停营业、系统维护，必须确认）；到账与订单提醒；新人礼与领券；活动海报。一次进入页面最多弹一个，其余排到下次。</li>
+<li>频率：同一弹窗每人每天最多一次，同一活动的总次数、目标人群和投放页面由后台配置；已领取、已参与或主动关闭的不再弹；新人礼只给新人。</li>
+<li>形式：居中卡片，宽为屏宽的 75%–85%，主视觉加价值（金额大号数字）加一个主按钮；关闭按钮在卡片下方居中（直径 32）或右上角；点遮罩可关闭（强公告除外）。领取后原地变为“领取成功”与“去使用”，不跳转。</li>
+<li>时机：首页或菜单页内容加载完成后再弹；结算、支付、填写表单与播放中不弹；订阅消息授权只在用户打开提醒开关或完成订单后请求。</li>
+<li>公告：门店公告用菜单顶部单行条，超长省略并给“查看”；系统公告用首页顶部可关闭的通知条；强公告用居中确认框，写原因、影响和恢复时间。</li>
+<li>后台的弹窗与公告管理有：类型、素材与文案、跳转、目标人群、投放页面、开始与结束时间、频率、优先级、状态，并统计曝光与点击。</li>
+</ul>
+<h3>门店与配送</h3>
+<ul>
+<li>门店选择页上方地图、下方列表；列表项写门店名、距离、营业状态与排队、地址、营业时间、服务标签（可外卖、可预约）、“常去”标记，右侧电话与导航；分“附近”“收藏”。首次进入时用浮层推荐最近的三家。</li>
+<li>门店休息时可预约并写下次营业时间；超出配送范围时提示改为自取或换地址。</li>
+</ul>
+<h3>营业状态与一键开停业</h3>
+<ul>
+<li>每个门店有一个营业状态，全系统只存一份，小程序、收银与支付、设备、外卖平台都读它：营业中；暂停营业（临时，可带恢复时间）；休息中（营业时间外自动进入）；已闭店（长期停业，门店列表不再推荐）。</li>
+<li>后台入口：顶栏右侧的营业状态胶囊显示当前门店状态，点开即一键停业或一键开业；门店列表行内开关；多店可批量。只有店长与总部运营能操作，操作写入营业日志并通知相关人员。</li>
+<li>一键停业弹出居中确认框，一屏填完：停业原因（预设加自定义）；恢复方式（手动开业或定时恢复）；进行中订单的处理（默认继续制作完成，可选取消并原路退款）；是否保留预约下单；储值、买卡、会员续费与积分兑换是否同时暂停（默认暂停）；对外公告文案（按原因自动生成，可改）。框里先列出影响：进行中订单、待支付订单与将切换的设备各有多少。</li>
+<li>一键开业先做开业检查并逐项显示结果：支付通道、收银与打印、关键设备在线、售罄与库存、营业时间。不通过的项写原因与处理入口；支付通道等阻断项不通过时不能开业。</li>
+<li>停业后的小程序：门店栏显示状态与恢复时间，菜单顶部一条停业公告，首次进入弹一次强公告（原因、恢复时间、附近营业门店）；菜单与价格仍可浏览，加购与结算按钮变成不可点的“暂停营业”，购物车保留；门店列表里标出状态并排在营业门店之后；允许预约时只开放预约时段。</li>
+<li>停业后的支付：服务端在创建订单、发起支付和支付回调三处都校验营业状态，停业后拒绝新的下单与预支付；停业前已发起、停业后才到账的支付按“进行中订单的处理”完成制作或自动原路退款，不能出现付了钱没人做。前端按钮置灰只是提示，不能代替服务端校验。</li>
+<li>停业后的设备：每类设备登记停业动作并由营业状态统一下发，例如门禁与闸机只放行员工，储物柜与取餐柜停止新分配，打印机停止接单，点单机与收银屏显示停业画面，广告屏换成停业公告，灯光与空调按场景关闭或节能。逐台显示下发结果，失败的可重试并告警；设备失败不影响停业与支付暂停本身生效。开业时按相反动作恢复。</li>
+<li>营业时间到点自动进入休息中并自动恢复，节假日可设特殊营业时间；外卖平台门店同步置休与恢复。每次切换写入营业日志：时间、操作人或定时任务、原因、受影响的订单与设备结果。</li>
+</ul>
+<h3>状态与异常</h3>
+<ul>
+<li>列表与详情首次加载用骨架屏，品牌可用吉祥物加载动画；断网用插画、一句原因和“重试”；售罄、未达起送、券不可用、超出范围、支付失败、价格变化都有专门界面，写原因和下一步。</li>
+</ul>
+<h3>营销区排版</h3>
+<ul>
+<li>首页自上而下：品牌主视觉或联名主视觉（带一个行动按钮）、问候与会员条、两到三个主服务大入口（插画或生成图标、名称、一行利益点）、四到五个次入口（图标、名称、一行利益点、角标）、活动组合、人气推荐。</li>
+<li>营销区（首页、活动页、会员与积分商城的推荐位）可以不规则：一大两小的组合、插画与吉祥物出框、手写风标题、装饰元素。功能区（菜单列表、表单、订单、设置、后台）保持对齐与等高；边缘对齐的“一大两小”（大卡高度等于两张小卡加间距）在功能区也可用。</li>
+</ul>
+<h3>合规底线</h3>
+<ul>
+<li>划线价等被比较价格要真实、有依据，并在页面说明其含义；标“原价”时，原价应是本次促销前七日内在本交易场所成交的最低价格，七日内没有成交的取促销前最后一次成交价（《明码标价和禁止价格欺诈规定》）。</li>
+<li>费用明码标价，不在结算最后一步才出现；不默认勾选搭售、保险与自动续费；倒计时、库存、销量必须真实。</li>
+</ul>
+</section>
+<!-- SECTION:rules:END -->
+
+<!-- SECTION:platform-matrix:START id=platform-matrix data-rule-id=commerce-platform-matrix -->
+<section id="platform-matrix" data-rule-id="commerce-platform-matrix" aria-labelledby="platform-matrix-heading">
+<h2 id="platform-matrix-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="6" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/></svg><span>平台矩阵</span></h2>
+<div class="table-wrap"><table><thead><tr><th>端</th><th>交易与营销的要点</th></tr></thead><tbody>
+<tr><td>小程序</td><td>紧凑字阶；底部悬浮购物车栏；订阅消息只在用户操作后请求；隐私协议在首次使用前确认</td></tr>
+<tr><td><code>App</code> 与 <code>H5</code></td><td>同一套价格结构与弹窗规则；<code>H5</code> 支付回跳后先查单再显示结果</td></tr>
+<tr><td>网站</td><td>价格表与方案卡按网站规范；促销信息同样受合规底线约束</td></tr>
+<tr><td>后台</td><td>商品、规格与价格、活动、优惠券、弹窗与公告、门店都有列表、新增、编辑、排期、上下线与数据统计</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:platform-matrix:END -->
+
+<!-- SECTION:examples:START id=examples data-rule-id=commerce-examples -->
+<section id="examples" data-rule-id="commerce-examples" aria-labelledby="examples-heading">
+<h2 id="examples-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m4 17 5-5 3 3 2-2 6 6"/></svg><span>案例样本</span></h2>
+<h3>咖啡连锁点单</h3>
+<p>首页是联名主视觉、三个立体插画主入口与四个次入口；菜单页顶部是可用券条，价格写“¥10.9 预估到手”加划线价并可看明细；规格是带图标的选项卡片；详情页有“价格说明”解释划线价；我的页有资产四格、即将过期角标和消费日历。</p>
+<h3>茶饮点单</h3>
+<p>菜单页门店栏写“前方 2 杯制作中”，商品价“¥28.8 起”配划线价与“新店试业全场 8 折”活动行；规格弹层推荐项带星标、不推荐的明写；订单详情取餐号大字，下面是“已优惠 ¥14”；活动弹层里有门店公告、优惠活动与食品安全档案。</p>
+</section>
+<!-- SECTION:examples:END -->
+
+<!-- SECTION:output-contract:START id=output-contract data-rule-id=commerce-output-contract -->
+<section id="output-contract" data-rule-id="commerce-output-contract" aria-labelledby="output-contract-heading">
+<h2 id="output-contract-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>输出契约</span></h2>
+<ul>
+<li>原型的商品数据有售价、划线价与说明、规格加价、售罄项、限购；购物车与结算有费用明细与优惠明细，金额前后一致。</li>
+<li>每个交易页面都有：正常、空、加载、售罄或不可用、未达起送、券不可用、价格变化、支付失败中适用的状态，用 <code>data-state-kind</code> 或 <code>data-scenario</code> 标出。</li>
+<li>弹窗与公告写明类型、触发时机、频率与优先级；价格用 <code>price</code> 色，划线价用删除线元素。</li>
+<li>有门店的系统演示营业状态：后台顶栏状态胶囊、停业确认框、开业检查结果；小程序停业状态的门店栏、公告条、强公告与不可加购按钮。</li>
+</ul>
+</section>
+<!-- SECTION:output-contract:END -->
+
+<!-- SECTION:quality-gates:START id=quality-gates data-rule-id=commerce-quality-gates -->
+<section id="quality-gates" data-rule-id="commerce-quality-gates" aria-labelledby="quality-gates-heading">
+<h2 id="quality-gates-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h5M15 7h5M9 7a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM4 17h10M18 17h2M14 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg><span>质量门禁</span></h2>
+<ul>
+<li>同一价格位出现两个强调价、划线价没有说明、写“原价”却不是促销前成交价：退回修改。</li>
+<li>结算才出现配送费或包装费、默认勾选搭售或自动续费、虚假倒计时或库存：失败。</li>
+<li>菜单、购物车、结算、订单详情的金额算法不一致：失败。</li>
+<li>商品卡营销信息超过三层、标签样式不统一、售罄仍能加购：退回修改。</li>
+<li>一次进页弹出两个以上弹窗、弹窗没有关闭方式、结算或支付中弹窗：退回修改。</li>
+<li>功能区错落不等高，或营销区之外出现出框与不规则排版：退回修改。</li>
+<li>有门店却没有一键开业与停业、停业后仍能下单或支付、只在前端置灰而服务端不校验、设备不联动或营业状态存了多份：失败。</li>
+</ul>
+</section>
+<!-- SECTION:quality-gates:END -->
+
+<!-- SECTION:handoff:START id=handoff data-rule-id=commerce-handoff -->
+<section id="handoff" data-rule-id="commerce-handoff" aria-labelledby="handoff-heading">
+<h2 id="handoff-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h12M13 4l3 3-3 3M20 17H8M11 14l-3 3 3 3"/></svg><span>交接规则</span></h2>
+<p>交给开发技能：价格与优惠的计算规则（叠加、互斥、取整）、费用项、券与活动的数据结构、弹窗与公告的投放字段、库存与价格变化的校验点、划线价的取值来源，以及营业状态的数据、三处支付校验、停业时在途订单与到账支付的处理、设备联动指令与回报。</p>
+</section>
+<!-- SECTION:handoff:END -->
+
+</main>
+</body>
+</html>

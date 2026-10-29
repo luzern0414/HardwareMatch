@@ -39,7 +39,7 @@ Keep the architecture and every later page generated from one specification file
 
 ## 5 System design
 
-Create `raw/01-system/04-system-design.html` after architecture approval. Apply the system HTML contract in `references/system-design.html`; design layer by layer with `references/ui-standards.html` (设计架构 → 功能架构 → 信息架构与导航 → 页面与版式 → 组件 → 视觉基础 → 文案) and, for each layer, the same-named layer of every surface the product has (`references/admin-design.html`, `references/miniprogram-design.html`, `references/agent-design.html`, `references/website-design.html`), plus `references/function-list-design.html` for the function list; retain traceability, and stop for human approval.
+Create `raw/01-system/04-system-design.html` after architecture approval. Apply the system HTML contract in `references/system-design.html`; design layer by layer with `references/ui-standards.html` (设计架构 → 功能架构 → 信息架构与导航 → 页面与版式 → 组件 → 视觉基础 → 文案) and, for each layer, the same-named layer of every surface the product has (`references/admin-design.html`, `references/miniprogram-design.html`, `references/agent-design.html`, `references/website-design.html`), plus `references/function-list-design.html` for the function list and `references/commerce-design.html` (card `commerce`) when the product sells, takes orders, runs promotions or keeps members; retain traceability, and stop for human approval.
 
 ## 6 Visual and prototype
 

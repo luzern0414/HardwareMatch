@@ -52,6 +52,28 @@
       "last_confirmed": "2026-10-29"
     },
     {
+      "key": "commerce-ui-commercial-grade",
+      "kind": "preference",
+      "text": "交易界面按商用小程序做：现价加划线价与到手价标签，商品卡营销信息不超过三层，菜单顶部券条，悬浮购物车栏写配送费与满减进度，规格写推荐与售罄，优惠弹窗与公告弹窗有优先级、频率与后台配置；规则在 commerce-design.html，组件骨架在 templates.txt 的 commerce-kit.html",
+      "why": "用户 2026-10-29：不像可商用的精美产品，例如点单要原价划线再显示折扣价、要有活动，并补充优惠弹窗与公告弹窗；提供了咖啡与茶饮点单小程序录屏",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
+      "key": "commercial-miniprogram-density",
+      "kind": "preference",
+      "text": "小程序用紧凑字阶：商品名与列表名 14 加粗，主对象大卡片 16，描述、规格、“状态 · 时间”第二行与标签、划线价 12，价格数字 16–18 加粗而货币符号与小数 12，智能体消息 14/22，每屏只留一个大数字；营销区（首页、活动页、会员与积分商城推荐位）可以错落、一大两小、出框与手写标题，功能区（菜单列表、表单、订单、设置、后台）对齐等高",
+      "why": "用户 2026-10-29 看过商用小程序录屏后确认紧凑字阶，并决定只在营销区放开不规则排版",
+      "uses": 2,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29",
+      "previous": {
+        "text": "小程序界面按商用作品的密度：时间、时长、计数、标签与坐标用 12，表单、消息与列表行名称 14，卡片与区块标题 16，对象名 18，每屏一个 32 大数字；版式混用错落宫格、时间轴、叠卡、出框立体元素、环形与面积图、波形进度条和曲线轨道，不整页用整宽单元格纵向堆叠",
+        "replaced_at": "2026-10-29"
+      }
+    },
+    {
       "key": "dashboard-computed-metrics",
       "kind": "preference",
       "text": "驾驶舱先分运营型与分析型，指标给计算后的变化、比率、排名与异常，长期为 0 的指标合并为一行状态，数据少于 3 个点不画折线、1 类不画环图，卡片时间范围服从页面",
@@ -106,6 +128,15 @@
       "last_confirmed": "2026-10-28"
     },
     {
+      "key": "imagegen-decorative-elements",
+      "kind": "preference",
+      "text": "装饰位置（品牌主卡主视觉、空状态、完成页、封面）可用 Imagegen 生成品牌色的柔和立体元素，透明底、无文字；导航、按钮、单元格里的功能图标仍用线性矢量；尽量一次生成 4×4 拼板再切图，提高效率",
+      "why": "用户 2026-10-29：装饰性的元素图案可以做；尽量生成4*4的，提高效率",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "interaction-closure",
       "kind": "preference",
       "text": "每个操作走完入口 → 反馈 → 结果 → 返回：每页写进入方式、目标、一个主操作、离开方式与加载、空、错误、成功、禁用五类状态；同一页面同一动作只一个入口（列表行除外），文字相同即同一动作，同一目的地一个入口；对象有查看、编辑、删除或归档、状态变更或写明不提供的理由；状态无死状态，流程有成功终点与失败恢复，审批后有去向；异步操作有进行中、成功、失败与重试、空四种结果，按钮有可用、禁用写原因、加载中三态；破坏性操作先确认；原型逐个操作走一遍",
@@ -140,6 +171,15 @@
       "uses": 1,
       "first_seen": "2026-10-28",
       "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "store-open-close-one-click",
+      "kind": "preference",
+      "text": "有门店的系统后台必须能一键开业与停业：营业状态只存一份；停业后小程序可浏览不可下单并有公告，服务端在下单、发起支付、支付回调三处校验并处理在途订单，设备按登记的停业动作统一下发并回报；开业前做开业检查",
+      "why": "用户 2026-10-29 要求后台补一键开业与停业，完善停业后的小程序显示、支付暂停与设备配置",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
     },
     {
       "key": "一个入口",
@@ -385,11 +425,15 @@
     {
       "key": "small-fill-selector-naming",
       "kind": "lesson",
-      "text": "界面里的小块实色（进度条填充、阶段点、数字角标、播放键）在选择器里写明 -mark、-bar i、.badge 或 button，12 号辅助字的选择器带 caption、tag、time 等标记；否则检查器判为大面积深色或正文过小",
-      "why": "check_document 与 validate_session 按选择器里的约定标记识别小元素",
-      "uses": 1,
+      "text": "小块实色与 12 号辅助字的选择器要写明约定标记（.dot、-bar i、-mark、badge；caption、meta、time、unit）；主卡内的白字选择器以 .brand-card 开头，否则对比度按白底计算报错；控件按钮文字保持 14",
+      "why": "修订 4.2 视觉板首次检查报 13 个错误，按这三类改名后通过",
+      "uses": 2,
       "first_seen": "2026-10-29",
-      "last_confirmed": "2026-10-29"
+      "last_confirmed": "2026-10-29",
+      "previous": {
+        "text": "界面里的小块实色（进度条填充、阶段点、数字角标、播放键）在选择器里写明 -mark、-bar i、.badge 或 button，12 号辅助字的选择器带 caption、tag、time 等标记；否则检查器判为大面积深色或正文过小",
+        "replaced_at": "2026-10-29"
+      }
     },
     {
       "key": "system-design-table-cells",
@@ -472,6 +516,15 @@
       "last_confirmed": "2026-10-29"
     },
     {
+      "key": "commercial-card-patterns",
+      "kind": "fact",
+      "text": "商用小程序卡片的丰富感来自六种做法：整幅照片加黑色透明度遮罩压白字、主色块加照片分栏、内容卡用真实首屏截图做封面、立体元素探出卡片边缘、浅彩宫格配大号数字、头部色块上叠卡；渐变底、模糊光晕与半透明玻璃是另一路 AI 风格，按视觉规范不能用",
+      "why": "Luz-Crawl 任务 024 的 Dribbble 小程序、卡片、AI 助手三页约 150 张缩略图拼图核对",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "component-library-reference",
       "kind": "fact",
       "text": "组件库参考清单在 references/ui-standards.html“参考组件库”；2026-10-28 已采集 Ant Design 字体与数据格式、Arco、TDesign 字体与表格、Semi、Element Plus、Carbon、Polaris、Atlassian 表格及 NN/g 数据表格、驾驶舱、筛选共 16 页（LuzCrawl 批次 batch-f38ef88f）",
@@ -479,6 +532,28 @@
       "uses": 1,
       "first_seen": "2026-10-28",
       "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "imagegen-actual-size",
+      "kind": "fact",
+      "text": "Imagegen 返回的尺寸与格式以打印结果为准：2k 16:9 webp 实际返回 1672×941 png，2k 1:1 返回 1536×1024；收到后再自行缩放并转 webp",
+      "why": "10 月 29 日三次生成的打印警告",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
+      "key": "imagegen-element-sheet",
+      "kind": "fact",
+      "text": "4×4 透明底拼板按 4k 请求后按实际尺寸切 16 格并去碎点；2×2 风格样例请求 2k 1:1 实际返回 1536×1024，按四象限切分、按透明边界裁切、补 6% 边距后缩到 320 方图",
+      "why": "两次风格样例生成的打印结果",
+      "uses": 2,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29",
+      "previous": {
+        "text": "Imagegen 透明底 4×4 元素拼板：请求 2880 实际返回 1254×1254，每格约 313 像素，界面 120 像素内够用；按网格切图后只保留面积不小于主体 1% 的连通部分，去掉背景碎点，再裁边存 WebP（每个约 15 KB）嵌入页面",
+        "replaced_at": "2026-10-29"
+      }
     },
     {
       "key": "manifest-strict-fields",
@@ -528,6 +603,15 @@
         "text": "原型脚本里不要写右方括号紧跟左圆括号的调用（例如按键名取函数后直接传参），先赋给变量再调用；会话校验会把它当成 Markdown 链接报断链",
         "replaced_at": "2026-10-29"
       }
+    },
+    {
+      "key": "ui-reference-galleries",
+      "kind": "fact",
+      "text": "商用移动界面参考以 Dribbble 搜索页最有效（voice-recorder-app、meeting-notes-app、mobile-dashboard、bento-mobile-app、ai-assistant-mobile-app，缩略图 400×300 可批量下载拼图对比）；站酷搜索多为作品封面信息少，优设小程序标签页多为课程广告",
+      "why": "Luz-Crawl 批量 15 个入口、下载约 300 张图后按来源拼图核对",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
     }
   ]
 }

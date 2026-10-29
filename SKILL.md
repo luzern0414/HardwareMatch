@@ -43,6 +43,7 @@ D:\Codes\Luz-System\                   the skill (rules, templates, knowledge, s
     agent-design.html                  智能体设计规范
     website-design.html                网站设计规范
     function-list-design.html          系统功能列表规范
+    commerce-design.html               交易与营销界面规范
     system-design.html                 系统设计规范 (gates, architecture and system-design HTML, prototype panel, phone operability)
     hardware-design.html               硬件设计规范 (business flow → devices → interfaces → protocols → backend; site requirements; list layout)
     hardware\                          hardware knowledge: device categories, protocols, scenarios, research playbook, plan schema
@@ -73,6 +74,7 @@ Never write outputs into the skill, and never put rules, templates or scripts in
 | Website or landing page | [website-design.html](references/website-design.html) | Approved system design or brief; main action per page known |
 | Architecture, system-design HTML, prototype panel | [system-design.html](references/system-design.html) | Requirement IDs, exact modules, module approval, research, then architecture approval |
 | Function list | [function-list-design.html](references/function-list-design.html) | Approved functions, pages, actions, states |
+| Ordering, retail, membership, promotions (prices, coupons, cart, checkout, popups and notices) | [commerce-design.html](references/commerce-design.html) | Transaction model and price rules known; card `commerce` |
 | On-site hardware | [hardware-design.html](references/hardware-design.html) and `references/hardware/` | Scale, operation model, budget and site facts recorded |
 | Colour, type, icons, corners, motion, spacing | Luz-Design `references/visual-design.html` | — |
 
