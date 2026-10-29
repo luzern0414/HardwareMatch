@@ -234,6 +234,7 @@
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "主题色系统", "价格色与营业状态"]}
       ],
       "tools": [
+        "效果怎么做（划线价、角标、券面缺口、一大两小、出框元素、分类联动、悬浮栏避开安全区）读 `py -X utf8 scripts/context.py ui-recipes`；示例 `examples/commerce-kit/`",
         "价格色用主题共用色 `price`（#D9001B）与 `priceTint`（#FFF1F0），见 Luz-Design `references/themes.json`；与品牌色无关，对白底与浅底都过 4.5:1",
         "商品图、入口图标、活动主视觉与弹窗主视觉可用 Imagegen 生成（Luz-Design visual-design.html 图像生成：风格由用户在视觉稿里选定，优先 4×4 拼板切图）；控件图标仍用线性矢量",
         "组件骨架：`references/templates.txt` 的 commerce-kit.html（菜单页门店栏、公告条、券条、分类栏与商品行、悬浮购物车栏、规格弹层、券面、结算明细、领券弹窗、强公告、取餐号），已通过 check_document 与会话字号检查；换成会话主题色后按需取用，商品图换成实拍或生成的抠图",
@@ -244,6 +245,30 @@
         "`py -X utf8 scripts/validate_session.py <会话目录>` 与 `check_interaction.py` 零 ERROR",
         "`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\check_document.py <页面.html> --allow interface` 零 ERROR",
         "浏览器里完整下一单：多规格加价、售罄、未达起送、券不可用、价格变化、支付失败都能看到对应界面，金额前后一致"
+      ]
+    },
+    "ui-recipes": {
+      "title": "界面实现参考（价格、角标、券面、不规则卡片、联动、浮层的写法）",
+      "summary": "交易、营销与会员界面常见效果的规格、写法与参考来源，以及让检查脚本认出辅助文字、小块实色与控件的类名约定",
+      "keywords": ["实现", "写法", "划线价", "角标", "徽标", "券面", "缺口", "不规则", "一大两小", "出框", "吸顶", "联动", "安全区", "弹窗", "倒计时", "骨架屏", "生成元素"],
+      "sections": [
+        {"page": "ui-recipes.html", "title": "界面实现参考", "path": ["工作流程"]},
+        {"page": "ui-recipes.html", "title": "界面实现参考", "path": ["核心规则"]},
+        {"page": "ui-recipes.html", "title": "界面实现参考", "path": ["平台矩阵"]},
+        {"page": "ui-recipes.html", "title": "界面实现参考", "path": ["案例样本"]},
+        {"page": "ui-recipes.html", "title": "界面实现参考", "path": ["输出契约"]},
+        {"page": "ui-recipes.html", "title": "界面实现参考", "path": ["质量门禁"]},
+        {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "五、组件", "常用控件做法"]},
+        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "层级与立体感", "圆角"]}
+      ],
+      "tools": [
+        "骨架：`references/templates.txt` 的 commerce-kit.html；完整示例：`examples/commerce-kit/index.html`（生成元素在 `assets/`，首屏截图 `screenshot-home.png`）",
+        "生成元素：Luz-Design `references/prompt-image.txt` 的元素拼板模板，`D:\\Codes\\Imagegen\\src\\imagegen.py` 先空跑再生成，`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\cut_element_sheet.py <拼板.png> <输出目录> <16 个名称>` 切图"
+      ],
+      "checks": [
+        "`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\check_document.py <页面.html> --allow interface` 零 ERROR",
+        "`py -X utf8 scripts/validate_session.py <会话目录>` 零 ERROR",
+        "手机宽度浏览器逐屏截图核对：价格不换行、角标不遮主体、出框元素只在营销区、悬浮栏不被安全区遮挡"
       ]
     },
     "agent-ui": {

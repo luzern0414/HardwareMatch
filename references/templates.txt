@@ -573,7 +573,47 @@ h1 svg{width:24px;height:24px;flex:0 0 auto}
 h3{font-weight:600}
 h2{margin:24px 4px 8px;font-size:16px;line-height:24px;font-weight:600}
 .icon{width:16px;height:16px;flex:0 0 auto;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+a.card,.services a,.entries a{color:inherit;text-decoration:none}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--e1)}
+/* Home and marketing area (commerce-design.html 营销区排版): irregular layout lives only here */
+.art{display:grid;place-items:center;color:var(--action)}
+.art svg{width:60%;height:60%;stroke-width:2}
+.brand-card .art{color:#fff}
+.art img{display:block;width:100%;height:100%;object-fit:contain}
+.brand-card{position:relative;margin-top:36px;padding:16px 132px 16px 16px;border-radius:16px;background:var(--action);color:#fff;box-shadow:var(--e2)}
+.brand-card .hero-title{margin:0;font-size:22px;line-height:30px;font-weight:700}
+.brand-card .hero-meta{margin:4px 0 12px;color:#F6EBDD;font-size:12px;line-height:18px}
+.brand-card .hero-cta{min-height:32px;padding:0 16px;border:0;border-radius:999px;background:#fff;color:var(--action-press);font:inherit;font-weight:600}
+.brand-card .hero-art{position:absolute;right:4px;bottom:0;width:128px;height:156px}
+.member-strip{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;padding:10px 12px}
+.member-strip b{font-weight:600}
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.service{display:grid;justify-items:center;gap:2px;padding:12px 4px;text-align:center}
+.service .art{width:56px;height:56px}
+.service-name{font-size:16px;line-height:24px;font-weight:600}
+.entries{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:8px;padding:12px 4px}
+.entry{position:relative;display:grid;justify-items:center;gap:2px;text-align:center}
+.entry .art{width:40px;height:40px}
+.entry-name{font-size:14px;line-height:22px}
+.entry .badge{position:absolute;right:6px;top:-6px;padding:0 5px;border-radius:999px;background:var(--price);color:#fff;font-size:12px;line-height:16px}
+.bento{display:grid;grid-template-columns:1.15fr 1fr;grid-template-areas:"big top" "big bottom";gap:8px;margin-top:12px}
+.bento > *{position:relative;overflow:visible;padding:12px}
+.bento-big{grid-area:big;min-height:224px}
+.bento-top{grid-area:top}
+.bento-bottom{grid-area:bottom}
+.bento-title{margin:0;font-size:16px;line-height:24px;font-weight:600}
+.bento-big .hint{display:block;margin-bottom:8px}
+.bento-big .art{position:absolute;right:-8px;bottom:-12px;width:136px;height:136px}
+.bento-top .art,.bento-bottom .art{position:absolute;right:6px;bottom:6px;width:52px;height:52px}
+.bento .pill-cta{min-height:28px;padding:0 12px;border:0;border-radius:999px;background:var(--price);color:#fff;font:inherit;font-size:14px;line-height:22px}
+.countdown{display:inline-flex;align-items:center;gap:2px;margin:4px 0 8px}
+.countdown .badge{position:static;min-width:22px;padding:0 3px;border-radius:4px;background:var(--price);color:#fff;font-size:12px;line-height:18px;text-align:center}
+/* Coupon notches: two half circles in the page colour over the dashed divider */
+.coupon{position:relative;overflow:visible}
+.coupon-value{border-radius:12px 0 0 12px}
+.coupon::before,.coupon::after{content:"";position:absolute;left:88px;width:16px;height:16px;border-radius:50%;background:var(--canvas)}
+.coupon::before{top:-9px;box-shadow:inset 0 -1px 0 var(--line)}
+.coupon::after{bottom:-9px;box-shadow:inset 0 1px 0 var(--line)}
 /* Store bar and pickup switch */
 .store{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px}
 .store-name{font-size:16px;line-height:24px;font-weight:600}
@@ -672,11 +712,11 @@ h2{margin:24px 4px 8px;font-size:16px;line-height:24px;font-weight:600}
 .coupon-foot{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
 .coupon-foot .rule-hint{color:var(--ink2);font-size:12px;line-height:18px;text-decoration:none}
 .use{min-height:30px;padding:0 14px;border:0;border-radius:999px;background:var(--price);color:#fff;font:inherit;font-size:14px;line-height:22px}
-.badge{position:absolute;right:0;top:0;padding:0 6px;border-radius:0 12px 0 8px;background:var(--action-tint);color:var(--action-press);font-size:12px;line-height:18px}
+.coupon-body .badge{position:absolute;right:0;top:0;padding:0 6px;border-radius:0 12px 0 8px;background:var(--action-tint);color:var(--action-press);font-size:12px;line-height:18px}
 .expire{color:var(--price)}
 .coupon.unavailable .coupon-value{background:var(--canvas);color:var(--ink2);border-right-color:var(--line)}
 .coupon.unavailable .coupon-name{color:var(--ink2)}
-/* Settlement bar and breakdown */
+/* Settlement bar and breakdown: account pages show two decimals; lists drop trailing zeros */
 .breakdown{padding:12px 16px}
 .row{display:flex;justify-content:space-between;padding:4px 0}
 .row .minus{color:var(--price)}
@@ -706,6 +746,35 @@ h2{margin:24px 4px 8px;font-size:16px;line-height:24px;font-weight:600}
 <body>
 <main>
 <h1>{{BRAND_MARK}}{{SYSTEM_NAME}}</h1>
+
+<section aria-labelledby="home-h">
+<h2 id="home-h">首页与营销区</h2>
+<div class="brand-card">
+  <h3 class="hero-title">秋日桂花拿铁</h3>
+  <div class="hero-meta">新品第二杯半价，至 11 月 15 日</div>
+  <button class="hero-cta" type="button">立即品尝</button>
+  <span class="art hero-art" data-art="mascot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="4"/><path d="M6 21c0-4 3-6 6-6s6 2 6 6"/></svg></span>
+</div>
+<div class="card member-strip"><span>早上好，<b>V2 进阶会员</b></span><span class="meta">积分 1,280 · 优惠券 3 张</span></div>
+<div class="services">
+  <a class="card service" href="#menu-h"><span class="art" data-art="pickup" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9h10v9a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3z"/><path d="M6 9h12M9 5h6"/></svg></span><span class="service-name">到店自取</span><span class="meta">下单免排队</span></a>
+  <a class="card service" href="#menu-h"><span class="art" data-art="delivery" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M9 17h6M5 13h9l2-5h3"/></svg></span><span class="service-name">外送到家</span><span class="meta">满 30 免配送费</span></a>
+  <a class="card service" href="#menu-h"><span class="art" data-art="group-order" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h6l-1 12H6zM13 8h6l-1 12h-4z"/></svg></span><span class="service-name">一起拼单</span><span class="meta">满 3 杯 9 折</span></a>
+</div>
+<div class="card entries">
+  <a class="entry" href="#coupon-h"><span class="art" data-art="coupon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v4a2 2 0 0 0 0 4v4H4v-4a2 2 0 0 0 0-4z"/></svg></span><span class="entry-name">领券中心</span><span class="meta">天天有券</span><span class="badge">9.9</span></a>
+  <a class="entry" href="#home-h"><span class="art" data-art="member-card" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></span><span class="entry-name">会员卡</span><span class="meta">先囤先省</span></a>
+  <a class="entry" href="#home-h"><span class="art" data-art="sign-in" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M9 13l2 2 4-4"/></svg></span><span class="entry-name">签到有礼</span><span class="meta">连签 7 天</span></a>
+  <a class="entry" href="#home-h"><span class="art" data-art="points" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="7" rx="6" ry="3"/><path d="M6 7v5c0 1.7 2.7 3 6 3s6-1.3 6-3V7"/></svg></span><span class="entry-name">积分商城</span><span class="meta">好物兑换</span></a>
+</div>
+<div class="bento">
+  <a class="card bento-big" href="#coupon-h"><h3 class="bento-title">限时 9.9 元</h3><span class="meta hint">每日 10 点开抢，每人限 1 杯</span>
+    <span class="countdown" aria-label="距结束 02 时 15 分 08 秒"><span class="badge">02</span>:<span class="badge">15</span>:<span class="badge">08</span></span>
+    <button class="pill-cta" type="button">立即抢购</button><span class="art" data-art="new-item" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10h9l-1 10H7z"/><path d="M15 9l2-5"/><path d="M19 4v4M17 6h4"/></svg></span></a>
+  <a class="card bento-top" href="#pop-h"><h3 class="bento-title">新人礼</h3><span class="meta">32 元券包</span><span class="art" data-art="gift" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16v11H4zM12 9v11M4 13h16"/></svg></span></a>
+  <a class="card bento-bottom" href="#home-h"><h3 class="bento-title">幸运转盘</h3><span class="meta">每日 1 次</span><span class="art" data-art="wheel" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg></span></a>
+</div>
+</section>
 
 <section aria-labelledby="menu-h">
 <h2 id="menu-h">菜单页</h2>
@@ -810,12 +879,12 @@ h2{margin:24px 4px 8px;font-size:16px;line-height:24px;font-weight:600}
 <section aria-labelledby="pay-h">
 <h2 id="pay-h">结算明细</h2>
 <div class="card breakdown">
-  <div class="row"><span>商品金额</span><span>¥32.0</span></div>
-  <div class="row"><span>包装费</span><span>¥1.0</span></div>
-  <div class="row"><span>配送费</span><span>¥3.0</span></div>
-  <div class="row"><span>会员折扣</span><span class="minus">-¥6.4</span></div>
-  <div class="row"><span>优惠券（已选最优）</span><span class="minus">-¥5.0</span></div>
-  <div class="total"><div><span class="price"><span class="meta">实付</span><span class="amount"><span class="unit">¥</span><span class="num">24</span><span class="unit">.6</span></span></span><div class="meta">已优惠 ¥11.4</div></div><button class="checkout" type="button">去支付</button></div>
+  <div class="row"><span>商品金额</span><span>¥32.00</span></div>
+  <div class="row"><span>包装费</span><span>¥1.00</span></div>
+  <div class="row"><span>配送费</span><span>¥3.00</span></div>
+  <div class="row"><span>会员折扣</span><span class="minus">-¥6.40</span></div>
+  <div class="row"><span>优惠券（已选最优）</span><span class="minus">-¥5.00</span></div>
+  <div class="total"><div><span class="price"><span class="meta">实付</span><span class="amount"><span class="unit">¥</span><span class="num">24</span><span class="unit">.60</span></span></span><div class="meta">已优惠 ¥11.40</div></div><button class="checkout" type="button">去支付</button></div>
 </div>
 </section>
 

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>界面实现参考</title>
+  <link rel="stylesheet" href="guidelines.css">
+</head>
+<body>
+<main id="main" aria-label="界面实现参考">
+    <h1>界面实现参考</h1>
+<!-- SECTION:scope:START id=scope data-rule-id=recipes-scope -->
+<section id="scope" data-rule-id="recipes-scope" aria-labelledby="scope-heading">
+<h2 id="scope-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><circle cx="12" cy="12" r="3"/></svg><span>适用范围</span></h2>
+<p>交易、营销与会员界面里常见效果的实现写法：每条写规格、写法与参考来源。要做什么由<a href="commerce-design.html">交易与营销界面规范</a>与各端规范决定，本页只写怎么做；可直接取用的骨架在模板文件的 <code>commerce-kit.html</code>，完整示例在 <code>examples/commerce-kit/</code>。</p>
+</section>
+<!-- SECTION:scope:END -->
+
+<!-- SECTION:workflow:START id=workflow data-rule-id=recipes-workflow -->
+<section id="workflow" data-rule-id="recipes-workflow" aria-labelledby="workflow-heading">
+<h2 id="workflow-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h5a3 3 0 0 1 3 3v1M16 18h-5a3 3 0 0 1-3-3v-1"/><path d="m13 8 3 2 3-2M11 16l-3-2-3 2"/></svg><span>工作流程</span></h2>
+<ol>
+<li>先在规范里确认这个效果用在哪个区域（营销区还是功能区）。</li>
+<li>从 <code>commerce-kit.html</code> 取对应骨架，换成会话主题色；入口图标、插画与装饰元素按视觉规范生成并切图。</li>
+<li>按本页的规格与写法实现，类名沿用“输出契约”里的约定，检查脚本才能认出辅助文字、小块实色与控件。</li>
+<li>在手机宽度的浏览器里逐屏截图核对，再跑文件检查与会话校验。</li>
+</ol>
+</section>
+<!-- SECTION:workflow:END -->
+
+<!-- SECTION:rules:START id=rules data-rule-id=recipes-rules -->
+<section id="rules" data-rule-id="recipes-rules" aria-labelledby="rules-heading">
+<h2 id="rules-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 5 6v5c0 4.5 2.8 7.8 7 10 4.2-2.2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg><span>核心规则</span></h2>
+<h3>一、价格与数字</h3>
+<div class="table-wrap"><table><thead><tr><th>效果</th><th>规格</th><th>写法</th><th>参考</th></tr></thead><tbody>
+<tr><td>价格组合</td><td>整数 16–18 加粗；货币符号与小数约 0.65–0.75 倍；基线对齐、不换行</td><td><code>.amount{display:inline-flex;align-items:baseline}</code>，货币符号、整数、小数各一个 <code>span</code>；外层 <code>white-space:nowrap</code></td><td><code>NutUI</code> 价格组件；本技能模板</td></tr>
+<tr><td>等宽数字</td><td>价格、计时、数量对齐不跳动</td><td><code>font-variant-numeric:tabular-nums</code></td><td><code>MDN</code> <code>font-variant-numeric</code></td></tr>
+<tr><td>划线价</td><td>12 次要灰，紧贴现价右侧；只在有效时显示</td><td>用 <code>&lt;s&gt;</code> 加 <code>text-decoration:line-through</code>；读屏不会播报删除线，在前面放一段只给读屏的“划线价”文字</td><td><code>MDN</code> <code>s</code> 元素“无障碍”、<code>text-decoration</code>；价格规定第十六条</td></tr>
+<tr><td>预估到手价明细</td><td>价格旁说明图标，点开底部弹层逐项相减</td><td>按钮包住说明图标并写 <code>aria-label</code>；弹层列售价、会员、券、满减与到手价</td><td>《互联网平台价格行为规则》</td></tr>
+<tr><td>倒计时</td><td><code>HH:MM:SS</code>，每段一个价格色数字块，结束换状态</td><td>每段 <code>span.badge</code>，外层写完整 <code>aria-label</code>；按服务端结束时间计算，不用本地重置</td><td><code>Vant</code>、<code>NutUI</code> 倒计时</td></tr>
+</tbody></table></div>
+<h3>二、标签、角标与徽标</h3>
+<div class="table-wrap"><table><thead><tr><th>效果</th><th>规格</th><th>写法</th><th>参考</th></tr></thead><tbody>
+<tr><td>促销标签</td><td>12 号，高 16–18，圆角 2–4，浅底或描边，同屏同一样式</td><td><code>span.tag</code>；颜色取 <code>priceTint</code> 底配 <code>price</code> 字</td><td><code>NutUI</code> 标签、<code>TDesign</code> 标签</td></tr>
+<tr><td>图片角标</td><td>左上角，外侧圆角跟随图片</td><td>图片容器 <code>position:relative</code>；角标 <code>position:absolute;left:0;top:0;border-radius:8px 0 8px 0</code></td><td><code>MDN</code> <code>position</code>；录屏“开业限定”</td></tr>
+<tr><td>斜角飘带与贴纸</td><td>只用于营销区</td><td>飘带用 <code>clip-path:polygon(…)</code> 切出斜边；贴纸用小胶囊加 <code>rotate(-6deg)</code></td><td><code>MDN</code> <code>clip-path</code>；作品调研</td></tr>
+<tr><td>数量徽标</td><td>最小 18，胶囊形，超过 99 写“99+”，为 0 不显示</td><td><code>.badge{position:absolute;right:-2px;top:-2px;min-width:18px;border-radius:999px}</code></td><td>组件库徽标；尼尔森诺曼集团加购反馈</td></tr>
+</tbody></table></div>
+<h3>三、卡片与容器</h3>
+<div class="table-wrap"><table><thead><tr><th>效果</th><th>规格</th><th>写法</th><th>参考</th></tr></thead><tbody>
+<tr><td>等高卡片网格</td><td>同一行等高，图片同比例裁切</td><td>网格默认拉伸；图片 <code>aspect-ratio:1</code> 加 <code>object-fit:cover</code></td><td><code>MDN</code> <code>object-fit</code></td></tr>
+<tr><td>一大两小</td><td>大卡高度等于两张小卡加间距；营销区可错落，功能区边缘对齐</td><td><code>grid-template-areas:"big top" "big bottom"</code></td><td><code>MDN</code> <code>grid-template-areas</code>；瑞幸首页录屏</td></tr>
+<tr><td>出框元素</td><td>吉祥物或商品探出卡片上沿或角落，只在营销区</td><td>卡片 <code>position:relative;overflow:visible</code>，元素 <code>position:absolute</code> 加负的 <code>top</code> 或 <code>bottom</code>，卡片上方留出同样高度；元素用透明底图片</td><td>录屏与作品调研；视觉规范“图像生成”</td></tr>
+<tr><td>券面缺口</td><td>价值区与内容区之间虚线，上下两个半圆缺口</td><td>券 <code>position:relative</code>；<code>::before</code> 与 <code>::after</code> 画直径 16 的圆，颜色等于页面底色，压在虚线两端；不用渐变</td><td><code>MDN</code> <code>position</code>；组件库券面</td></tr>
+<tr><td>照片主卡</td><td>照片上压白字</td><td>照片上叠黑色半透明遮罩（透明度 0.35–0.5），白字放遮罩上；这是扁平规则允许的照片遮罩</td><td>视觉规范“扁平线性风格”；商用卡片调研</td></tr>
+<tr><td>叠卡</td><td>内容卡压在头部色块下沿</td><td>头部色块后面的卡片 <code>margin-top:-24px</code> 并加第 1 级层级</td><td>作品调研</td></tr>
+</tbody></table></div>
+<h3>四、列表与导航</h3>
+<div class="table-wrap"><table><thead><tr><th>效果</th><th>规格</th><th>写法</th><th>参考</th></tr></thead><tbody>
+<tr><td>分类联动</td><td>左侧选中跟随右侧滚动，点左侧跳到分组</td><td>小程序用 <code>scroll-view</code> 的 <code>scroll-into-view</code>；网页用 <code>IntersectionObserver</code> 监听分组标题</td><td>微信 <code>scroll-view</code>；<code>MDN</code> 交叉观察器</td></tr>
+<tr><td>吸顶分组标题</td><td>分组标题滚到顶部时停住</td><td><code>position:sticky;top:0</code>，背景与列表同色</td><td><code>MDN</code> <code>position</code></td></tr>
+<tr><td>横向券条</td><td>可横滑，露出下一张提示还有</td><td><code>overflow-x:auto</code> 加 <code>scroll-snap-type:x mandatory</code>，卡片 <code>scroll-snap-align:start</code></td><td><code>MDN</code> 滚动吸附</td></tr>
+<tr><td>多行截断</td><td>商品名两行，描述一行</td><td><code>-webkit-line-clamp:2</code> 配 <code>display:-webkit-box</code></td><td><code>MDN</code> <code>line-clamp</code></td></tr>
+</tbody></table></div>
+<h3>五、浮层与反馈</h3>
+<div class="table-wrap"><table><thead><tr><th>效果</th><th>规格</th><th>写法</th><th>参考</th></tr></thead><tbody>
+<tr><td>悬浮购物车栏</td><td>高 50–56，胶囊形，避开底部安全区</td><td><code>position:fixed;bottom:calc(8px + env(safe-area-inset-bottom))</code></td><td><code>MDN</code> <code>env()</code>；<code>Vant</code> 提交订单栏</td></tr>
+<tr><td>底部弹层</td><td>高度不超过屏幕 80%，内容内部滚动，按钮固定在底部</td><td>弹层 <code>max-height:80vh;display:flex;flex-direction:column</code>，中间区 <code>overflow:auto</code></td><td>小程序设计规范“组件参数”</td></tr>
+<tr><td>居中弹窗</td><td>宽 75%–85%，关闭按钮在下方居中</td><td><code>&lt;dialog&gt;</code> 加 <code>showModal()</code>，焦点自动进入弹窗；强公告不响应遮罩点击</td><td><code>MDN</code> <code>dialog</code></td></tr>
+<tr><td>加购飞入</td><td>约 400 毫秒，结束时徽标跳动一次</td><td>克隆商品图做 <code>transform</code> 位移与缩放；减少动态时直接更新徽标</td><td><code>MDN</code> <code>prefers-reduced-motion</code></td></tr>
+<tr><td>骨架屏</td><td>首次加载，形状与真实内容一致</td><td>浅灰块，可加扁平规则允许的流光</td><td>视觉规范“扁平线性风格”</td></tr>
+</tbody></table></div>
+<h3>六、图片与元素</h3>
+<div class="table-wrap"><table><thead><tr><th>效果</th><th>规格</th><th>写法</th><th>参考</th></tr></thead><tbody>
+<tr><td>商品图</td><td>同组同角度、同光、同底，1:1 或 4:3</td><td><code>object-fit:cover</code>；抠图放比卡片浅一阶的底板</td><td>作品调研；<code>MDN</code> <code>object-fit</code></td></tr>
+<tr><td>生成元素</td><td>透明底，显示尺寸的 2 倍</td><td>按 4×4 拼板生成，用 <code>Luz-Design</code> 的 <code>cut_element_sheet.py</code> 切图、去碎点、裁边存 <code>WebP</code>（约 10–15 千字节一张）</td><td>视觉规范“图像生成”；本技能示例</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:rules:END -->
+
+<!-- SECTION:platform-matrix:START id=platform-matrix data-rule-id=recipes-platform-matrix -->
+<section id="platform-matrix" data-rule-id="recipes-platform-matrix" aria-labelledby="platform-matrix-heading">
+<h2 id="platform-matrix-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="6" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/></svg><span>平台矩阵</span></h2>
+<div class="table-wrap"><table><thead><tr><th>端</th><th>差异</th></tr></thead><tbody>
+<tr><td>小程序</td><td>分类联动用 <code>scroll-view</code>；安全区用 <code>env(safe-area-inset-bottom)</code>；弹窗用自定义浮层组件</td></tr>
+<tr><td>网页与 <code>H5</code></td><td>分类联动用 <code>IntersectionObserver</code>；弹窗用 <code>dialog</code></td></tr>
+<tr><td>后台</td><td>价格、标签、徽标沿用同一写法；不用出框与不规则排版</td></tr>
+</tbody></table></div>
+</section>
+<!-- SECTION:platform-matrix:END -->
+
+<!-- SECTION:examples:START id=examples data-rule-id=recipes-examples -->
+<section id="examples" data-rule-id="recipes-examples" aria-labelledby="examples-heading">
+<h2 id="examples-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m4 17 5-5 3 3 2-2 6 6"/></svg><span>案例样本</span></h2>
+<p><code>examples/commerce-kit/index.html</code> 用生成的软陶元素演示首页与营销区（吉祥物出框的品牌主卡、三大入口、带角标的次入口、一大两小与倒计时）、菜单页、规格弹层、券面缺口、结算明细、领券弹窗、强公告与取餐号；<code>examples/commerce-kit/screenshot-home.png</code> 是手机宽度的首屏截图。</p>
+</section>
+<!-- SECTION:examples:END -->
+
+<!-- SECTION:output-contract:START id=output-contract data-rule-id=recipes-output-contract -->
+<section id="output-contract" data-rule-id="recipes-output-contract" aria-labelledby="output-contract-heading">
+<h2 id="output-contract-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>输出契约</span></h2>
+<ul>
+<li>12 号文字的类名带辅助标记：<code>meta</code>、<code>caption</code>、<code>hint</code>、<code>time</code>、<code>unit</code>、<code>tag</code>、<code>badge</code>。</li>
+<li>小块实色的类名带小元素标记：<code>badge</code>、<code>tag</code>、<code>chip</code>、<code>mark</code>、<code>dot</code>；控件用按钮元素，或带按钮、标签页等角色。</li>
+<li>品牌主卡类名为 <code>brand-card</code>，卡内白字的选择器以它开头；划线价用 <code>s</code> 元素并带读屏文字。</li>
+</ul>
+</section>
+<!-- SECTION:output-contract:END -->
+
+<!-- SECTION:quality-gates:START id=quality-gates data-rule-id=recipes-quality-gates -->
+<section id="quality-gates" data-rule-id="recipes-quality-gates" aria-labelledby="quality-gates-heading">
+<h2 id="quality-gates-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h5M15 7h5M9 7a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM4 17h10M18 17h2M14 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg><span>质量门禁</span></h2>
+<ul>
+<li>划线价没有读屏文字、货币符号与小数跟整数一样大、价格换行：退回修改。</li>
+<li>角标遮住商品主体、出框元素用在功能区、券面缺口用渐变实现：退回修改。</li>
+<li>悬浮栏被底部安全区遮挡、动效不响应减少动态设置：退回修改。</li>
+</ul>
+</section>
+<!-- SECTION:quality-gates:END -->
+
+<!-- SECTION:handoff:START id=handoff data-rule-id=recipes-handoff -->
+<section id="handoff" data-rule-id="recipes-handoff" aria-labelledby="handoff-heading">
+<h2 id="handoff-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h12M13 4l3 3-3 3M20 17H8M11 14l-3 3 3 3"/></svg><span>交接规则</span></h2>
+<p>前端实现沿用本页写法与类名；小程序端的分类联动、安全区与浮层按“平台矩阵”替换为对应组件。</p>
+</section>
+<!-- SECTION:handoff:END -->
+
+</main>
+</body>
+</html>
