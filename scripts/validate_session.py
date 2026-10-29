@@ -45,6 +45,9 @@ ADVICE_RE = re.compile(r"(下一步建议|建议增加|推荐模块|建议你|�
 BAD_NEIGHBOR_CLASS_RE = re.compile(r"(?:^|[-_])(description|desc|note|tip|help|explain|advice|recommend|guidance)(?:$|[-_])", re.I)
 POSTER_TASK_RE = re.compile(r"海报|poster", re.I)
 DESCRIPTIVE_COPY_RE = re.compile(r"说明|解释|建议|提示|备注|详情|方法|流程|步骤|原因|帮助|推荐|指南", re.I)
+# A short label that ends in one of these words names a page, field or object (会议详情, Demo 详情, 审批流程, 退款原因);
+# the same word leading copy (说明：…, 详情见…), after a verb (查看详情) or inside a longer phrase is explanatory text.
+NAME_LABEL_RE = re.compile(r"(?=.{2,14}$)(?!查看|点击|了解|更多|详见|请)[^：:。，,；;！？!?]{1,12}?\s?(?:说明|详情|方法|流程|步骤|原因|帮助|指南|备注)")
 LABEL_CLASS_RE = re.compile(r"(?:^|[-_])(label|value|legend|axis|pill|unit|number|category)(?:$|[-_])", re.I)
 COMMON_MULTI_LABEL_SUFFIXES = frozenset({
     "com.cn", "org.cn", "net.cn", "gov.cn", "edu.cn",
@@ -638,7 +641,7 @@ def visual_only(node: Node | str) -> bool:
 def chart_label_is_allowed(text: str, classes: str) -> bool:
     if not text:
         return True
-    if ADVICE_RE.search(text) or DESCRIPTIVE_COPY_RE.search(text):
+    if ADVICE_RE.search(text) or (DESCRIPTIVE_COPY_RE.search(text) and not NAME_LABEL_RE.fullmatch(text)):
         return False
     if len(text) > 32 or re.search(r"[。！？!?；;]", text):
         return False
@@ -1173,6 +1176,9 @@ def validate_research(
 
 def collect_stable_ids(root: Node, errors: list[str], label: str) -> dict[str, set[str]]:
     ids = {attr: set() for attr in DATA_ID_PATTERNS}
+    # An action that is also a navigation entry carries the navigation ID as a reference (system-design.html 架构的交互字段);
+    # only definitions must be unique, and a reference must name a defined entry.
+    nav_refs: list[str] = []
     for node in iter_nodes(root):
         for attr, pattern in DATA_ID_PATTERNS.items():
             value = node.get(attr).strip()
@@ -1181,9 +1187,15 @@ def collect_stable_ids(root: Node, errors: list[str], label: str) -> dict[str, s
             if not pattern.fullmatch(value):
                 errors.append(f"{label} has invalid {attr}: {value}")
                 continue
+            if attr == "data-navigation-id" and node.get("data-action-id").strip():
+                nav_refs.append(value)
+                continue
             if value in ids[attr] and attr not in {"data-page-id", "data-component-id"}:
                 errors.append(f"{label} repeats {attr}: {value}")
             ids[attr].add(value)
+    for value in nav_refs:
+        if value not in ids["data-navigation-id"]:
+            errors.append(f"{label} action references undefined data-navigation-id: {value}")
     return ids
 
 

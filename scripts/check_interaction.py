@@ -30,6 +30,14 @@ from pathlib import Path
 ID_RE = re.compile(r"(?<![A-Z0-9-])(?:FL|P|A|N|C|S|D|F)-\d{3,}(?![0-9])")
 PAGE_ID_RE = re.compile(r"^P-\d{3,}$")
 LIST_SPLIT_RE = re.compile(r"[,，、;；\s]+")
+LIST_DELIM_RE = re.compile(r"[,，、;；]")
+
+
+def split_list(text: str) -> list[str]:
+    """Comma, 、 or semicolon lists keep values with spaces ("AI 已润色"); a list without them splits on whitespace."""
+    text = (text or "").strip()
+    parts = LIST_DELIM_RE.split(text) if LIST_DELIM_RE.search(text) else text.split()
+    return [p.strip() for p in parts if p.strip()]
 ITEM_SPLIT_RE = re.compile(r"[;；]")
 PAIR_SPLIT_RE = re.compile(r"[:：]")
 PAREN_RE = re.compile(r"[（(][^）)]*[）)]")
@@ -43,6 +51,8 @@ ROOT_SOURCE_RE = re.compile(r"标签栏|底部标签|侧栏|菜单|顶部导航|
 EXTERNAL_SOURCE_RE = re.compile(r"外部|分享|深链接|通知|扫码|全局")
 LOGIN_RE = re.compile(r"login|signin|登录")
 BACK_LABEL_RE = re.compile(r"^(?:返回|关闭|完成|取消|退出|收起)")
+# Actions that only view, switch views or leave: a page with nothing else is read-only and its primary action is 无.
+READ_ONLY_ACTION_RE = re.compile(r"^(?:返回|关闭|完成|取消|退出|收起|切换|查看|预览|展开|放大|缩小|全屏|翻页|上一|下一|下载|复制|刷新)")
 LEADING_VERB_RE = re.compile(r"^(?:打开|进入|查看|前往|去|点击)\s*")
 
 STATE_KINDS = {"加载": "加载", "载入": "加载", "空": "空", "空状态": "空", "错误": "错误", "失败": "错误", "出错": "错误",
@@ -266,7 +276,7 @@ def _page_contract(model: Model, page: Page, opt_in: bool, errors: list[str]) ->
             errors.append(f"architecture page {pid} {page.name} must declare {', '.join(missing)} "
                           "(进入方式、页面目标、主操作、离开方式与五类状态)")
     if entry:
-        tokens = [t for t in LIST_SPLIT_RE.split(entry) if t]
+        tokens = split_list(entry)
         if not tokens:
             errors.append(f"architecture page {pid} data-entry is empty")
         for token in tokens:
@@ -300,8 +310,11 @@ def _page_contract(model: Model, page: Page, opt_in: bool, errors: list[str]) ->
                 errors.append(f"architecture page {pid} primary action {refs[0]} is not an action of this page")
         elif primary not in {"无", "—", "-", "none"}:
             errors.append(f"architecture page {pid} data-primary-action must be one A-ID, or 无 for a read-only page")
-        elif on_page:
-            errors.append(f"architecture page {pid} declares no primary action but has actions: {_join(sorted(on_page))}")
+        else:
+            moving = sorted(a for a in on_page if not READ_ONLY_ACTION_RE.match(model.actions[a].label.strip()))
+            if moving:
+                errors.append(f"architecture page {pid} declares no primary action but has actions that change data or move "
+                              f"the task on: {_join(moving)}; 无 is only for pages whose actions view, switch or leave")
     for ref in _ids(secondary, "A"):
         if ref not in on_page:
             errors.append(f"architecture page {pid} secondary action {ref} is not an action of this page")
@@ -346,7 +359,7 @@ def _navigation_findings(model: Model, opt_in: bool, errors: list[str], warnings
             if action.page in pages:
                 outbound[action.page].add(target)
     for page in pages.values():
-        for token in LIST_SPLIT_RE.split(page.node.get("data-entry")):
+        for token in split_list(page.node.get("data-entry")):
             if token and not ID_RE.fullmatch(token):
                 roots.add(page.id)
             elif token:
@@ -522,7 +535,7 @@ def _action_findings(model: Model, errors: list[str], warnings: list[str]) -> No
 def _parse_values(node) -> list[str]:
     declared = node.get("data-values").strip()
     if declared:
-        return [v for v in LIST_SPLIT_RE.split(declared) if v]
+        return split_list(declared)
     if node.tag == "tr":
         cells = _cells(node)
         text = cells[-1] if cells else ""
@@ -557,7 +570,7 @@ def _state_findings(model: Model, errors: list[str], warnings: list[str]) -> Non
                 if value != "*" and value not in known:
                     errors.append(f"architecture state {sid} transition names unknown value: {value}")
         initial = node.get("data-initial").strip() or (values[0] if values else "")
-        terminal = set(v for v in LIST_SPLIT_RE.split(node.get("data-terminal")) if v)
+        terminal = set(split_list(node.get("data-terminal")))
         wildcard_out = any(src == "*" for src, _, _ in edges)
         for value in values:
             has_in = any(dst == value for _, dst, _ in edges)

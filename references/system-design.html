@@ -84,7 +84,7 @@
 <div class="table-wrap"><table><thead><tr><th>位置</th><th>属性</th><th>写法</th><th>检查</th></tr></thead><tbody>
 <tr><td>页面</td><td><code>data-entry</code></td><td>导航、动作或页面编号，或关键词（标签栏、登录、外部、通知、全局），逗号分隔</td><td>编号必须存在，导航编号必须指向本页</td></tr>
 <tr><td>页面</td><td><code>data-goal</code></td><td>一句话</td><td>写了契约后必填</td></tr>
-<tr><td>页面</td><td><code>data-primary-action</code></td><td>一个动作编号；只读页写“无”</td><td>只能一个，必须是本页动作</td></tr>
+<tr><td>页面</td><td><code>data-primary-action</code></td><td>一个动作编号；只读页写“无”（本页动作只有查看、切换、下载、复制、返回、关闭这类不改数据也不推进任务的操作）</td><td>只能一个，必须是本页动作</td></tr>
 <tr><td>页面</td><td><code>data-secondary-actions</code></td><td>动作编号列表</td><td>必须是本页动作，不与主操作重复</td></tr>
 <tr><td>页面</td><td><code>data-exit</code></td><td><code>返回:来源;完成:P-012</code>；一级页 <code>切换:标签栏</code>；外部只读页 <code>终点:客户关闭页面</code></td><td>页面编号必须存在</td></tr>
 <tr><td>页面</td><td><code>data-states</code></td><td><code>加载:…;空:…;错误:…;成功:…;禁用:…</code>，不适用写“不适用（理由）”</td><td>五类齐全；列表页的“空”要有下一步</td></tr>
@@ -92,7 +92,7 @@
 <tr><td>动作</td><td><code>data-feedback</code></td><td><code>进行中:…;成功:…;失败:…</code>，成功写去向，失败写恢复入口</td><td>写了就必须三段齐全；没写给警告</td></tr>
 <tr><td>动作</td><td><code>data-confirm</code>、<code>data-undo</code></td><td>确认的对象与后果，或撤销方式</td><td>破坏性动作两者都没有给警告</td></tr>
 <tr><td>导航</td><td><code>data-from</code></td><td>来源页编号，或标签栏、全局、外部</td><td>同一来源到同一目标两条导航即报错</td></tr>
-<tr><td>状态</td><td><code>data-values</code>、<code>data-initial</code>、<code>data-terminal</code>、<code>data-transitions</code>、<code>data-page-ids</code></td><td><code>加载&gt;有数据@返回数据;网络错误&gt;加载@重试</code></td><td>非初始值要有进入事件，非终态要有离开事件</td></tr>
+<tr><td>状态</td><td><code>data-values</code>、<code>data-initial</code>、<code>data-terminal</code>、<code>data-transitions</code>、<code>data-page-ids</code></td><td><code>加载&gt;有数据@返回数据;网络错误&gt;加载@重试</code>；<code>data-values</code> 用逗号或顿号分隔，值里可以有空格（<code>草稿,AI 已润色,已发布</code>）</td><td>非初始值要有进入事件，非终态要有离开事件</td></tr>
 <tr><td>实体</td><td><code>data-lifecycle</code></td><td><code>新建:A-101;查看:A-103;编辑:不提供（理由）;删除:A-130;状态:A-116</code></td><td>查看、编辑、删除必填（动作编号或带理由的不提供）</td></tr>
 <tr><td>流程</td><td><code>data-success</code></td><td>成功终点页面或状态</td><td>页面编号必须存在；没写给警告</td></tr>
 <tr><td>组件</td><td><code>data-display</code></td><td>只读展示的用途</td><td>无动作又没标展示给警告</td></tr>

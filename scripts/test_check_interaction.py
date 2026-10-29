@@ -349,5 +349,61 @@ class AgentStateTests(unittest.TestCase):
         self.assertEqual(errors, [])
 
 
+
+class RuleAndCheckAgreementTests(unittest.TestCase):
+    """The rule pages and the checks agree: values with spaces, read-only pages, navigation references, names ending in 详情."""
+
+    def test_list_values_with_spaces_stay_whole(self) -> None:
+        from check_interaction import split_list
+        self.assertEqual(split_list("草稿,AI 已润色,已发布"), ["草稿", "AI 已润色", "已发布"])
+        self.assertEqual(split_list("草稿、AI 已润色；已发布"), ["草稿", "AI 已润色", "已发布"])
+        self.assertEqual(split_list("加载 空 失败"), ["加载", "空", "失败"])
+        self.assertEqual(split_list(""), [])
+
+    def test_state_value_with_a_space_is_one_value(self) -> None:
+        state = ('<div class="node" data-state-id="S-001" data-values="草稿,AI 已润色,已发布" data-initial="草稿" '
+                 'data-terminal="已发布" data-transitions="草稿>AI 已润色@润色;AI 已润色>已发布@发布">稿件状态</div>')
+        errors, _ = run(*BASE, state)
+        self.assertFalse(any("S-001" in e for e in errors), errors)
+
+    def viewer(self, *actions: str):
+        attrs = dict(entry="N-001", goal="查看产物", primary_action="无", exit="返回:来源", states=FULL_STATES)
+        return run(page("P-001", "产物面板", "/artifact", **attrs), nav("N-001", "P-001", "侧栏 · 产物", "侧栏"),
+                   comp("C-001", "P-001", "产物查看", *actions))
+
+    def test_read_only_page_may_declare_no_primary_action(self) -> None:
+        for actions in ((act("A-001", "P-001", "C-001", "切换版本"), act("A-002", "P-001", "C-001", "返回")),
+                        (act("A-001", "P-001", "C-001", "全屏查看"), act("A-002", "P-001", "C-001", "下载")),
+                        (act("A-001", "P-001", "C-001", "关闭"),)):
+            with self.subTest(actions=len(actions)):
+                errors, _ = self.viewer(*actions)
+                self.assertFalse(any("declares no primary action" in e for e in errors), errors)
+        errors, _ = self.viewer(act("A-001", "P-001", "C-001", "切换版本"), act("A-003", "P-001", "C-001", "保存修改"))
+        self.assertTrue(any("declares no primary action" in e and "A-003" in e and "A-001" not in e.split(":")[-1] for e in errors), errors)
+
+    def test_navigation_id_on_an_action_is_a_reference(self) -> None:
+        from validate_session import collect_stable_ids
+        defined = '<table><tbody>' + nav("N-001", "P-002", "订单行 → 订单详情", "P-001") + '</tbody></table>'
+        button = '<button type="button" data-action-id="A-001" data-navigation-id="{nid}">打开订单详情</button>'
+        errors: list[str] = []
+        collect_stable_ids(parse(defined + button.format(nid="N-001")), errors, "architecture")
+        self.assertEqual(errors, [])
+        errors = []
+        collect_stable_ids(parse(defined + button.format(nid="N-009")), errors, "architecture")
+        self.assertTrue(any("undefined data-navigation-id: N-009" in e for e in errors), errors)
+        errors = []
+        collect_stable_ids(parse(defined + defined), errors, "architecture")
+        self.assertTrue(any("repeats data-navigation-id: N-001" in e for e in errors), errors)
+
+    def test_names_ending_in_a_descriptive_word_are_labels(self) -> None:
+        from validate_session import chart_label_is_allowed
+        for name in ("会议详情", "Demo 详情", "AI 会议详情", "审批流程", "退款原因", "使用指南"):
+            with self.subTest(name=name):
+                self.assertTrue(chart_label_is_allowed(name, "label"))
+        for copy in ("查看详情", "说明：请先登录", "详情见附件", "提示", "处理建议", "操作流程是先登记再审核"):
+            with self.subTest(copy=copy):
+                self.assertFalse(chart_label_is_allowed(copy, "label"))
+
+
 if __name__ == "__main__":
     unittest.main()
