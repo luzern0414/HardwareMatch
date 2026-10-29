@@ -34,7 +34,7 @@
       "tools": [
         "建会话：`py -X utf8 scripts/new_session.py --name \"<名称>\" --modes system --system-name \"<系统名>\" --modules \"<模块1>,<模块2>\"`（有现场设备用 `--modes system,hardware`）；生成 BRIEF、模块确认页 `raw/01-system/01-module-intake.html` 与本卡，模块由人批准后才往下做",
         "先查经验：`py -X utf8 scripts/experience.py search <关键词>`；新鲜来源用 `py -X utf8 scripts/experience.py reuse <会话目录> <来源编号…> --module <模块>` 复制进调研，再补采",
-        "调研用 Luz-Crawl（`D:\\Codes\\Luz-Crawl`，每个请求一个 `begin \"<主题>\" --new` 任务目录）：至少 12 个网址、5 个可注册域名，页面结构、交互流程、组件状态三类证据，快照放 `raw/01-system/crawl-snapshots/`；只调研用户看得见、用得到的东西",
+        "调研按 Luz-Crawl 的 SKILL.md 调用协议：`doctor` → `begin \"<主题>\" --new`（得到 folder）→ `experience --query` → 每条命令带 `--out <folder>`；至少 12 个网址、5 个可注册域名，页面结构、交互流程、组件状态三类证据，快照放 `raw/01-system/crawl-snapshots/`；只调研用户看得见、用得到的东西",
         "架构 `raw/01-system/03-system-architecture.html` 与系统设计 `raw/01-system/04-system-design.html` 从 `references/templates.txt` 的同名模板起步；模板只是骨架，小节、编号、版式按本卡",
         "界面各端另读对应规则卡：`py -X utf8 scripts/context.py admin-list | admin-dashboard | admin-form | miniprogram | agent-ui | website | function-list`，用 `--card` 存进会话",
         "架构按 `references/templates.txt` 的 system-architecture.html 起步，每个页面写交互契约（`data-entry`、`data-goal`、`data-primary-action`、`data-exit`、`data-states`），对象写 `data-lifecycle`，状态写 `data-transitions`，流程写 `data-success`；只读自查：`py -X utf8 scripts/check_interaction.py <会话目录>`",
@@ -104,13 +104,13 @@
         {"page": "system-design.html", "title": "系统设计规范", "path": ["案例样本", "后台订单列表的结构推导"]},
         {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["质量门禁"]},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "二、排版基础", "界面密度与表格对齐"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "字体族必须统一"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "七级字体角色"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
+        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "字体族必须统一"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
       ],
       "tools": [
         "动手前用 Luz-Crawl 查参考组件库（Ant Design / ProComponents 的 ProTable、TDesign、Arco、Semi、Element Plus 的表格、筛选与分页），在设计说明写明主要组件跟随哪一家，借行为不借外观",
         "原型从 `references/templates.txt` 的 interactive-prototype.html 起步（`py -X utf8 scripts/add_mode.py <会话目录> prototype`）；模板自带分页条，默认 20 条/页",
-        "导出文件的版式交给 Luz-Design：`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\context.py xlsx`"
+        "导出文件的版式交给 Luz-Design：`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\context.py xlsx`",
+        "视觉层（配色与主题、字体角色、图标与插画、层级）另读 Luz-Design 规则卡：`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\context.py interface-visual`"
       ],
       "checks": [
         "`py -X utf8 scripts/validate_session.py <会话目录>` 零 ERROR（含分页与表格单元格的 WARN 要处理）",
@@ -136,7 +136,6 @@
         {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["核心规则", "六、视觉基础"]},
         {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["案例样本"]},
         {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["质量门禁"]},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "配色"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "字体族必须统一"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "七级字体角色"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "二、排版基础", "界面密度与表格对齐"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
@@ -144,6 +143,7 @@
       "tools": [
         "先分运营型与分析型，再按价值排指标；只放后端能返回或用户点名的指标，长期为 0 的合并为一行状态",
         "图表借 Ant Design Charts、ECharts、TDesign 图表的悬停与图例行为；每张图有即时的自定义悬停提示与十字线或高亮",
+        "视觉层（配色与主题、字体角色、图标与插画、层级）另读 Luz-Design 规则卡：`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\context.py interface-visual`",
         "原型从 `references/templates.txt` 的 interactive-prototype.html 起步；模板只是骨架"
       ],
       "checks": [
@@ -165,7 +165,11 @@
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "五、组件", "头像"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "五、组件", "常用控件做法"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "七、文案"]},
-        {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["核心规则", "二、功能架构"]},
+        {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["核心规则", "二、功能架构", "内容维护闭环"]},
+        {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["核心规则", "二、功能架构", "操作成本"]},
+        {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["核心规则", "二、功能架构", "营业状态"]},
+        {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["核心规则", "二、功能架构", "版本信息"]},
+        {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["核心规则", "二、功能架构", "权限与角色"]},
         {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["核心规则", "四、页面与版式"]},
         {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["核心规则", "五、组件", "表单与输入"]},
         {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["核心规则", "五、组件", "按钮与浮层"]},
@@ -173,12 +177,12 @@
         {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["核心规则", "七、文案"]},
         {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["质量门禁"]},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "字体族必须统一"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "七级字体角色"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "图形：一套线性图标"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
       ],
       "tools": [
         "动手前用 Luz-Crawl 查参考组件库（Ant Design、TDesign、Arco、Element Plus 的 Form、Modal、Switch、Upload、DatePicker）的默认值与状态，写明跟随哪一家",
         "小程序里展示的每项运营内容都在后台有增删改排序；数据只存一份",
+        "视觉层（配色与主题、字体角色、图标与插画、层级）另读 Luz-Design 规则卡：`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\context.py interface-visual`",
         "原型从 `references/templates.txt` 的 interactive-prototype.html 起步；模板只是骨架"
       ],
       "checks": [
@@ -204,13 +208,12 @@
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "四、页面与版式", "界面的丰富度"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "五、组件", "分页与加载更多"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "五、组件", "头像"]},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "配色"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "主题色系统", "主色按行业气质选择"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "字体族必须统一"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
       ],
       "tools": [
         "动手前用 Luz-Crawl 查微信小程序设计指南与 Vant、NutUI、TDesign 小程序组件的默认值与状态，写明跟随哪一家",
         "行业主题与主色见 Luz-Design `references/themes.json`；官方色板取阶，不凭感觉调深调浅",
+        "视觉层（配色与主题、字体角色、图标与插画、层级）另读 Luz-Design 规则卡：`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\context.py interface-visual`",
         "原型里手机框与后台共用一套演示数据；从 `references/templates.txt` 的 interactive-prototype.html 起步，模板只是骨架",
         "点单、电商、会员、营销活动、弹窗与公告另读 `py -X utf8 scripts/context.py commerce`"
       ],
@@ -231,7 +234,7 @@
         {"page": "commerce-design.html", "title": "交易与营销界面规范", "path": ["输出契约"]},
         {"page": "commerce-design.html", "title": "交易与营销界面规范", "path": ["质量门禁"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "五、组件", "浮层与反馈"]},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "主题色系统", "价格色与营业状态"]}
+        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "主题色系统", "价格色与营业状态"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
       ],
       "tools": [
         "效果怎么做（划线价、角标、券面缺口、一大两小、出框元素、分类联动、悬浮栏避开安全区）读 `py -X utf8 scripts/context.py ui-recipes`；示例 `examples/commerce-kit/`",
@@ -239,7 +242,7 @@
         "商品图、入口图标、活动主视觉与弹窗主视觉可用 Imagegen 生成（Luz-Design visual-design.html 图像生成：风格由用户在视觉稿里选定，优先 4×4 拼板切图）；控件图标仍用线性矢量",
         "组件骨架：`references/templates.txt` 的 commerce-kit.html（菜单页门店栏、公告条、券条、分类栏与商品行、悬浮购物车栏、规格弹层、券面、结算明细、领券弹窗、强公告、取餐号），已通过 check_document 与会话字号检查；换成会话主题色后按需取用，商品图换成实拍或生成的抠图",
         "原型的模拟数据要像真的：售价、划线价与说明、规格加价、售罄、限购、费用与优惠明细；用 `data-state-kind` 或 `data-scenario` 演示每种异常",
-        "调研来源：Luz-Crawl 任务 026（组件库、体验研究与价格法规、作品视觉）与用户提供的咖啡、茶饮点单小程序录屏"
+        "调研前先查经验库：`py -X utf8 scripts/experience.py search 点单`（已有的调研任务与录屏记录在经验 commerce-config-research-sources）"
       ],
       "checks": [
         "`py -X utf8 scripts/validate_session.py <会话目录>` 与 `check_interaction.py` 零 ERROR",
@@ -259,11 +262,11 @@
         {"page": "ui-recipes.html", "title": "界面实现参考", "path": ["输出契约"]},
         {"page": "ui-recipes.html", "title": "界面实现参考", "path": ["质量门禁"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "五、组件", "常用控件做法"]},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "层级与立体感", "圆角"]}
+        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "层级与立体感", "圆角"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
       ],
       "tools": [
         "骨架：`references/templates.txt` 的 commerce-kit.html；完整示例：`examples/commerce-kit/index.html`（生成元素在 `assets/`，首屏截图 `screenshot-home.png`）",
-        "生成元素：Luz-Design `references/prompt-image.txt` 的元素拼板模板，`D:\\Codes\\Imagegen\\src\\imagegen.py` 先空跑再生成，`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\cut_element_sheet.py <拼板.png> <输出目录> <16 个名称>` 切图"
+        "生成元素：Luz-Design `references/prompt-image.txt` 的元素拼板模板，`D:\\Codes\\Imagegen\\src\\imagegen.py` 先空跑再生成，`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\cut_element_sheet.py <拼板.png> <输出目录> <16 个名称>` 切图；生成超时不自动重试（按次计费），先查已有的生成记录，仍失败就改用线性矢量"
       ],
       "checks": [
         "`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\check_document.py <页面.html> --allow interface` 零 ERROR",
@@ -286,7 +289,7 @@
       ],
       "tools": [
         "架构里写配置清单表；服务端实现交给 Luz-Dev（模块详设 config 与规则 OPS-005、REL-003）",
-        "调研来源：Luz-Crawl 任务 028（微信小程序更新机制与 UpdateManager、Firebase 远程配置、Apollo、Nacos、功能开关、苹果审核指南 2.5.2）"
+        "调研前先查经验库：`py -X utf8 scripts/experience.py search 远程配置`（已有的调研任务记录在经验 commerce-config-research-sources）"
       ],
       "checks": [
         "`py -X utf8 scripts/validate_session.py <会话目录>` 零 ERROR",
@@ -326,6 +329,7 @@
       "tools": [
         "先列任务目标、能力清单（会做、不会做、要审批）、工具清单（按影响分级）与停止条件，再画界面；不可撤销、动钱或对外发送的动作用审批卡片",
         "智能体会话同时读规则卡 agent-runtime-ui（服务器推送事件、事件类型、排队、重试熔断、断点续跑、上限）；visual 阶段用 `--card agent-ui --card agent-runtime-ui` 存进会话",
+        "视觉层（配色与主题、字体角色、图标与插画、层级）另读 Luz-Design 规则卡：`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\context.py interface-visual`",
         "动手前用 Luz-Crawl 查主流智能体产品与组件库（Ant Design X、TDesign Chat 等）的消息、思维链、工具调用与审批组件；组件库没有耗时属性的，按本卡“耗时与进度”补",
         "原型从 `references/templates.txt` 的 interactive-prototype.html 起步；带智能体规则卡的会话由 add_mode.py 自动插入 agent-run-states.html（七种运行状态各一块，`data-state` 标记），按本卡改写内容"
       ],
@@ -352,15 +356,14 @@
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "四、页面与版式", "图片与元素密度"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "四、页面与版式", "响应与适配"]},
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "七、文案", "界面文案"]},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "配色"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "主题色系统", "主色按行业气质选择"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "字体族必须统一"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "字阶：按产品类型各用一套"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
       ],
       "tools": [
         "标签页图标与页头品牌标识：`py -X utf8 scripts/new_session.py icon \"<系统名>\"` 打印两者，模板的 `{{TAB_ICON}}`、`{{BRAND_MARK}}` 自动填好",
-        "首屏用真实照片（Luz-Crawl 找有授权的来源并记下出处），不用自动轮播",
-        "页面文字来自用户或 Luz-Writing；本技能只负责结构、导航与界面"
+        "首屏优先实拍照片（用 Luz-Crawl 找有授权的来源并记下出处），没有实拍时用 Imagegen 生成（无文字、无标志、无可辨认人脸）；不用自动轮播",
+        "页面文字来自用户或 Luz-Writing；本技能只负责结构、导航与界面",
+        "视觉层（配色与主题、字体角色、图标与插画、层级）另读 Luz-Design 规则卡：`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\context.py interface-visual`"
       ],
       "checks": [
         "`py -X utf8 D:\\Codes\\Luz-Design\\scripts\\check_document.py <页面.html> --allow interface` 零 ERROR",
@@ -386,12 +389,11 @@
         {"page": "ui-standards.html", "title": "界面通用规范", "path": ["质量门禁"]},
         {"page": "admin-design.html", "title": "网页管理后台设计规范", "path": ["核心规则", "四、页面与版式", "宽度与溢出"]},
         {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "字体族必须统一"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "七级字体角色"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"},
-        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "二、排版基础", "界面密度与表格对齐"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
+        {"root": "D:\\Codes\\Luz-Design\\references", "page": "visual-design.html", "title": "视觉设计规范（Luz-Design）", "path": ["核心规则", "一、视觉基础", "字体与字号", "七级字体角色"], "url": "https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html"}
       ],
       "tools": [
         "视觉稿批准后：`py -X utf8 scripts/add_mode.py <会话目录> prototype`，生成 `raw/03-prototype/interactive-prototype.html` 骨架与本卡；页面与按钮只用架构里已批准的页面编号与动作编号",
-        "每个端另读对应规则卡（admin-list、admin-dashboard、admin-form、miniprogram、agent-ui、website），用 `--card` 存进会话",
+        "每个端另读对应规则卡（admin-list、admin-dashboard、admin-form、miniprogram、agent-ui、website），用 `--card` 存进会话；字体角色、表格对齐与视觉层另读 Luz-Design 规则卡 interface-visual",
         "要一页同时放功能列表、小程序与后台时按 SKILL.md“集成系统设计页”：恰好三部分，共用一套演示数据、一套字体与字阶",
         "浏览器验收用 Playwright 或 Claude in Chrome：无脚本错误，保存验收截图到 `raw/99-delivery/`，原型与截图两个哈希一起由人批准",
         "发布：`py -X utf8 scripts/publish.py <会话目录> prototype`（未用 add_mode.py 声明原型模式、模块范围／架构／系统设计／视觉稿任一项未经人批准或批准后文件被改、没有规则卡、规则卡过期、BRIEF“采用的规则”或“本次沉淀”为空，都会被拒绝；被拒绝时停下来请人确认，不要绕过）"
@@ -427,8 +429,8 @@
         "建会话：`py -X utf8 scripts/new_session.py --name \"<名称>硬件选型清单\" --modes hardware`（与软件一起时 `--modes system,hardware`）；先在 `raw/04-hardware/requirements.md` 写清规模、运营模式、已有设备、预算与现场条件",
         "先查硬件经验：`py -X utf8 scripts/hw_experience.py stats`、`search \"<关键词>\"`、`compat \"<设备>\"`、`suppliers \"<品类>\"`、`queries \"<关键词>\"`；硬件教训读 `experience/hardware/lessons.md`",
         "设备品类与参数读 `references/hardware/hardware-basics.md`，协议读 `references/hardware/protocols.md`，场景读 `references/hardware/scenarios/<场景>.md`，plan.json 字段读 `references/hardware/plan-schema.md`；示例 `examples/unmanned-gym.plan.json`",
-        "调研用 Luz-Crawl：`py -X utf8 scripts/hw_crawl_digest.py <任务目录>` 整理候选与来源；实物图 `py -X utf8 scripts/hw_fetch_images.py search <产品id> \"<品牌 型号>\"`",
-        "生成：`py -X utf8 scripts/hw_build.py <会话目录>` 校验 plan.json、生成 `raw/04-hardware/hardware-plan.html` 并跑 Luz-Design 文档检查；发布 `py -X utf8 scripts/publish.py <会话目录> hardware`"
+        "调研按 Luz-Crawl 的 SKILL.md 调用协议：`doctor` → `begin \"<主题>\" --new`（得到 folder）→ `experience --query` → 每条命令带 `--out <folder>`；`py -X utf8 scripts/hw_crawl_digest.py <folder>` 整理候选与来源；实物图 `py -X utf8 scripts/hw_fetch_images.py search <产品id> \"<品牌 型号>\"`",
+        "生成：`py -X utf8 scripts/hw_build.py <会话目录>` 校验 plan.json、生成 `raw/04-hardware/hardware-plan.html` 并跑 Luz-Design 文档检查；清单由人批准后（`raw/99-delivery/APPROVALS.json` 的 hardware 一项）发布 `py -X utf8 scripts/publish.py <会话目录> hardware`"
       ],
       "checks": [
         "`py -X utf8 scripts/hw_build.py <会话目录>` 返回 0（方案零错误、文档检查通过），缺实物图的 WARN 补齐",
@@ -460,7 +462,7 @@
       "tools": [
         "把运行事件表（每种运行状态由哪些事件进入与离开、各事件携带什么）和错误文案表写进系统设计；事件名与字段以本卡为准，不另起名字",
         "后端实现（事件日志与 `Last-Event-ID` 续传、心跳、队列与并发上限、幂等键、重试与熔断、检查点、取消与回滚、网关关闭缓冲）交给 Luz-Dev：https://github.com/luzern0414/Luz-Dev/blob/master/references/agent-foundation.md",
-        "调研来源在 Luz-Crawl 任务 017（服务器推送事件、排队、重试、熔断、幂等、进度）、018（智能体底座）与 023（ReAct、MCP 工具与授权、轮次上限、过度代理）；新调研先查这三个任务"
+        "调研前先查经验库：`py -X utf8 scripts/experience.py search 智能体`（已有的调研任务记录在经验 agent-research-sources）"
       ],
       "checks": [
         "原型七种运行状态齐全（`validate_session.py` 无 agent run states 警告），执行中有逐步计时与停止，失败有从失败处重试与请求编号",

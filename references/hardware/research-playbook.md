@@ -4,15 +4,9 @@ LuzCrawl 在 `D:\Codes\Luz-Crawl`，命令从该目录运行，完整规则见�
 
 ## 1 开始
 
-```powershell
-cd D:\Codes\Luz-Crawl
-node scripts/luz-crawl.mjs doctor                        # ready=true 才继续
-$T = (node scripts/luz-crawl.mjs begin "<系统名>硬件选型调研" --new | ConvertFrom-Json).folder
-```
+按 Luz-Crawl 的 SKILL.md 调用协议：`doctor` → `begin "<系统名>硬件选型调研" --new`（得到 `folder`）→ `experience --query "<品类或场景>"` → 之后每条命令带 `--out <folder>`。读取顺序（先静默、再最小化的可见浏览器、最后才请用户登录）、并发、停放与续接都以 Luz-Crawl 为准，本页不复述。
 
-- 一个选型需求只建一个任务目录 `$T`，所有搜索、采集都带 `--out $T`；子 Agent 只用主线程给的 `$T`，不得自己 `begin`。
-- **始终带 `--profile <用户 Edge 配置 ID>`**（`doctor` 输出里 `daemon.profiles[].contextId`，或 `pending` 里已有任务的 `profile`）。不带时 LuzCrawl 用静默 Edge 配置，1688 第二次搜索就要求验证且无法人工处理。
-- **LuzCrawl 命令必须串行执行**。两个进程同时用同一个静默浏览器配置会互相关闭浏览器（报错 `Target page, context or browser has been closed` / `Multiple Browser Bridge profiles are connected`）。要并发只能用 `batch --concurrency`。
+- 一个选型需求只建一个任务目录；子 Agent 只用主线程给的 `folder`，不得自己 `begin`。
 
 ## 2 先查经验库
 
@@ -38,7 +32,7 @@ py -X utf8 scripts/hw_experience.py queries "<关键词>"          # 以前搜�
 ## 4 1688 实操（2026-10-28 验证）
 
 - 1688 用浏览器 GBK 表单搜索；`--read 0` 只取搜索卡片（标题、价格、销量、回头率、供应商、链接），一次 25–60 条，足够做价格区间。
-- **验证频率**：真实 Edge 配置下大约每 2–8 次搜索弹一次滑块。命令返回 `awaiting_user` + `task_id` 时：停止批量 → 请用户在 Edge 手动拖滑块 → `node scripts/luz-crawl.mjs continue <task_id>` → 继续后面的查询。查询之间 `sleep 15` 可以明显降低频率。
+- **验证频率**：1688 大约每 2–8 次搜索弹一次滑块。命令返回 `awaiting_user` + `task_id` 时：停止批量 → 请用户在 Edge 手动拖滑块 → `node scripts/luz-crawl.mjs continue <task_id>` → 继续后面的查询。查询之间 `sleep 15` 可以明显降低频率。
 - 查询词写法：
   - 品类词 + 关键参数：`电磁锁 280kg 磁力锁`、`门禁电源 12V 5A 后备电池`、`POE交换机 8口 千兆`。
   - 品牌 + 型号前缀：`海康威视 人脸识别门禁一体机 DS-K1T`、`海康 DS-2CD3956 鱼眼`，用来拿正品渠道价。
@@ -47,7 +41,7 @@ py -X utf8 scripts/hw_experience.py queries "<关键词>"          # 以前搜�
   1. 只用标题明确是目标型号/规格的卡片；
   2. 同一型号取 3 家以上的中位数，剔除明显是配件或定金的价格；
   3. 清单里写"1688 参考价"，并给出该卡片的商品链接（`https://detail.1688.com/offer/<id>.html`）。
-- 用 `py -X utf8 <skill>/scripts/hw_crawl_digest.py $T --out digest.json --md digest.md` 把全部候选拆成 标题/价格/销量/供应商/链接 表，再人工挑选。
+- 用 `py -X utf8 <skill>/scripts/hw_crawl_digest.py <folder> --out digest.json --md digest.md` 把全部候选拆成 标题/价格/销量/供应商/链接 表，再人工挑选。
 
 ## 5 采购渠道：不只 1688
 

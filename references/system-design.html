@@ -62,6 +62,9 @@
 <tr><td><a href="agent-design.html">智能体设计规范</a></td><td>任务定义与工具分级、能力清单、追问、记忆与引用、审批与接管、消息与工具调用、七种运行状态与耗时、运行时与可靠性（服务器推送事件、排队、防错防失败）</td></tr>
 <tr><td><a href="website-design.html">网站设计规范</a></td><td>页面类型与转化、顶部导航与页脚、断点、区块组件、搜索与性能</td></tr>
 <tr><td><a href="function-list-design.html">系统功能列表规范</a></td><td>交付网页里的功能列表</td></tr>
+<tr><td><a href="commerce-design.html">交易与营销界面规范</a></td><td>点单、电商、会员、营销活动、弹窗与公告、营业状态与一键开停业</td></tr>
+<tr><td><a href="ui-recipes.html">界面实现参考</a></td><td>价格、角标、券面、不规则卡片、联动与浮层效果的写法</td></tr>
+<tr><td><a href="config-design.html">远程配置规范</a></td><td>运行参数与开关的配置文件、热加载、客户端兜底、代码更新</td></tr>
 <tr><td><a href="hardware-design.html">硬件设计规范</a></td><td>业务逻辑到设备映射、接口与协议、连接图、型号价格与渠道、现场条件、硬件经验库</td></tr>
 <tr><td><a href="https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html">视觉设计规范</a>（视觉技能）</td><td>配色、字体字号、图标、圆角阴影、动效、间距与文字纪律</td></tr>
 </tbody></table></div>
@@ -75,6 +78,7 @@
 <tr><td>实体与生命周期</td><td>每个对象的新建、查看、编辑、删除或归档、状态变更</td><td>界面通用规范“功能闭环”</td></tr>
 <tr><td>流程与异常</td><td>主流程、成功终点、每种失败的恢复入口</td><td>界面通用规范“功能闭环”</td></tr>
 <tr><td>状态机</td><td>状态、进入与离开事件、终态</td><td>界面通用规范“状态体系”</td></tr>
+<tr><td>内容来源与文案</td><td>内容来源表（后台配置、后端存储不展示、运行参数、系统计算、用户产生）；文案键表（键、页面与位置、默认文案、字数上限、变量、是否后台可见）</td><td>界面通用规范“内容来源与维护闭环”</td></tr>
 <tr><td>接口与事件</td><td>前端需要的接口意图与事件；后端实现交给开发技能</td><td><a href="handoff.md">开发交接契约</a></td></tr>
 <tr><td>智能体运行时与底座</td><td>有智能体时必写：事件流用服务器推送事件（<code>SSE</code>），事件类型与七种运行状态的对应；排队与三级并发上限、幂等键、超时与重试、熔断与降级、检查点与断点续跑、取消与回滚、每轮上限；执行轮次上限、工具分级与权限、参数错误返回；底座各层（接入、输入护栏、意图识别与路由、编排、工具层、结构化输出、记忆、知识库、输出护栏、可观测与评测）各由哪个界面元素呈现</td><td><a href="agent-design.html">智能体设计规范</a>“运行时与可靠性”“底座链路与界面”；实现见开发技能的<a href="https://github.com/luzern0414/Luz-Dev/blob/master/references/agent-foundation.md">智能体底座</a></td></tr>
 <tr><td>远程配置</td><td>配置清单（键、类型、默认、范围、作用范围、生效方式、可见端、风险）；配置文件与热加载、回滚方法，不做后台页面；客户端兜底默认值；小程序与 <code>App</code> 的代码更新方式</td><td><a href="config-design.html">远程配置规范</a></td></tr>

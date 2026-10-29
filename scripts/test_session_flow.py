@@ -190,7 +190,7 @@ class SessionFlowTests(unittest.TestCase):
         validate_session.NOTES_FILE = ROOT / "experience" / "notes.json"  # adopt_rules points it at a temporary store
 
     def test_minimal_system_session_is_valid_and_does_not_prebuild_downstream(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             session = make_system(tool_root(temp))
             self.assertEqual(validate(session), [])
             self.assertFalse((session / "raw" / "01-system/03-system-architecture.html").exists())
@@ -202,7 +202,7 @@ class SessionFlowTests(unittest.TestCase):
                 self.assertNotEqual(approvals[name]["status"], "approved")
 
     def test_full_hash_bound_chain_passes(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             session = prepare_approved_system(root)
             add_mode(root, session, "visual", skill_root=ROOT, allow_live_crawl_offline=True)
@@ -215,7 +215,7 @@ class SessionFlowTests(unittest.TestCase):
 
     def test_session_root_holds_only_the_published_final_html_and_raw(self) -> None:
         from publish import publish
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             session = prepare_approved_system(root)
             add_mode(root, session, "visual", skill_root=ROOT, allow_live_crawl_offline=True)
@@ -232,22 +232,22 @@ class SessionFlowTests(unittest.TestCase):
             self.assertTrue(any("may only contain" in e for e in validate(session, allow_live_crawl_offline=True)))
 
     def test_sessions_and_modes_save_their_rule_cards(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             session = prepare_approved_system(root)
             rules = session / "raw" / "00-rules"
-            self.assertEqual(sorted(p.name for p in rules.glob("*.md")), ["interaction.md", "system-design.md"])
+            self.assertEqual(sorted(p.name for p in rules.glob("*.md")), ["interaction.md", "remote-config.md", "system-design.md"])
             add_mode(root, session, "visual", skill_root=ROOT, allow_live_crawl_offline=True)
-            self.assertEqual(sorted(p.name for p in rules.glob("*.md")), ["admin-list.md", "interaction.md", "miniprogram.md", "system-design.md"])
+            self.assertEqual(sorted(p.name for p in rules.glob("*.md")), ["admin-list.md", "interaction.md", "miniprogram.md", "remote-config.md", "system-design.md"])
             approve_artifact(session, "visual", "02-visual/visual-board.html")
             add_mode(root, session, "prototype", skill_root=ROOT, allow_live_crawl_offline=True, cards=["admin-dashboard"])
             self.assertEqual(sorted(p.name for p in rules.glob("*.md")),
-                             ["admin-dashboard.md", "admin-list.md", "interaction.md", "miniprogram.md", "prototype.md", "system-design.md"])
+                             ["admin-dashboard.md", "admin-list.md", "interaction.md", "miniprogram.md", "prototype.md", "remote-config.md", "system-design.md"])
             self.assertTrue((rules / "prototype.md").read_text(encoding="utf-8").startswith("<!-- rules-sha256: "))
             # Named surface cards replace the visual defaults; the stage card always comes with its mode.
             other = create_session(root, "官网", ["system"], skill_root=ROOT, session_kind="system", system_name="官网",
                                    modules=["首页"], cards=["website"])
-            self.assertEqual(sorted(p.name for p in (other / "raw" / "00-rules").glob("*.md")), ["interaction.md", "system-design.md", "website.md"])
+            self.assertEqual(sorted(p.name for p in (other / "raw" / "00-rules").glob("*.md")), ["interaction.md", "remote-config.md", "system-design.md", "website.md"])
             hardware = create_session(root, "门店硬件选型清单", ["hardware"], skill_root=ROOT)
             self.assertTrue((hardware / "raw" / "00-rules" / "hardware.md").is_file())
             with self.assertRaises(ValueError) as caught:
@@ -258,7 +258,7 @@ class SessionFlowTests(unittest.TestCase):
     def test_agent_session_prototype_shows_the_seven_run_states(self) -> None:
         # agent-design.html 运行状态: an agent session's prototype skeleton carries one data-state block per run state;
         # removing them leaves a warning, never an error, so older sessions keep validating.
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             session = prepare_approved_system(root)
             add_mode(root, session, "visual", skill_root=ROOT, allow_live_crawl_offline=True, cards=["agent-ui", "agent-runtime-ui"])
@@ -277,7 +277,7 @@ class SessionFlowTests(unittest.TestCase):
             warnings = []
             validate(session, allow_live_crawl_offline=True, warnings=warnings)
             self.assertTrue(any("does not demonstrate the run states" in w for w in warnings))
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             session = prepare_prototype(root)
             text = (session / "raw" / "03-prototype" / "interactive-prototype.html").read_text(encoding="utf-8")
@@ -288,7 +288,7 @@ class SessionFlowTests(unittest.TestCase):
         # A prototype written straight after the architecture, without system design, visual approval or the
         # prototype mode, must not be published (publish.py approval gate mirrors add_mode.py).
         from publish import publish
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             session = prepare_approved_system(root)
             adopt_rules(session)
@@ -318,7 +318,7 @@ class SessionFlowTests(unittest.TestCase):
 
     def test_publish_needs_rule_card_adopted_rules_and_sediment(self) -> None:
         from publish import publish
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             session = prepare_prototype(root)
             brief = session / "raw" / "BRIEF.md"
@@ -355,7 +355,7 @@ class SessionFlowTests(unittest.TestCase):
                 self.assertTrue(any(marker in e for e in errors), (marker, errors))
 
     def test_sessions_created_before_rule_cards_are_exempt(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             session = make_system(tool_root(temp))
             for path in (session / "raw" / "00-rules").glob("*.md"):
                 path.unlink()
@@ -367,7 +367,7 @@ class SessionFlowTests(unittest.TestCase):
             self.assertEqual(validate(session), [])
 
     def test_modified_architecture_hash_blocks_downstream(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             session = prepare_approved_system(root)
             path = session / "raw" / "01-system/03-system-architecture.html"
@@ -378,7 +378,7 @@ class SessionFlowTests(unittest.TestCase):
                 add_mode(root, session, "visual", skill_root=ROOT, allow_live_crawl_offline=True)
 
     def test_research_without_task_or_snapshot_fails(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             session = make_system(tool_root(temp))
             write_requirements(session)
             approve_module(session)
@@ -390,7 +390,7 @@ class SessionFlowTests(unittest.TestCase):
             self.assertTrue(any("at least 12 unique sources" in error for error in errors), errors)
 
     def test_architecture_cannot_exist_before_module_approval(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             session = make_system(tool_root(temp))
             write_requirements(session)
             write_research(session)
@@ -399,7 +399,7 @@ class SessionFlowTests(unittest.TestCase):
             self.assertTrue(any("before module_scope approval" in error for error in errors), errors)
 
     def test_system_design_requires_architecture_approval(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             session = make_system(tool_root(temp))
             write_requirements(session); approve_module(session); write_research(session)
             write_architecture(session); write_system_design(session)
@@ -407,7 +407,7 @@ class SessionFlowTests(unittest.TestCase):
             self.assertTrue(any("before architecture approval" in error for error in errors), errors)
 
     def test_visual_cannot_start_without_both_approvals(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             session = make_system(root)
             with self.assertRaises(PermissionError):
@@ -415,7 +415,7 @@ class SessionFlowTests(unittest.TestCase):
 
     def test_hardware_session_and_mode_routing(self) -> None:
         from new_session import parse_modes
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             session = create_session(root, "无人健身房硬件选型清单", ["hardware"], skill_root=ROOT)
             self.assertTrue((session / "raw" / "04-hardware" / "plan.json").is_file())
@@ -426,8 +426,42 @@ class SessionFlowTests(unittest.TestCase):
                 parse_modes(other)
             self.assertIn("Luz-Design", str(caught.exception))
 
+    def test_hardware_list_needs_the_persons_approval_before_publishing(self) -> None:
+        from publish import publish
+        with tempfile.TemporaryDirectory() as temp:
+            root = tool_root(temp)
+            session = create_session(root, "无人健身房硬件选型清单", ["hardware"], skill_root=ROOT)
+            approvals = read_json(session / "raw" / "99-delivery" / "APPROVALS.json")
+            self.assertEqual(approvals["hardware"]["status"], "pending")
+            (session / "raw" / "04-hardware" / "hardware-plan.html").write_text("<!doctype html><title>清单</title>", encoding="utf-8")
+            with self.assertRaises(PermissionError) as caught:
+                publish(session, "hardware")
+            self.assertIn("hardware is not approved", str(caught.exception))
+
+    def test_validate_skill_prints_the_package_result_first(self) -> None:
+        import contextlib
+        import io
+        import validate_skill
+        buffer = io.StringIO()
+        with contextlib.redirect_stdout(buffer):
+            code = validate_skill.main(["--package-only"])
+        lines = buffer.getvalue().splitlines()
+        self.assertTrue(lines[0].startswith("PACKAGE PASS" if code == 0 else "PACKAGE FAIL"), lines[:2])
+        self.assertTrue(lines[-1].startswith("PASS:") if code == 0 else any(l.startswith("FAIL:") for l in lines))
+        if code == 0:
+            self.assertIn("--package-only", lines[-1])
+
+    def test_add_mode_refuses_document_and_poster_work(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = tool_root(temp)
+            session = make_system(root)
+            for mode, poster in (("document", False), ("visual", True)):
+                with self.assertRaises(ValueError) as caught:
+                    add_mode(root, session, mode, standalone_poster=poster, skill_root=ROOT)
+                self.assertIn("Luz-Design", str(caught.exception))
+
     def test_h1_first_contract_accepts_only_title_then_section(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             page = Path(temp) / "visual-design.html"
             page.write_text(minimal_rule_page(), encoding="utf-8")
             errors: list[str] = []
@@ -515,7 +549,7 @@ class AuthorizationTests(unittest.TestCase):
 
     def test_one_signed_authorization_carries_the_demo_to_publish(self) -> None:
         from publish import publish
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             session = make_demo(root)
             self.assertEqual(read_json(session / "raw" / "99-delivery" / "MANIFEST.json")["approval_mode"], "authorization")
@@ -536,7 +570,7 @@ class AuthorizationTests(unittest.TestCase):
     def module_errors(self, *, per_stage: bool = False, sign: dict | None = None, record: dict | None = None,
                       after=None) -> list[str]:
         from validate_session import validate_approval_record
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             session = make_system(root) if per_stage else make_demo(root)
             sign_authorization(session, **(sign or {}))
@@ -576,7 +610,7 @@ class AuthorizationTests(unittest.TestCase):
                 self.assertTrue(any(expected in e for e in errors), errors)
 
     def test_authorization_is_for_software_demo_sessions(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+        with tempfile.TemporaryDirectory() as temp:
             root = tool_root(temp)
             with self.assertRaises(ValueError):
                 create_session(root, "无人健身房", ["system", "hardware"], skill_root=ROOT, session_kind="system",

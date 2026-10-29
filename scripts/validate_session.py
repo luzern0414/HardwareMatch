@@ -522,6 +522,9 @@ def validate_approvals(session: Path, errors: list[str]) -> dict | None:
     for name in ("module_scope", "architecture", "system_design", "visual"):
         validate_approval_record(session, name, approvals.get(name), errors)
     validate_approval_record(session, "prototype", approvals.get("prototype"), errors, browser_acceptance=True)
+    # The hardware list is approved like the other stages; sessions created before 2026-10-29 have no record.
+    if "hardware" in approvals:
+        validate_approval_record(session, "hardware", approvals.get("hardware"), errors)
     standalone = approvals.get("standalone_poster", {})
     if not isinstance(standalone, dict):
         errors.append("APPROVALS.json standalone_poster must be an object")
@@ -1521,7 +1524,7 @@ def validate_visual(
 
 # Interface detail rules (references/ui-standards.html and admin-design.html): a page title must not repeat the
 # highlighted navigation item, a navigation group must not repeat its only item, a table column that is empty in the
-# current data is hidden, and interface body text is at least 14px. 12–13px is allowed only on elements whose selector
+# current data is hidden, and interface body text is at least 14px. 12px (the scale has no 13) is allowed only on elements whose selector
 # or class marks them as auxiliary; this is the naming convention prototypes follow.
 AUXILIARY_TEXT_RE = re.compile(
     r"(?:^|[-_.#\s])(meta|hint|time|date|unit|badge|tag|chip|pill|axis|legend|tick|caption|aux|corner|dot|count|kbd)(?:$|[-_\s:.\[>+~)])",
@@ -1702,7 +1705,7 @@ def prototype_ui_findings(root: Node) -> tuple[list[str], list[str]]:
 
 
 def interface_type_findings(root: Node, label: str) -> tuple[list[str], list[str]]:
-    """Interface text is at least 14px; 12–13px only on auxiliary selectors or classes (time, tag, meta, badge …).
+    """Interface text is at least 14px; 12px (the scale has no 13) only on auxiliary selectors or classes (time, tag, meta, badge …).
     The visual board and the prototype render the same interfaces, so both follow this (Luz-Design visual-design.html
     字体与字号; ui-standards.html). Returns (errors, warnings): body-text elements are errors, other selectors warnings."""
     errors: list[str] = []

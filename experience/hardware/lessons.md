@@ -4,8 +4,7 @@
 
 ## LuzCrawl 使用
 
-- 2026-10-28 两个 LuzCrawl 进程同时跑会互相关闭浏览器（`Target page, context or browser has been closed` / `Multiple Browser Bridge profiles are connected`）。→ 命令一律串行；需要并发只用 `batch --concurrency`。
-- 2026-10-28 不带 `--profile` 时用静默 Edge 配置，1688 第二次搜索就要求验证且用户看不到页面。→ 始终带用户 Edge 配置（`doctor` 里 `daemon.profiles[].contextId`）。
+- 2026-10-29 早先“命令一律串行”“始终带 `--profile`”的做法已过期。→ 调用顺序与读取方式以 Luz-Crawl 的 SKILL.md 调用协议为准：`doctor` → `begin --new` → `experience --query` → 每条命令带 `--out`；先静默读取，失败再用最小化的可见浏览器，最后才请用户登录；多个会话可同时使用，每个需求一个任务目录。
 - 2026-10-28 1688 在真实配置下约每 2–8 次搜索弹一次滑块；查询间隔 15 秒可明显降低频率。任务被停放后验证页可能已关闭，用户找不到。→ 返回 `awaiting_user` 立即停下请用户处理；用户找不到页面就放弃该批，改走官网、淘宝/京东摘要、厂家渠道。
 - 2026-10-28 `while read … done < 文件` 循环里调用 node 时，若用 `&` 挂后台，循环会提前结束。→ 批量脚本用工具的后台运行方式，不在命令里加 `&`。
 - 2026-10-28 `search web`（必应）带 `--read 2` 的单条查询要 2–5 分钟；结果页摘要本身常含价格与型号，`--read 1` 足够。

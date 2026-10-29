@@ -32,7 +32,6 @@ HW_REQUIREMENTS = """# 硬件需求
 | HW-04 | 硬件预算区间 | |
 | HW-05 | 后台系统（自研 / SaaS）与设备接入要求 | |
 """
-POSTER_TASK_RE = re.compile(r"海报|poster", re.I)
 SESSION_KINDS = ("general", "system")
 # per_stage: a person approves each stage. authorization: a platform demo session; a person signs one authorization
 # before generation and the platform records each stage under it (SKILL.md 调用协议 6).
@@ -41,8 +40,8 @@ APPROVAL_MODES = ("per_stage", "authorization")
 # A stage card always comes with its mode; visual mode adds the surface cards named with --card, else these two.
 MODE_CARDS = {"system": "system-design", "prototype": "prototype", "hardware": "hardware"}
 # The closed-loop interaction rules (ui-standards.html 页面交互契约, 功能闭环, 操作反馈) come with the stages that write
-# the architecture and build the prototype.
-MODE_EXTRA_CARDS = {"system": ("interaction",), "prototype": ("interaction",)}
+# the architecture and build the prototype; every system with a client writes a configuration list (config-design.html).
+MODE_EXTRA_CARDS = {"system": ("interaction", "remote-config"), "prototype": ("interaction",)}
 DEFAULT_SURFACE_CARDS = ("admin-list", "miniprogram")
 
 # Tab icon and brand mark (Luz-Design references/visual-design.html 网页图标与品牌标识; ui-standards.html 页头):
@@ -326,11 +325,8 @@ def print_card_hint(folder: Path) -> None:
 
 
 def render_brief(skill_root: Path, title: str, session_kind: str) -> str:
-    text = read_template(skill_root, "brief.md")
-    if session_kind == "standalone_poster":
-        text = text.replace("- Session:", f"- Session: {title}", 1)
-        text = text.replace("- Request summary:", f"- Request summary: {title}", 1)
-    return text
+    # Posters left for Luz-Design; old sessions with session_kind standalone_poster still validate (validate_session.py).
+    return read_template(skill_root, "brief.md")
 
 
 def validate_creation(modes: list[str], session_kind: str, system_name: str | None, modules: list[str],
@@ -375,8 +371,6 @@ def create_session(
     root = root.resolve()
     root.mkdir(parents=True, exist_ok=True)
     clean = clean_title(title)
-    if session_kind == "standalone_poster" and not POSTER_TASK_RE.search(clean):
-        raise ValueError("standalone poster session title must explicitly describe a poster task")
     sequences = []
     for item in root.iterdir():
         match = SESSION_RE.match(item.name)
@@ -404,10 +398,9 @@ def create_session(
         approvals = json.loads(read_template(skill_root, "approvals.json"))
         if session_kind == "system":
             approvals["module_scope"]["requested_modules"] = requested_modules
-        if session_kind == "standalone_poster":
-            approvals["module_scope"]["status"] = "not_requested"
-            approvals["system_design"]["status"] = "not_requested"
-            approvals["standalone_poster"]["status"] = "requested"
+        if "hardware" in modes:
+            # The hardware list is approved by the person like every other stage (hardware-design.html 工作流程).
+            approvals["hardware"]["status"] = "pending"
         if approval_mode == "authorization":
             # Filled when the person signs, before generation (SKILL.md 调用协议 6, 一次授权).
             approvals["authorizations"] = []

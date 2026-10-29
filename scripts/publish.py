@@ -43,7 +43,8 @@ UPSTREAM_APPROVALS = {
     "system_design": ("module_scope", "architecture"),
     "visual": ("module_scope", "architecture", "system_design"),
     "prototype": ("module_scope", "architecture", "system_design", "visual"),
-    "hardware": (),
+    # The hardware list has no downstream stage, so its own approval by the person is the gate.
+    "hardware": ("hardware",),
 }
 
 

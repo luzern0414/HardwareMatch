@@ -11,7 +11,7 @@ import time
 from pathlib import Path
 from typing import Callable
 
-from new_session import MODE_NAMES, OUTPUT_ROOT, SESSION_RE, SKILL_ROOT, init_mode, print_card_hint, rule_card_kinds, save_rule_cards
+from new_session import MODE_NAMES, OTHER_SKILL_MODES, OUTPUT_ROOT, SESSION_RE, SKILL_ROOT, init_mode, print_card_hint, rule_card_kinds, save_rule_cards
 
 LOCK_TIMEOUT_SECONDS = 5.0
 
@@ -52,8 +52,11 @@ def checked_session(root: Path, session: Path) -> Path:
 
 
 def add_mode(root: Path, session: Path, mode: str, *, standalone_poster: bool = False, skill_root: Path = SKILL_ROOT, source_checker: Callable[[str], int] | None = None, allow_live_crawl_offline: bool = False, cards: list[str] | None = None) -> dict:
-    if mode not in {"visual", "prototype", "document"}:
-        raise ValueError("add_mode supports visual, prototype, or document; system scope is created only by the intake workflow")
+    # Document layout and posters belong to Luz-Design; the option is still parsed so old callers get a clear refusal.
+    if mode in OTHER_SKILL_MODES or standalone_poster:
+        raise ValueError(f"{'standalone posters' if standalone_poster else mode} belong to Luz-Design (D:\\Codes\\Luz-Design), not Luz-System; use that skill")
+    if mode not in {"visual", "prototype"}:
+        raise ValueError("add_mode supports visual or prototype; system scope is created only by the intake workflow")
     # Visual adds the surface cards (--card admin-list, miniprogram, website, agent-ui …; default admin-list and miniprogram).
     kinds = rule_card_kinds([mode], cards)
     session = checked_session(root, session)
@@ -63,16 +66,10 @@ def add_mode(root: Path, session: Path, mode: str, *, standalone_poster: bool = 
     manifest = load_json(manifest_path)
     approvals = load_json(approvals_path)
     modes = list(manifest.get("modes", []))
-    kind = manifest.get("session_kind")
     if mode == "visual":
         from validate_session import validate
         system_approved = approvals.get("system_design", {}).get("status") == "approved"
         architecture_approved = approvals.get("architecture", {}).get("status") == "approved"
-        poster_requested = (
-            standalone_poster
-            and kind == "standalone_poster"
-            and approvals.get("standalone_poster", {}).get("status") in {"requested", "approved"}
-        )
         architecture = work / "01-system" / "03-system-architecture.html"
         design = work / "01-system" / "04-system-design.html"
         legacy_design = work / "01-system" / "03-system-design.html"
@@ -89,12 +86,8 @@ def add_mode(root: Path, session: Path, mode: str, *, standalone_poster: bool = 
             )
             if errors:
                 raise PermissionError("visual gate failed: " + "; ".join(errors))
-        elif poster_requested:
-            errors = validate(session)
-            if errors:
-                raise PermissionError("standalone poster gate failed: " + "; ".join(errors))
         else:
-            raise PermissionError("visual mode requires approved architecture and system design; standalone posters must be declared when the session is created")
+            raise PermissionError("visual mode requires approved architecture and system design")
     elif mode == "prototype":
         from validate_session import validate
         visual_approved = approvals.get("visual", {}).get("status") == "approved"
@@ -139,8 +132,8 @@ def add_mode(root: Path, session: Path, mode: str, *, standalone_poster: bool = 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Activate a Luz System mode after its approval gate.")
     parser.add_argument("session", help="Numbered session folder")
-    parser.add_argument("mode", choices=["visual", "prototype", "document"])
-    parser.add_argument("--standalone-poster", action="store_true")
+    parser.add_argument("mode", choices=["visual", "prototype", "document"], help="visual or prototype; document is refused (Luz-Design)")
+    parser.add_argument("--standalone-poster", action="store_true", help="refused: posters belong to Luz-Design")
     parser.add_argument("--root", help="Session root override, primarily for tests")
     parser.add_argument("--card", action="append", help="Rule card for the surfaces in scope (repeatable): admin-list, admin-dashboard, admin-form, miniprogram, agent-ui, agent-runtime-ui, website, function-list, interaction; visual defaults to admin-list and miniprogram")
     args = parser.parse_args(argv)

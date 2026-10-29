@@ -38,6 +38,8 @@ STORE_OVERRIDDEN = NOTES != EXP / "notes.json"
 KINDS = ["功能", "交互流程", "组件", "色彩", "字阶", "前端规则", "设计理念", "调研经验"]
 CATEGORIES = ["页面结构", "交互流程", "组件状态", "前端规则"]
 STALE_DAYS = 180
+# One industry, one tag: harvests under an alias merge into the same patterns instead of creating duplicates.
+INDUSTRY_ALIASES = {"健身": "健身房"}
 PATTERN_CAP = 300
 SOURCE_CAP = 200
 
@@ -451,7 +453,7 @@ def cmd_harvest(args) -> int:
     session = Path(args.session).resolve()
     name = session.name
     work = work_dir(session)
-    industries = [x for x in args.industry.split(",") if x]
+    industries = list(dict.fromkeys(INDUSTRY_ALIASES.get(x, x) for x in args.industry.split(",") if x))
     sources_doc = load(SOURCES, "sources")
     sources = sources_doc["sources"]
     by_url = {s["url"]: s for s in sources}
@@ -633,7 +635,7 @@ def render() -> None:
             if refs:
                 lines.append("- 依据：" + "；".join(f"[{r['title']}]({r['url']})" for r in refs))
             lines.append("")
-    lines += ["## 来源", "", "| 编号 | 类别 | 来源 | 可借鉴 | 采集日期 | 复用 |", "|---|---|---|---|---|---|"]
+    lines += ["## 来源", "", "| 编号 | 类别 | 来源 | 可借鉴 | 采集日期 | 复用 |", "|:---:|:---:|:---|:---|:---:|:---:|"]  # short values centred, long text left
     for s in sources:
         age = age_days(s.get("captured_at"))
         reuse = "可复用快照" if s.get("snapshot") and age is not None and age <= STALE_DAYS else ("知识，无快照" if not s.get("snapshot") else "已过期")

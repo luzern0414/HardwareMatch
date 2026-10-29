@@ -197,7 +197,8 @@ def validate_rule_page(
     errors: list[str],
 ) -> None:
     text = path.read_text(encoding="utf-8")
-    rel = path.relative_to(ROOT)
+    # Tests check pages in the system temp folder, so a page outside the skill is named by its file name.
+    rel = path.relative_to(ROOT) if path.resolve().is_relative_to(ROOT) else Path(path.name)
     if "<!doctype html>" not in text.lower():
         errors.append(f"HTML missing doctype: {rel}")
     if not re.search(r'<link\s+rel="stylesheet"\s+href="guidelines\.css"', text, re.I):
@@ -318,6 +319,8 @@ def validate_rule_page(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate the flattened Luz System skill and root-level sessions.")
     parser.add_argument("--strict-production", action="store_true", help="Require strict session structure and live source verification")
+    parser.add_argument("--package-only", action="store_true",
+                        help="Check only the skill package; skip the sessions in the output folder")
     args = parser.parse_args(argv)
     errors: list[str] = []
     for rel in REQUIRED:
@@ -437,18 +440,6 @@ def main(argv: list[str] | None = None) -> int:
         if re.search(r"(?<![A-Za-z0-9-])sk-(?:proj-)?[A-Za-z0-9_]{20,}", text):
             errors.append(f"possible API key in {path.relative_to(ROOT)}")
 
-    sessions = [path for path in OUTPUT_ROOT.iterdir() if path.is_dir() and SESSION_RE.match(path.name)] if OUTPUT_ROOT.is_dir() else []
-    warnings: list[str] = []
-    for session in sorted(sessions):
-        session_warnings: list[str] = []
-        errors.extend(
-            f"{session.name}: {error}"
-            for error in validate_session(
-                session, strict=args.strict_production, live_sources=args.strict_production, warnings=session_warnings
-            )
-        )
-        warnings.extend(f"{session.name}: {warning}" for warning in dict.fromkeys(session_warnings))
-
     from new_session import read_template
     templates: dict[str, str] = {}
     for name in TEMPLATE_NAMES:
@@ -474,6 +465,24 @@ def main(argv: list[str] | None = None) -> int:
     from experience import check as check_experience
     errors.extend(f"experience: {e}" for e in check_experience())
 
+    # The package result comes first, so a session problem (an output, not the skill) never hides it.
+    if errors:
+        print(f"PACKAGE FAIL: {len(errors)} skill package issue(s)")
+    else:
+        print("PACKAGE PASS: skill package has no errors")
+    sessions = [] if args.package_only else (
+        [path for path in OUTPUT_ROOT.iterdir() if path.is_dir() and SESSION_RE.match(path.name)] if OUTPUT_ROOT.is_dir() else [])
+    warnings: list[str] = []
+    for session in sorted(sessions):
+        session_warnings: list[str] = []
+        errors.extend(
+            f"{session.name}: {error}"
+            for error in validate_session(
+                session, strict=args.strict_production, live_sources=args.strict_production, warnings=session_warnings
+            )
+        )
+        warnings.extend(f"{session.name}: {warning}" for warning in dict.fromkeys(session_warnings))
+
     for warning in warnings:
         print("WARN", warning)
     if errors:
@@ -485,6 +494,8 @@ def main(argv: list[str] | None = None) -> int:
         print("WARN: Imagegen was not found at D:\\Codes\\Imagegen")
     session_label = f"{len(sessions)} production session(s)" if args.strict_production else f"{len(sessions)} session(s)"
     validation_label = "sessions production-validated" if args.strict_production else "sessions not production-validated"
+    if args.package_only:
+        session_label, validation_label = "0 session(s)", "sessions skipped (--package-only)"
     print(
         f"PASS: Luz System skill validated with {len(REQUIRED)} required files, "
         f"{session_label}, 3 rule entrances, and {validation_label}"

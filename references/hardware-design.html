@@ -24,7 +24,7 @@
 <li>查硬件经验库，读对应场景的业务逻辑。</li>
 <li>写系统方案故事板，再按“设备与连接”选型。</li>
 <li>用真实浏览器调研型号、价格与渠道，补齐经验库没有的部分。</li>
-<li>写方案数据，校验零错误后生成硬件选型清单网页，并用视觉技能的文件检查脚本验收。</li>
+<li>写方案数据，校验零错误后生成硬件选型清单网页，并用视觉技能的文件检查脚本验收；清单交人工批准，与其他阶段一样在批准账本里记录文件哈希，批准后才发布。</li>
 <li>沉淀经验，交付清单；同时有软件设计时，把设备与集成写进系统架构。</li>
 </ol>
 </section>
@@ -107,7 +107,7 @@
 <div class="table-wrap"><table><thead><tr><th>位置</th><th>职责</th><th>通过条件</th></tr></thead><tbody>
 <tr><td>会话的硬件需求文件</td><td>记录规模、运营、预算与现场条件</td><td>会改变选型的关键信息齐全</td></tr>
 <tr><td>会话的硬件方案数据</td><td>故事板、设备、链路、现场条件、价格与渠道</td><td>方案校验零错误</td></tr>
-<tr><td>会话的硬件选型清单网页</td><td>图文清单与连接图</td><td>文件检查脚本通过；只做硬件时发布为会话唯一的最终网页</td></tr>
+<tr><td>会话的硬件选型清单网页</td><td>图文清单与连接图</td><td>文件检查脚本通过，经人工批准并记录哈希；只做硬件时发布为会话唯一的最终网页</td></tr>
 <tr><td>硬件经验库</td><td>产品、匹配规则、渠道、搜索词、流程经验</td><td>本次新结论已入库</td></tr>
 </tbody></table></div>
 </section>
@@ -122,6 +122,7 @@
 <li>型号没有出处、价格没有链接与日期、拿不到价格又没有联系渠道：退回调研。</li>
 <li>把消防、强电、布线当成选型内容，或没有汇总对现场的需求：退回设计。</li>
 <li>经验库没有更新，或把个人手机号、微信写进会进仓库的文件：不算交付。</li>
+<li>清单没有经人工批准、批准后文件又被改动：不能发布（发布脚本拒绝）。</li>
 </ul>
 </section>
 <!-- SECTION:quality-gates:END -->
@@ -129,7 +130,7 @@
 <!-- SECTION:handoff:START id=handoff data-rule-id=hardware-handoff -->
 <section id="handoff" data-rule-id="hardware-handoff" aria-labelledby="handoff-heading">
 <h2 id="handoff-heading" class="section-heading"><svg class="icon-linear section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h12M13 4l3 3-3 3M20 17H8M11 14l-3 3 3 3"/></svg><span>交接规则</span></h2>
-<p>设备清单、链路与协议、接入方式、通信时序和现场条件交给后端技能实现设备接入与后台对接；系统架构中的集成项与硬件方案的设备编号保持一致。</p>
+<p>设备清单、链路与协议、接入方式、通信时序和现场条件交给开发技能实现设备接入与后台对接；系统架构中的集成项与硬件方案的设备编号保持一致。</p>
 </section>
 <!-- SECTION:handoff:END -->
 
