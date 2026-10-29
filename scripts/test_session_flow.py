@@ -284,6 +284,38 @@ class SessionFlowTests(unittest.TestCase):
             self.assertNotIn('data-state="排队"', text)  # not an agent session: no agent part
             self.assertNotIn("AGENT_PART", text)  # and no leftover marker
 
+    def test_publish_needs_the_mode_and_every_upstream_approval(self) -> None:
+        # A prototype written straight after the architecture, without system design, visual approval or the
+        # prototype mode, must not be published (publish.py approval gate mirrors add_mode.py).
+        from publish import publish
+        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+            root = tool_root(temp)
+            session = prepare_approved_system(root)
+            adopt_rules(session)
+            prototype = session / "raw" / "03-prototype" / "interactive-prototype.html"
+            prototype.parent.mkdir(parents=True, exist_ok=True)
+            prototype.write_text((session / "raw" / "01-system" / "04-system-design.html").read_text(encoding="utf-8"), encoding="utf-8")
+            with self.assertRaises(PermissionError) as caught:
+                publish(session, "prototype")
+            self.assertIn("has not declared", str(caught.exception))
+            self.assertIn("visual is not approved", str(caught.exception))
+            self.assertFalse((session / f"{session.name}.html").exists())
+            prototype.unlink()
+            prototype.parent.rmdir()
+            add_mode(root, session, "visual", skill_root=ROOT, allow_live_crawl_offline=True)
+            approve_artifact(session, "visual", "02-visual/visual-board.html")
+            add_mode(root, session, "prototype", skill_root=ROOT, allow_live_crawl_offline=True)
+            adopt_rules(session)
+            # An approved upstream file edited afterwards blocks publishing until it is approved again.
+            board = session / "raw" / "02-visual" / "visual-board.html"
+            original = board.read_text(encoding="utf-8")
+            board.write_text(original + "<!-- edited -->", encoding="utf-8")
+            with self.assertRaises(PermissionError) as caught:
+                publish(session, "prototype")
+            self.assertIn("visual artifact hash differs", str(caught.exception))
+            board.write_text(original, encoding="utf-8")
+            self.assertTrue(publish(session, "prototype").is_file())
+
     def test_publish_needs_rule_card_adopted_rules_and_sediment(self) -> None:
         from publish import publish
         with tempfile.TemporaryDirectory(dir=ROOT) as temp:

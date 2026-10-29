@@ -231,6 +231,19 @@
       "last_confirmed": "2026-10-28"
     },
     {
+      "key": "admin-prototype-page-structure",
+      "kind": "lesson",
+      "text": "后台原型按原型骨架的结构写：body 里第一个可见内容是唯一的 h1（品牌图案加系统名，文字直接写在 h1 内），h1 后紧跟以 h2 开头的 section；菜单放在这个 section 里的 nav 中，侧栏或顶栏用 CSS 布局，不要把 header、aside 放在 h1 之前；check_document 加 --allow interface 就允许应用外壳，不必改用 div 冒充导航；范围只有一个菜单页时不画单项侧栏，用 h2 页面名标明位置",
+      "why": "会员管理列表页评测：旧版 check_document 在 --allow interface 下仍拦 nav，agent 只好用 div 加 role 绕开；已改为界面模式允许外壳",
+      "uses": 2,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29",
+      "previous": {
+        "text": "后台原型要同时通过 validate_session 与 check_document：h1 写品牌图案加系统名且文字直接写在 h1 内，h1 后紧跟 section，section 第一项是 h2；外壳用 div 加 role=navigation 与 console、topbar 类名，不用 nav、aside、header 标签；范围只有一个菜单页时不画单项侧栏，用 h2 页面名标明位置",
+        "replaced_at": "2026-10-29"
+      }
+    },
+    {
       "key": "arch-html-inline-style",
       "kind": "lesson",
       "text": "架构等审阅页不要写内联 style：校验器把多个内联样式拼接后按 font 声明检查，会把 margin、padding 误判为字号；数据字段名避开 更新时间、生成时间、SHA-256、示例数据 等被 check_document 拦截的元数据词",
@@ -238,6 +251,15 @@
       "uses": 1,
       "first_seen": "2026-10-28",
       "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "disabled-variant-specificity",
+      "kind": "lesson",
+      "text": "置灰样式写在主按钮、危险按钮、文字按钮等变体规则之后并同时覆盖 :hover，否则只读或已注销时红色危险按钮仍像可点；浏览器验收要截图核对每个变体的禁用态，量浮层尺寸前等入场动画结束",
+      "why": "001 会员管理列表页只读截图发现行内“注销”仍为红色，390 宽测量浮层时取到缩放动画中的尺寸",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
     },
     {
       "key": "luzcrawl-nngroup-rate-limit",
@@ -252,10 +274,10 @@
       "key": "prototype-panel-and-icons",
       "kind": "lesson",
       "text": "原型配置面板若未写入架构，用单选与复选控件实现，避免无动作编号的按钮；check_document 把 svg 后第一段文字当图标含义，图标按钮要带可见文字，同一插画不在多处复用，头像用 img；全局加 [hidden]{display:none!important} 防止按钮样式覆盖隐藏",
-      "why": "008 原型多轮校验与浏览器验收",
-      "uses": 1,
+      "why": "008 原型多轮校验与浏览器验收；001 会员管理列表页再次采用",
+      "uses": 2,
       "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28"
+      "last_confirmed": "2026-10-29"
     },
     {
       "key": "reuse-knowledge-only-sources",
@@ -346,6 +368,15 @@
       "uses": 1,
       "first_seen": "2026-10-28",
       "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "member-list-default-and-columns",
+      "kind": "fact",
+      "text": "会员列表默认有效、按最近到店倒序（未到店排最后），即将到期取 15 天内；选定单一状态、单一门店或单一会员卡类型时隐藏对应列，由状态标签或筛选标签写一次；表头筛选与窄屏工具条是同一动作时用不同 data-arg 区分入口",
+      "why": "001 会员管理列表页浏览器验收 58 项通过（1280–1920 无溢出、1440×900 首屏 12 行、390 宽可操作）",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
     }
   ]
 }

@@ -18,6 +18,7 @@ from validate_session import (
     sediment_errors,
     sha256_file,
     tab_icon_errors,
+    validate_approval_record,
     validate_light_html,
     work_dir,
 )
@@ -35,6 +36,43 @@ STAGE_CARDS = {
     "prototype": "prototype",
     "hardware": "hardware",
 }
+# A stage belongs to a mode, and add_mode.py adds a mode only after the stages before it are approved by a person.
+# Publishing checks the same chain, so a stage written without its approvals is never delivered.
+STAGE_MODES = {"system_design": "system", "visual": "visual", "prototype": "prototype", "hardware": "hardware"}
+UPSTREAM_APPROVALS = {
+    "system_design": ("module_scope", "architecture"),
+    "visual": ("module_scope", "architecture", "system_design"),
+    "prototype": ("module_scope", "architecture", "system_design", "visual"),
+    "hardware": (),
+}
+
+
+def approval_gate_errors(work: Path, stage: str) -> list[str]:
+    """The stage's mode is declared and every upstream approval is a person's, on the file as it is now."""
+    delivery = work / "99-delivery"
+    manifest = json.loads((delivery / "MANIFEST.json").read_text(encoding="utf-8"))
+    errors: list[str] = []
+    mode = STAGE_MODES[stage]
+    if mode not in manifest.get("modes", []):
+        errors.append(f"stage {stage} belongs to mode {mode}, which this session has not declared: add it with "
+                      f"`py -X utf8 scripts/add_mode.py <会话> {mode}`, which checks the approvals before it")
+    upstream = UPSTREAM_APPROVALS[stage]
+    if stage == "visual" and manifest.get("session_kind") == "standalone_poster":
+        upstream = ()
+    if not upstream:
+        return errors
+    try:
+        approvals = json.loads((delivery / "APPROVALS.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return errors + ["raw/99-delivery/APPROVALS.json is missing or unreadable"]
+    for name in upstream:
+        item = approvals.get(name)
+        if not isinstance(item, dict) or item.get("status") != "approved":
+            errors.append(f"{name} is not approved yet: show it to the person and record their approval in APPROVALS.json "
+                          "(scripts and the model never approve)")
+            continue
+        validate_approval_record(work, name, item, errors)
+    return errors
 
 
 def publish(folder: Path, stage: str) -> Path:
@@ -45,6 +83,9 @@ def publish(folder: Path, stage: str) -> Path:
     source = work / STAGE_PATHS[stage]
     if not source.is_file():
         raise FileNotFoundError(f"missing stage artifact: raw/{STAGE_PATHS[stage]}")
+    approval_errors = approval_gate_errors(work, stage)
+    if approval_errors:
+        raise PermissionError("publish refused, approval gate: " + "; ".join(approval_errors))
     # Work starts from a current rule card and the BRIEF names the rules it applied (scripts/context.py).
     rule_errors = rule_card_errors(work, require_adopted=True, check_current=True)
     if rule_errors:

@@ -319,7 +319,7 @@
         "每个端另读对应规则卡（admin-list、admin-dashboard、admin-form、miniprogram、agent-ui、website），用 `--card` 存进会话",
         "要一页同时放功能列表、小程序与后台时按 SKILL.md“集成系统设计页”：恰好三部分，共用一套演示数据、一套字体与字阶",
         "浏览器验收用 Playwright 或 Claude in Chrome：无脚本错误，保存验收截图到 `raw/99-delivery/`，原型与截图两个哈希一起由人批准",
-        "发布：`py -X utf8 scripts/publish.py <会话目录> prototype`（没有规则卡、规则卡过期、BRIEF“采用的规则”或“本次沉淀”为空会被拒绝）"
+        "发布：`py -X utf8 scripts/publish.py <会话目录> prototype`（未用 add_mode.py 声明原型模式、模块范围／架构／系统设计／视觉稿任一项未经人批准或批准后文件被改、没有规则卡、规则卡过期、BRIEF“采用的规则”或“本次沉淀”为空，都会被拒绝；被拒绝时停下来请人确认，不要绕过）"
       ],
       "checks": [
         "`py -X utf8 scripts/validate_session.py <会话目录>` 零 ERROR，原型的 WARN 逐条处理；交付前加 `--strict-production`",
