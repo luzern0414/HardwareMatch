@@ -48,12 +48,13 @@
 - **visual-board-type-floor**：视觉板与原型用同一套界面字号规则：正文、表格、控件不小于 14px，时间、角标、单位、计数等辅助文字可用 12–13px，但选择器或类名要标明（time、tag、meta、badge、unit、count 等）；智能体的步骤耗时、等待时长、阶段计时属于数据档，用 14 号等宽数字（旧版 validate_session 对 02-visual 一律按 14 像素、对 03-prototype 按 12 像素，视觉板与原型字号对不上；已统一）　确认 2 次，最近 2026-10-29
 - **规范页技术记号**：规范页正文用中文，99+、Esc、YYYY-MM-DD 等技术记号放进 code 或 kbd 元素；“不要字母”指的是不用文字头像，不是页面里禁止一切拉丁字母（用户澄清，validate_skill.py 已改为只放行 code 与 kbd）　确认 1 次，最近 2026-10-28
 
-## 有效信息（9/120）
+## 有效信息（10/120）
 
 - **agent-foundation-design-split**：智能体底座分工：Luz-System 的 agent-design.html 写界面契约（能力清单、追问、步骤卡、审批、七种运行状态与 data-state 原型、耗时、引用与没有找到、记忆查看与删除、错误呈现、运行事件表），规则卡 agent-ui 与 agent-runtime-ui；实现（接入层、护栏、意图路由、编排、工具契约、结构化输出、记忆、知识库、可观测、事件日志续传、队列、检查点）在 Luz-Dev references/agent-foundation.md，系统设计页架构清单有“智能体运行时与底座”一项（2026-10-29 智能体底座规格（Luz-System 设计层与 Luz-Dev 实现层分开写，不重复））　确认 1 次，最近 2026-10-29
 - **agent-research-sources**：智能体调研来源：Luz-Crawl 任务 017（WHATWG 服务器推送事件、MDN SSE 与 Retry-After、Anthropic 流式/错误/速率限制、Azure 队列削峰/重试/熔断、Stripe 幂等、Nginx 代理、NN/g 响应时间与进度指示、LangGraph 流式）与 018（Anthropic 智能体、工具、上下文工程、上下文检索、多智能体，Pydantic 与 Pydantic AI，OpenAI Agents SDK 护栏与追踪，LangGraph 记忆、持久化、中断，Mem0，pgvector，Qdrant 混合检索，OWASP 大模型十大风险，通义千问与 DeepSeek 函数调用）；新调研先复用这两个任务（2026-10-29 写 agent-design.html 依据表时逐篇核对原文）　确认 1 次，最近 2026-10-29
 - **agent-run-state-blocks**：智能体原型的七种运行状态：进度头、尾部卡片与输入区按钮各自放进同名 data-state 块，由脚本整体切换；历史阶段的步骤卡只写一份，用类名切换进行中、失败与完成（检查要求每种状态一块且执行中块内有计时与停止，重复整屏会让动作入口翻倍）　确认 1 次，最近 2026-10-29
 - **agent-timing-display**：智能体耗时分段显示：运行头部常驻总已用时、当前阶段与预计剩余（取同类阶段历史中位数，无历史不显示）；每阶段、每步显示耗时，运行中每秒更新，结束定格；排队与等待审批单独计时，不计入执行用时；1 秒内不显示进度，超过 1 秒给进行标记，超过 10 秒显示已用时、当前步骤与停止；等宽数字，写法 12 秒、1 分 05 秒、1 小时 02 分；界面本地计时，按事件时间恢复不从 0 重算（NN/g 响应时间三界限与进度指示；Ant Design X 思维链没有耗时属性需自己补；用户 2026-10-29 追问智能体对话耗时）　确认 1 次，最近 2026-10-29
+- **approval-mode-authorization**：平台给销售生成的演示会话用 new_session.py --approval-mode authorization：生成前由人确认背景并签一条授权（APPROVALS.json authorizations，背景存独立文件并记哈希），各阶段照常产出、照常校验，通过后以 approval_basis authorization 记录并引用授权编号；背景改动或重做阶段要新授权；只限软件演示，Luz-Dev 拒收（用户 2026-10-29 决定：销售看不懂架构，直接生成最终前端页面，但要按技能完整流程执行；平台会话的本次沉淀不经人工确认直接写入）　确认 1 次，最近 2026-10-29
 - **component-library-reference**：组件库参考清单在 references/ui-standards.html“参考组件库”；2026-10-28 已采集 Ant Design 字体与数据格式、Arco、TDesign 字体与表格、Semi、Element Plus、Carbon、Polaris、Atlassian 表格及 NN/g 数据表格、驾驶舱、筛选共 16 页（LuzCrawl 批次 batch-f38ef88f）（Luz-Crawl 调研 009）　确认 1 次，最近 2026-10-28
 - **manifest-strict-fields**：strict-production 要求 MANIFEST 状态 approved、各阶段 sha256、verification 全 pass、deliverables 的 id 以 ARCH/SYS/VIS/PROTO 等前缀开头且每个模式至少一项（008 发布时 strict 校验）　确认 1 次，最近 2026-10-28
 - **member-list-default-and-columns**：会员列表默认有效、按最近到店倒序（未到店排最后），即将到期取 15 天内；选定单一状态、单一门店或单一会员卡类型时隐藏对应列，由状态标签或筛选标签写一次；表头筛选与窄屏工具条是同一动作时用不同 data-arg 区分入口（001 会员管理列表页浏览器验收 58 项通过（1280–1920 无溢出、1440×900 首屏 12 行、390 宽可操作））　确认 1 次，最近 2026-10-29

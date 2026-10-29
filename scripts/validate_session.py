@@ -12,7 +12,7 @@ import sys
 import urllib.error
 import urllib.request
 from dataclasses import dataclass, field
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Callable, Iterable
@@ -41,6 +41,14 @@ VALID_STATUS = {"draft", "review", "approved", "superseded"}
 VALID_MODES = {"system", "visual", "prototype", "hardware", "document"}
 VALID_APPROVAL_STATUS = {"pending", "approved", "rejected", "not_requested"}
 VALID_POSTER_STATUS = {"requested", "approved", "rejected", "not_requested"}
+# Approval modes (SKILL.md 调用协议 6). per_stage, the default: a person approves each stage. authorization (the user's
+# decision of 2026-10-29 for demos a platform generates for sales): a person signs one authorization before generation,
+# and the platform records each stage under it after the stage's checks pass. Either way a person signs; scripts and
+# the model never approve.
+APPROVAL_MODES = {"per_stage", "authorization"}
+AUTHORIZABLE_STAGES = ("module_scope", "architecture", "system_design", "visual", "prototype")
+AUTOMATIC_ACTORS = {"auto", "model", "system", "validator", "script", "platform", "agent", "bot"}
+AUTHORIZATION_ID_RE = re.compile(r"AUTH-\d{3}")
 ADVICE_RE = re.compile(r"(下一步建议|建议增加|推荐模块|建议你|建议使用|可以考虑|可考虑|不妨|或许|也许)")
 BAD_NEIGHBOR_CLASS_RE = re.compile(r"(?:^|[-_])(description|desc|note|tip|help|explain|advice|recommend|guidance)(?:$|[-_])", re.I)
 POSTER_TASK_RE = re.compile(r"海报|poster", re.I)
@@ -389,7 +397,7 @@ def validate_approval_record(
     approved_by = str(item.get("approved_by") or "").strip()
     if not approved_by:
         errors.append(f"APPROVALS.json {name} approval needs approved_by")
-    elif approved_by.casefold() in {"auto", "model", "system", "validator", "script"}:
+    elif approved_by.casefold() in AUTOMATIC_ACTORS:
         errors.append(f"APPROVALS.json {name} cannot be approved by an automatic actor")
     parse_iso_datetime(item.get("approved_at"), f"APPROVALS.json {name}.approved_at", errors)
     artifact = session_artifact(session, item.get("artifact_path"), errors, name)
@@ -405,6 +413,87 @@ def validate_approval_record(
             errors.append(f"APPROVALS.json {name}.browser_acceptance_sha256 must be a lowercase SHA-256 digest")
         elif acceptance and acceptance.is_file() and sha256_file(acceptance) != acceptance_hash:
             errors.append(f"APPROVALS.json {name} browser acceptance hash differs from the screenshot")
+    basis = item.get("approval_basis", "person")
+    if basis == "authorization":
+        validate_authorized_record(session, name, item, errors)
+    elif basis != "person":
+        errors.append(f"APPROVALS.json {name}.approval_basis must be person or authorization")
+
+
+def _instant(value) -> datetime | None:
+    try:
+        moment = datetime.fromisoformat(str(value))
+    except ValueError:
+        return None
+    return moment if moment.tzinfo else moment.replace(tzinfo=timezone.utc)
+
+
+def validate_authorization(session: Path, auth: object, errors: list[str]) -> None:
+    """One signed authorization: a person confirmed the background (context_path, hash-bound) and asked the platform to
+    run the stages in scope without stopping. Changed background needs a new authorization with its own context file."""
+    if not isinstance(auth, dict):
+        errors.append("APPROVALS.json authorizations entries must be objects")
+        return
+    aid = str(auth.get("id") or "")
+    label = f"APPROVALS.json authorization {aid or '(no id)'}"
+    if not AUTHORIZATION_ID_RE.fullmatch(aid):
+        errors.append(f"{label}: id must look like AUTH-001")
+    signer = str(auth.get("authorized_by") or "").strip()
+    if not signer:
+        errors.append(f"{label} needs authorized_by, the person who signed it")
+    elif signer.casefold() in AUTOMATIC_ACTORS:
+        errors.append(f"{label} cannot be signed by an automatic actor")
+    parse_iso_datetime(auth.get("authorized_at"), f"{label}.authorized_at", errors)
+    if not str(auth.get("statement") or "").strip():
+        errors.append(f"{label} needs statement, the person's own words when signing")
+    scope = auth.get("scope")
+    if not isinstance(scope, list) or not scope or len(set(scope)) != len(scope) or any(s not in AUTHORIZABLE_STAGES for s in scope):
+        errors.append(f"{label}.scope must list stages from " + ", ".join(AUTHORIZABLE_STAGES))
+    context = session_artifact(session, auth.get("context_path"), errors, f"authorization {aid} context")
+    digest = str(auth.get("context_sha256") or "")
+    if not SHA256_RE.fullmatch(digest):
+        errors.append(f"{label}.context_sha256 must be a lowercase SHA-256 digest")
+    elif context and context.is_file() and sha256_file(context) != digest:
+        errors.append(f"{label}: the context file differs from what was signed; changed background needs a new authorization")
+
+
+def validate_authorized_record(session: Path, name: str, item: dict, errors: list[str]) -> None:
+    """A stage recorded under a signed authorization: the session was created in approval_mode authorization, the stage is
+    in the authorization's scope, the signer is the approver, and the record cites the authorization in force when it
+    was written (after a re-authorization, new records cite the new one)."""
+    delivery = session / "99-delivery"
+    try:
+        manifest = json.loads((delivery / "MANIFEST.json").read_text(encoding="utf-8"))
+        approvals = json.loads((delivery / "APPROVALS.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        errors.append(f"APPROVALS.json {name} cites an authorization, but MANIFEST.json or APPROVALS.json is unreadable")
+        return
+    if manifest.get("approval_mode") != "authorization":
+        errors.append(f"APPROVALS.json {name} cites an authorization, but this session approves stage by stage "
+                      "(approval_mode authorization is chosen when the session is created)")
+        return
+    if name not in AUTHORIZABLE_STAGES:
+        errors.append(f"APPROVALS.json {name} cannot be approved under an authorization")
+        return
+    auths = [a for a in approvals.get("authorizations") or [] if isinstance(a, dict)]
+    aid = str(item.get("authorization_id") or "")
+    auth = next((a for a in auths if a.get("id") == aid), None)
+    if auth is None:
+        errors.append(f"APPROVALS.json {name}.authorization_id {aid or '(empty)'} names no signed authorization")
+        return
+    validate_authorization(session, auth, errors)
+    if name not in (auth.get("scope") or []):
+        errors.append(f"APPROVALS.json {name} is outside the scope of {aid}")
+    if str(item.get("approved_by") or "").strip() != str(auth.get("authorized_by") or "").strip():
+        errors.append(f"APPROVALS.json {name}.approved_by must be the person who signed {aid}")
+    recorded, signed = _instant(item.get("approved_at")), _instant(auth.get("authorized_at"))
+    if recorded and signed:
+        if recorded < signed:
+            errors.append(f"APPROVALS.json {name} was recorded before {aid} was signed")
+        dated = [(moment, a) for a in auths if (moment := _instant(a.get("authorized_at"))) and moment <= recorded]
+        in_force = max(dated, key=lambda pair: pair[0])[1] if dated else None
+        if in_force is not None and in_force.get("id") != aid:
+            errors.append(f"APPROVALS.json {name} cites {aid}, but {in_force.get('id')} was in force when it was recorded")
 
 
 def validate_approvals(session: Path, errors: list[str]) -> dict | None:
@@ -418,6 +507,16 @@ def validate_approvals(session: Path, errors: list[str]) -> dict | None:
         errors.append("APPROVALS.json missing: " + ", ".join(missing))
     if approvals.get("schema_version") != "2.0":
         errors.append("APPROVALS.json schema_version must be 2.0")
+
+    authorizations = approvals.get("authorizations", [])
+    if not isinstance(authorizations, list):
+        errors.append("APPROVALS.json authorizations must be a list")
+    else:
+        ids = [a.get("id") for a in authorizations if isinstance(a, dict)]
+        if len(ids) != len(set(ids)):
+            errors.append("APPROVALS.json authorizations repeat an id")
+        for auth in authorizations:
+            validate_authorization(session, auth, errors)
 
     module_scope = approvals.get("module_scope", {})
     for name in ("module_scope", "architecture", "system_design", "visual"):
@@ -1871,6 +1970,11 @@ def validate(
             errors.append("MANIFEST.json has an invalid status")
         if manifest.get("session_kind") not in {"general", "system", "standalone_poster"}:
             errors.append("MANIFEST.json has an invalid session_kind")
+        approval_mode = manifest.get("approval_mode", "per_stage")
+        if approval_mode not in APPROVAL_MODES:
+            errors.append("MANIFEST.json approval_mode must be per_stage or authorization")
+        elif approval_mode == "authorization" and (manifest.get("session_kind") != "system" or "hardware" in (manifest.get("modes") or [])):
+            errors.append("MANIFEST.json approval_mode authorization is for software demo sessions (session_kind system, no hardware)")
         if manifest.get("folder") != folder.name:
             errors.append("MANIFEST.json folder does not match directory name")
         final = final_html(folder)

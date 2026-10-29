@@ -34,6 +34,9 @@ HW_REQUIREMENTS = """# 硬件需求
 """
 POSTER_TASK_RE = re.compile(r"海报|poster", re.I)
 SESSION_KINDS = ("general", "system")
+# per_stage: a person approves each stage. authorization: a platform demo session; a person signs one authorization
+# before generation and the platform records each stage under it (SKILL.md 调用协议 6).
+APPROVAL_MODES = ("per_stage", "authorization")
 # Rule cards written into raw/00-rules/ when a mode starts (scripts/context.py; references/cards.json).
 # A stage card always comes with its mode; visual mode adds the surface cards named with --card, else these two.
 MODE_CARDS = {"system": "system-design", "prototype": "prototype", "hardware": "hardware"}
@@ -330,9 +333,14 @@ def render_brief(skill_root: Path, title: str, session_kind: str) -> str:
     return text
 
 
-def validate_creation(modes: list[str], session_kind: str, system_name: str | None, modules: list[str]) -> None:
+def validate_creation(modes: list[str], session_kind: str, system_name: str | None, modules: list[str],
+                      approval_mode: str = "per_stage") -> None:
     if session_kind not in SESSION_KINDS:
         raise ValueError(f"unknown session kind: {session_kind}")
+    if approval_mode not in APPROVAL_MODES:
+        raise ValueError(f"unknown approval mode: {approval_mode}")
+    if approval_mode == "authorization" and (session_kind != "system" or "hardware" in modes):
+        raise ValueError("approval mode authorization is for software demo sessions: --session-kind system --modes system")
     if "system" in modes and session_kind != "system":
         raise ValueError("system mode requires session kind 'system'")
     if session_kind == "system" and "system" not in modes:
@@ -359,9 +367,10 @@ def create_session(
     system_name: str | None = None,
     modules: list[str] | None = None,
     cards: list[str] | None = None,
+    approval_mode: str = "per_stage",
 ) -> Path:
     requested_modules = list(dict.fromkeys(modules or []))
-    validate_creation(modes, session_kind, system_name, requested_modules)
+    validate_creation(modes, session_kind, system_name, requested_modules, approval_mode)
     kinds = rule_card_kinds(modes, cards)
     root = root.resolve()
     root.mkdir(parents=True, exist_ok=True)
@@ -399,6 +408,9 @@ def create_session(
             approvals["module_scope"]["status"] = "not_requested"
             approvals["system_design"]["status"] = "not_requested"
             approvals["standalone_poster"]["status"] = "requested"
+        if approval_mode == "authorization":
+            # Filled when the person signs, before generation (SKILL.md 调用协议 6, 一次授权).
+            approvals["authorizations"] = []
         (delivery / "APPROVALS.json").write_text(
             json.dumps(approvals, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
@@ -416,6 +428,8 @@ def create_session(
         if session_kind == "system":
             manifest["system_name"] = system_name
             manifest["requested_modules"] = requested_modules
+        if approval_mode == "authorization":
+            manifest["approval_mode"] = approval_mode
         (delivery / "MANIFEST.json").write_text(
             json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
@@ -460,6 +474,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--modules", help="Comma-separated exact module names supplied by the user")
     parser.add_argument("--root", help="Output root override, primarily for tests")
     parser.add_argument("--card", action="append", help="Extra rule card for this task (repeatable): system-design, function-list, admin-list, admin-dashboard, admin-form, miniprogram, agent-ui, agent-runtime-ui, website, prototype, hardware, interaction; each mode adds its own card (system and prototype also add interaction)")
+    parser.add_argument("--approval-mode", choices=APPROVAL_MODES, default="per_stage",
+                        help="per_stage (default): a person approves each stage; authorization: a platform demo session where a "
+                             "person signs one authorization before generation (APPROVALS.json authorizations)")
     args = parser.parse_args(argv)
     root = Path(args.root).resolve() if args.root else OUTPUT_ROOT
     kind = args.session_kind
@@ -474,6 +491,7 @@ def main(argv: list[str] | None = None) -> int:
             system_name=args.system_name,
             modules=parse_csv(args.modules),
             cards=args.card,
+            approval_mode=args.approval_mode,
         )
     except Exception as exc:
         print(f"FAIL: {type(exc).__name__}: {exc}", file=sys.stderr)

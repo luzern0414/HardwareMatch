@@ -423,6 +423,15 @@
       "last_confirmed": "2026-10-29"
     },
     {
+      "key": "approval-mode-authorization",
+      "kind": "fact",
+      "text": "平台给销售生成的演示会话用 new_session.py --approval-mode authorization：生成前由人确认背景并签一条授权（APPROVALS.json authorizations，背景存独立文件并记哈希），各阶段照常产出、照常校验，通过后以 approval_basis authorization 记录并引用授权编号；背景改动或重做阶段要新授权；只限软件演示，Luz-Dev 拒收",
+      "why": "用户 2026-10-29 决定：销售看不懂架构，直接生成最终前端页面，但要按技能完整流程执行；平台会话的本次沉淀不经人工确认直接写入",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "component-library-reference",
       "kind": "fact",
       "text": "组件库参考清单在 references/ui-standards.html“参考组件库”；2026-10-28 已采集 Ant Design 字体与数据格式、Arco、TDesign 字体与表格、Semi、Element Plus、Carbon、Polaris、Atlassian 表格及 NN/g 数据表格、驾驶舱、筛选共 16 页（LuzCrawl 批次 batch-f38ef88f）",

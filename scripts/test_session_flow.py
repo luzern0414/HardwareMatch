@@ -467,5 +467,125 @@ class SessionFlowTests(unittest.TestCase):
         for token in ("底部导航", "菜品卡", "套餐选择", "购物车", "结算", "浏览器"):
             self.assertIn(token, visual)
 
+DEMO_SIGNER = "销售甲"
+STAGES = ("module_scope", "architecture", "system_design", "visual", "prototype")
+
+
+def make_demo(root: Path) -> Path:
+    return create_session(
+        root, "订餐系统", ["system"], skill_root=ROOT, session_kind="system",
+        system_name=SYSTEM_NAME, modules=MODULES, approval_mode="authorization",
+    )
+
+
+def sign_authorization(session: Path, aid: str = "AUTH-001", *, signer: str = DEMO_SIGNER, scope=STAGES,
+                       at: str | None = None, statement: str = "背景没问题，生成吧") -> Path:
+    """What the platform writes when the person confirms the background and presses 生成."""
+    context = session / "raw" / "00-intake" / f"{aid}-context.md"
+    context.parent.mkdir(parents=True, exist_ok=True)
+    context.write_text("# 背景\n\n连锁餐饮门店，演示点餐、支付与会员。\n", encoding="utf-8")
+    path = session / "raw" / "99-delivery" / "APPROVALS.json"
+    data = read_json(path)
+    data.setdefault("authorizations", []).append({
+        "id": aid, "authorized_by": signer, "authorized_at": at or now(), "scope": list(scope),
+        "statement": statement, "context_path": f"00-intake/{aid}-context.md", "context_sha256": digest(context),
+    })
+    write_json(path, data)
+    return context
+
+
+def record_under(session: Path, name: str, relative: str, aid: str = "AUTH-001", *, by: str = DEMO_SIGNER,
+                 at: str | None = None) -> None:
+    """What the platform writes for a stage after its checks pass."""
+    path = session / "raw" / "99-delivery" / "APPROVALS.json"
+    data = read_json(path)
+    data[name].update({
+        "status": "approved", "approval_basis": "authorization", "authorization_id": aid,
+        "artifact_path": relative, "artifact_sha256": digest(session / "raw" / relative),
+        "approved_by": by, "approved_at": at or now(), "note": "按授权通过：页面、交互与来源校验通过",
+    })
+    if name == "module_scope":
+        data[name]["selected_modules"] = MODULES
+    write_json(path, data)
+
+
+class AuthorizationTests(unittest.TestCase):
+    """approval_mode authorization (SKILL.md 调用协议 6): one signed authorization carries a platform demo through every
+    stage and its checks; everything else about approvals stays."""
+
+    def test_one_signed_authorization_carries_the_demo_to_publish(self) -> None:
+        from publish import publish
+        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+            root = tool_root(temp)
+            session = make_demo(root)
+            self.assertEqual(read_json(session / "raw" / "99-delivery" / "MANIFEST.json")["approval_mode"], "authorization")
+            write_requirements(session)
+            sign_authorization(session)
+            record_under(session, "module_scope", "01-system/01-module-intake.html")
+            write_research(session)
+            write_architecture(session)
+            record_under(session, "architecture", "01-system/03-system-architecture.html")
+            write_system_design(session)
+            record_under(session, "system_design", "01-system/04-system-design.html")
+            add_mode(root, session, "visual", skill_root=ROOT, allow_live_crawl_offline=True)
+            record_under(session, "visual", "02-visual/visual-board.html")
+            add_mode(root, session, "prototype", skill_root=ROOT, allow_live_crawl_offline=True)
+            adopt_rules(session)
+            self.assertTrue(publish(session, "prototype").is_file())
+
+    def module_errors(self, *, per_stage: bool = False, sign: dict | None = None, record: dict | None = None,
+                      after=None) -> list[str]:
+        from validate_session import validate_approval_record
+        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+            root = tool_root(temp)
+            session = make_system(root) if per_stage else make_demo(root)
+            sign_authorization(session, **(sign or {}))
+            record_under(session, "module_scope", "01-system/01-module-intake.html", **(record or {}))
+            if after:
+                after(session)
+            work = session / "raw"
+            errors: list[str] = []
+            validate_approval_record(work, "module_scope", read_json(work / "99-delivery" / "APPROVALS.json")["module_scope"], errors)
+            return errors
+
+    def test_a_valid_record_passes(self) -> None:
+        self.assertEqual(self.module_errors(), [])
+        # A record written before a re-authorization stays valid under the authorization it cites.
+        early = dict(at="2026-10-29T09:00:00+08:00")
+        self.assertEqual(self.module_errors(sign=early, record=dict(at="2026-10-29T09:30:00+08:00"),
+                                            after=lambda s: sign_authorization(s, "AUTH-002", at="2026-10-29T10:00:00+08:00")), [])
+
+    def test_what_an_authorization_cannot_cover(self) -> None:
+        def changed_background(session: Path) -> None:
+            (session / "raw" / "00-intake" / "AUTH-001-context.md").write_text("# 背景\n\n改成健身房。\n", encoding="utf-8")
+
+        cases = {
+            "approves stage by stage": dict(per_stage=True),
+            "automatic actor": dict(sign=dict(signer="platform"), record=dict(by="platform")),
+            "outside the scope of AUTH-001": dict(sign=dict(scope=("architecture", "system_design"))),
+            "must be the person who signed AUTH-001": dict(record=dict(by="销售乙")),
+            "context file differs": dict(after=changed_background),
+            "recorded before AUTH-001 was signed": dict(record=dict(at="2026-01-01T00:00:00+08:00")),
+            "needs statement": dict(sign=dict(statement=" ")),
+            "AUTH-002 was in force": dict(sign=dict(at="2026-10-29T09:00:00+08:00"), record=dict(at="2026-10-29T11:00:00+08:00"),
+                                          after=lambda s: sign_authorization(s, "AUTH-002", at="2026-10-29T10:00:00+08:00")),
+        }
+        for expected, options in cases.items():
+            with self.subTest(expected=expected):
+                errors = self.module_errors(**options)
+                self.assertTrue(any(expected in e for e in errors), errors)
+
+    def test_authorization_is_for_software_demo_sessions(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+            root = tool_root(temp)
+            with self.assertRaises(ValueError):
+                create_session(root, "无人健身房", ["system", "hardware"], skill_root=ROOT, session_kind="system",
+                               system_name="无人健身房", modules=["门禁"], approval_mode="authorization")
+            with self.assertRaises(ValueError):
+                create_session(root, "活动海报", [], skill_root=ROOT, approval_mode="authorization")
+            session = make_system(root)
+            self.assertNotIn("approval_mode", read_json(session / "raw" / "99-delivery" / "MANIFEST.json"))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
