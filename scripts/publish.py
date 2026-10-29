@@ -96,8 +96,11 @@ def publish(folder: Path, stage: str) -> Path:
     if note_errors:
         raise ValueError("publish refused, sediment gate (`py -X utf8 scripts/experience.py note --kind preference|lesson|fact --key <主题> --text \"<一句话原则>\"`, then list the key in BRIEF 本次沉淀): " + "; ".join(note_errors))
     errors: list[str] = []
-    # Prototypes render real interfaces with a 12px floor (Luz-Design visual-design.html 字体与字号); reading pages keep 14px.
-    root = validate_light_html(source, errors, min_px=12.0 if stage == "prototype" else 14.0)
+    # Visual boards and prototypes render real interfaces with a 12px floor for auxiliary text (Luz-Design
+    # visual-design.html 字体与字号); a standalone poster and reading pages keep 14px.
+    poster = json.loads((work / "99-delivery" / "MANIFEST.json").read_text(encoding="utf-8")).get("session_kind") == "standalone_poster"
+    interface = stage == "prototype" or (stage == "visual" and not poster)
+    root = validate_light_html(source, errors, min_px=12.0 if interface else 14.0)
     # Every published page carries its own browser-tab icon (Luz-Design visual-design.html 网页图标与品牌标识).
     if root is not None:
         errors.extend(tab_icon_errors(root, source.name))

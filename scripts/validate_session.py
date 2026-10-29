@@ -1319,10 +1319,16 @@ def validate_visual(
     modules: list[str],
     approved_ids: dict[str, set[str]],
     errors: list[str],
+    warnings: list[str] | None = None,
 ) -> None:
-    root = validate_light_html(path, errors)
+    # The visual board shows the interfaces at their real sizes: the prototype's 12px floor and auxiliary rule apply.
+    root = validate_light_html(path, errors, min_px=12.0)
     if root is None:
         return
+    type_errors, type_warnings = interface_type_findings(root, "visual-board")
+    errors.extend(type_errors)
+    if warnings is not None:
+        warnings.extend(type_warnings)
     main = first(root, "main")
     if main is None or main.get("data-artifact") != "visual-board":
         errors.append('visual-board must declare data-artifact="visual-board"')
@@ -1498,33 +1504,54 @@ def prototype_ui_findings(root: Node) -> tuple[list[str], list[str]]:
                 if SNAKE_OR_LATIN_HEADER_RE.search(header):
                     errors.append(f"interactive-prototype export preview header is a field name, not Chinese business wording: {header}")
 
-    # 4. Interface text below 14px outside auxiliary elements; 5. table cell side padding below 16px.
+    # 4. Interface text below 14px outside auxiliary elements (interface_type_findings); 5. table cell side padding below 16px.
+    type_errors, type_warnings = interface_type_findings(root, "interactive-prototype")
+    errors.extend(type_errors)
+    warnings.extend(type_warnings)
     style = css_text(root)
     variables = css_variables(style)
     for selector, declarations, in_at_rule in _css_rules(style):
-        size = _font_px(declarations, variables)
         for part in (s.strip() for s in selector.split(",")):
             if not part:
                 continue
             last = re.split(r"\s*[>+~]\s*|\s+", part)[-1]
-            # Pseudo-elements (mobile card column names, markers) and chart/SVG text follow their own rules.
-            decorative = "::" in last or any(token in part.lower() for token in ("svg", "chart"))
-            if size is not None and 12 <= size < 14 and not decorative and not AUXILIARY_TEXT_RE.search(part):
-                message = f"interactive-prototype interface text {size:g}px below 14px on a non-auxiliary selector: {part}"
-                (errors if BODY_TEXT_TAG_RE.match(last) else warnings).append(message)
             selection_cell = re.search(r"\.(?:ck|chk|check|sel|select)", last, re.I)
             # Responsive overrides (narrow-screen card rows) are not judged for cell padding.
             if re.match(r"(?:td|th)(?![\w-])", last, re.I) and "::" not in last and not selection_cell and not in_at_rule:
                 padding = _horizontal_padding_px(declarations, variables)
                 if padding is not None and padding < 16:
                     warnings.append(f"interactive-prototype table cell side padding {padding:g}px below 16px: {part}")
-    for node in nodes:
+    return list(dict.fromkeys(errors)), list(dict.fromkeys(warnings))
+
+
+def interface_type_findings(root: Node, label: str) -> tuple[list[str], list[str]]:
+    """Interface text is at least 14px; 12–13px only on auxiliary selectors or classes (time, tag, meta, badge …).
+    The visual board and the prototype render the same interfaces, so both follow this (Luz-Design visual-design.html
+    字体与字号; ui-standards.html). Returns (errors, warnings): body-text elements are errors, other selectors warnings."""
+    errors: list[str] = []
+    warnings: list[str] = []
+    style = css_text(root)
+    variables = css_variables(style)
+    for selector, declarations, _ in _css_rules(style):
+        size = _font_px(declarations, variables)
+        if size is None or not 12 <= size < 14:
+            continue
+        for part in (s.strip() for s in selector.split(",")):
+            if not part:
+                continue
+            last = re.split(r"\s*[>+~]\s*|\s+", part)[-1]
+            # Pseudo-elements (mobile card column names, markers) and chart/SVG text follow their own rules.
+            decorative = "::" in last or any(token in part.lower() for token in ("svg", "chart"))
+            if not decorative and not AUXILIARY_TEXT_RE.search(part):
+                message = f"{label} interface text {size:g}px below 14px on a non-auxiliary selector: {part}"
+                (errors if BODY_TEXT_TAG_RE.match(last) else warnings).append(message)
+    for node in iter_nodes(first(root, "body") or root):
         inline = node.get("style")
         if not inline:
             continue
         size = _font_px(inline, variables)
         if size is not None and 12 <= size < 14 and not AUXILIARY_TEXT_RE.search(" " + _classes(node)):
-            message = f"interactive-prototype inline text {size:g}px below 14px on <{node.tag}> without an auxiliary class"
+            message = f"{label} inline text {size:g}px below 14px on <{node.tag}> without an auxiliary class"
             (errors if node.tag in {"td", "th", "p", "label", "li"} else warnings).append(message)
     return list(dict.fromkeys(errors)), list(dict.fromkeys(warnings))
 
@@ -1984,7 +2011,7 @@ def validate(
                 errors.append("system-design HTML exists before architecture approval")
             validate_system_design(session, system_name, selected, errors, approved_ids=approved_ids)
         if (session / VISUAL_PATH).is_file() and not poster_session:
-            validate_visual(session / VISUAL_PATH, selected, approved_ids, errors)
+            validate_visual(session / VISUAL_PATH, selected, approved_ids, errors, warnings)
         if (session / PROTOTYPE_PATH).is_file():
             architecture_hash = approvals.get("architecture", {}).get("artifact_sha256") if approvals else None
             validate_prototype(session, selected, approved_ids, architecture_hash, errors, warnings)
@@ -2025,8 +2052,11 @@ def validate(
     for path in session.rglob("*.html"):
         if any(part in {".git", "__pycache__", ".pytest_cache"} for part in path.parts):
             continue
-        # Prototypes render interfaces (12px annotations allowed); every other page keeps the 14px floor.
-        validate_light_html(path, errors, min_px=12.0 if "03-prototype" in path.parts else 14.0)
+        # Visual boards and prototypes render interfaces (12px auxiliary text allowed); every other page, including a
+        # standalone poster's 02-visual, keeps the 14px floor.
+        poster = isinstance(manifest, dict) and manifest.get("session_kind") == "standalone_poster"
+        interface = "03-prototype" in path.parts or ("02-visual" in path.parts and not poster)
+        validate_light_html(path, errors, min_px=12.0 if interface else 14.0)
     for path in session.rglob("*"):
         if not path.is_file() or path.suffix.lower() not in {".md", ".html"}:
             continue

@@ -262,6 +262,15 @@
       "last_confirmed": "2026-10-29"
     },
     {
+      "key": "icon-label-consistency",
+      "kind": "lesson",
+      "text": "图标目录的说明文字要与页面上同一图标旁的对象名一致或互相包含；确属不同对象就另画一个图标，例如项目问答用问号气泡，与对话分开",
+      "why": "check_document --allow interface 把同一图形后面互不包含的文字判为一图多义",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "luzcrawl-nngroup-rate-limit",
       "kind": "lesson",
       "text": "NN/g 连续采集 5–6 篇后返回 429，后续条目被跳过；每批 NN/g 不超过 4 篇并放在批次最前，被拦后停在该站不换入口",
@@ -298,6 +307,15 @@
       "last_confirmed": "2026-10-29"
     },
     {
+      "key": "run-timing-said-once",
+      "kind": "lesson",
+      "text": "智能体对话页的总用时与已等时长只在任务进度头写一次，审批卡、项目页与工作台不重复同一时长；停止只放在输入区（发送键变停止），进度头不再放第二个停止",
+      "why": "一页一个事实说一次、一个动作一个入口",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "session-revision-archive",
       "kind": "lesson",
       "text": "已批准会话要修订架构时，把下游系统设计、视觉板、原型与发布页打包为 raw/99-delivery/revision-N.zip（不留散落 HTML，否则校验器会按页面规则扫描），MANIFEST 模式退回 system、各阶段 sha 置空并保留全部阶段键，再逐级重新审批",
@@ -314,6 +332,19 @@
       "uses": 1,
       "first_seen": "2026-10-28",
       "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "visual-board-type-floor",
+      "kind": "lesson",
+      "text": "视觉板与原型用同一套界面字号规则：正文、表格、控件不小于 14px，时间、角标、单位、计数等辅助文字可用 12–13px，但选择器或类名要标明（time、tag、meta、badge、unit、count 等）；智能体的步骤耗时、等待时长、阶段计时属于数据档，用 14 号等宽数字",
+      "why": "旧版 validate_session 对 02-visual 一律按 14 像素、对 03-prototype 按 12 像素，视觉板与原型字号对不上；已统一",
+      "uses": 2,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29",
+      "previous": {
+        "text": "视觉板校验对全部样式声明按 14 像素下限检查、不认辅助类名；智能体的步骤耗时、等待时长与阶段计时在视觉板里用 14 号等宽数字（智能体字阶的数据档），12 号只在原型里给时间戳与角标",
+        "replaced_at": "2026-10-29"
+      }
     },
     {
       "key": "规范页技术记号",

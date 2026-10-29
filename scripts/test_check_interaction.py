@@ -395,6 +395,30 @@ class RuleAndCheckAgreementTests(unittest.TestCase):
         collect_stable_ids(parse(defined + defined), errors, "architecture")
         self.assertTrue(any("repeats data-navigation-id: N-001" in e for e in errors), errors)
 
+    def test_visual_board_and_prototype_share_the_interface_type_floor(self) -> None:
+        from validate_session import interface_type_findings, parse_html, validate_light_html
+
+        def board(css: str) -> tuple[list[str], list[str], list[str]]:
+            html = ('<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>视觉板</title>'
+                    f'<style>body{{font-size:14px}}{css}</style></head><body><main data-artifact="visual-board"><h1>系统</h1>'
+                    '<section><h2>会员</h2><table><tr><td>王一</td><td class="time">10:24</td></tr></table></section></main></body></html>')
+            with tempfile.TemporaryDirectory() as temp:
+                path = Path(temp) / "visual-board.html"
+                path.write_text(html, encoding="utf-8")
+                floor: list[str] = []
+                validate_light_html(path, floor, min_px=12.0)
+                parse_errors: list[str] = []
+                root = parse_html(path, parse_errors)
+            errors, warnings = interface_type_findings(root, "visual-board")
+            return floor, errors, warnings
+
+        floor, errors, _ = board(".time{font-size:12px}")
+        self.assertEqual((floor, errors), ([], []))
+        _, errors, _ = board("td{font-size:12px}")
+        self.assertTrue(any("visual-board interface text 12px below 14px" in e for e in errors), errors)
+        floor, _, _ = board(".time{font-size:11px}")
+        self.assertTrue(any("below 12px" in e for e in floor), floor)
+
     def test_names_ending_in_a_descriptive_word_are_labels(self) -> None:
         from validate_session import chart_label_is_allowed
         for name in ("会议详情", "Demo 详情", "AI 会议详情", "审批流程", "退款原因", "使用指南"):
