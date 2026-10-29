@@ -419,6 +419,65 @@ class RuleAndCheckAgreementTests(unittest.TestCase):
         floor, _, _ = board(".time{font-size:11px}")
         self.assertTrue(any("below 12px" in e for e in floor), floor)
 
+    def test_links_are_href_and_src_in_html_and_outside_code_in_markdown(self) -> None:
+        from validate_session import local_links
+        html = ('<a href="raw/a.html">A</a><script src="app.js">const run = handlers[key](event); '
+                'el.innerHTML = `<a href="x.html">`;</script><style>.x{background:url(y.png)}</style>'
+                '<!-- <a href="old.html">旧</a> --><p>[说明](note.md) 是正文里的文字</p>')
+        self.assertEqual(local_links(html, html=True), ["raw/a.html", "app.js"])
+        markdown = "见 [方案](plan.md)，代码 `items[0](x)` 不是链接。\n```js\nfn[a](b)\n```\n<img src=\"pic.png\">"
+        self.assertEqual(local_links(markdown), ["plan.md", "pic.png"])
+
+    def test_solid_fill_on_controls_by_element(self) -> None:
+        from validate_session import parse_html, selector_styles_controls
+
+        def styles(body: str, selector: str) -> bool:
+            with tempfile.TemporaryDirectory() as temp:
+                path = Path(temp) / "p.html"
+                path.write_text(f'<!doctype html><html><body>{body}</body></html>', encoding="utf-8")
+                return selector_styles_controls(selector, parse_html(path, []))
+
+        self.assertTrue(styles('<button class="ok">确认</button>', ".ok"))
+        self.assertTrue(styles('<div role="dialog"><a class="confirm" role="button">删除</a></div>', "[role=dialog] .confirm:hover"))
+        self.assertTrue(styles('<a class="btn primary" href="#">预约</a>', "@media (max-width:600px){a.btn.primary"))
+        self.assertFalse(styles('<section class="hero">新品</section>', ".hero"))
+        self.assertFalse(styles('<button class="ok">确认</button><div class="ok">完成</div>', ".ok"))
+        self.assertFalse(styles('<p>无</p>', ".ghost"))
+
+    def test_dialog_buttons_carry_data_control(self) -> None:
+        from validate_session import iter_nodes, parse_html
+
+        def findings(body: str) -> tuple[list[str], list[str]]:
+            import validate_session
+            with tempfile.TemporaryDirectory() as temp:
+                session = Path(temp)
+                path = session / "03-prototype" / "interactive-prototype.html"
+                path.parent.mkdir(parents=True)
+                path.write_text('<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>原型</title></head><body>'
+                                f'<main data-artifact="interactive-prototype"><h1>原型</h1>{body}</main></body></html>',
+                                encoding="utf-8")
+                errors: list[str] = []
+                warnings: list[str] = []
+                validate_session.validate_prototype(session, [], {"data-action-id": {"A-001"}, "data-page-id": {"P-001"}},
+                                                    None, errors, warnings)
+            return [e for e in errors if "button" in e or "role=button" in e], [w for w in warnings if "role=button" in w]
+
+        trigger = '<button type="button" data-action-id="A-001" data-page-id="P-001">删除</button>'
+        errors, _ = findings(trigger + '<dialog><button type="button" data-control="confirm">确认删除</button>'
+                                       '<button type="button" data-control="cancel">取消</button></dialog>')
+        self.assertEqual(errors, [])
+        errors, _ = findings(trigger + '<div role="alertdialog"><button type="button" data-control="close">关闭</button></div>')
+        self.assertEqual(errors, [])
+        errors, _ = findings(trigger + '<button type="button" data-control="cancel">取消</button>')
+        self.assertTrue(any("data-control outside a dialog" in e for e in errors), errors)
+        errors, _ = findings(trigger + '<dialog><button type="button" data-control="submit">提交</button></dialog>')
+        self.assertTrue(any("data-control “submit”" in e for e in errors), errors)
+        errors, _ = findings(trigger + '<dialog><button type="button">确认</button></dialog>')
+        self.assertTrue(any("missing data-action-id" in e for e in errors), errors)
+        errors, warnings = findings(trigger + '<div role="dialog"><a role="button" class="ok">确认</a></div>')
+        self.assertEqual(errors, [])
+        self.assertTrue(warnings, warnings)
+
     def test_names_ending_in_a_descriptive_word_are_labels(self) -> None:
         from validate_session import chart_label_is_allowed
         for name in ("会议详情", "Demo 详情", "AI 会议详情", "审批流程", "退款原因", "使用指南"):

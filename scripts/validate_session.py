@@ -122,6 +122,8 @@ EVIDENCE_CATEGORIES = {
 BACKEND_CATEGORIES = {"业务规则", "法规", "接口", "后端", "business rules", "business rule", "regulation", "backend"}
 # Evidence reused from the skill's experience library (experience/sources.json) stays valid for this many days.
 REUSE_MAX_DAYS = 180
+# Buttons a dialog owns (system-design.html 架构的交互字段).
+DIALOG_CONTROLS = ("confirm", "cancel", "close", "done")
 SMALL_ELEMENT_TOKENS = (".brand-card", ".mark", ".icon", ".avatar", ".badge", ".pill", ".status", ".chip", ".tag", ".logo", ".corner",
                         ".coin", ".dot", ".kk", ".steps", ".copy i", ".check", ".box", "::before", "::after", "button", "input", "svg",
                         # data marks: checkbox fills, check marks, progress and ranking bar fills, heat-map cells
@@ -230,8 +232,83 @@ def load_json(path: Path, errors: list[str]):
     return None
 
 
-def local_links(text: str) -> list[str]:
-    targets = LINK_RE.findall(text) + HTML_LINK_RE.findall(text)
+# Controls take a solid fill whatever their class is called (Luz-Design visual-design.html 配色): a button, a button-type
+# input, an element with a control role (role="button", tab, switch …) or a link drawn as a button (class btn or button).
+CONTROL_ROLES = {"button", "tab", "switch", "checkbox", "radio", "option", "menuitemcheckbox", "menuitemradio"}
+CONTROL_INPUT_TYPES = {"button", "submit", "reset", "checkbox", "radio"}
+
+
+def is_control(node: Node) -> bool:
+    if node.tag == "button" or node.get("role").strip().lower() in CONTROL_ROLES:
+        return True
+    if node.tag == "input":
+        return node.get("type", "text").strip().lower() in CONTROL_INPUT_TYPES
+    return node.tag == "a" and bool(re.search(r"(?:^|[\s_-])(?:btn|button)(?:$|[\s_-])", node.get("class")))
+
+
+def _compound_matches(node: Node, compound: str) -> bool:
+    match = re.match(r"[a-zA-Z][\w-]*|\*", compound)
+    tag = match.group(0).lower() if match else "*"
+    rest = compound[match.end():] if match else compound
+    if tag != "*" and node.tag != tag:
+        return False
+    plain = re.sub(r"\[[^\]]*\]", "", rest)
+    if not set(re.findall(r"\.([\w-]+)", plain)) <= set(node.get("class").split()):
+        return False
+    if any(node.get("id") != value for value in re.findall(r"#([\w-]+)", plain)):
+        return False
+    for name, op, value in re.findall(r"\[\s*([\w-]+)\s*(?:([~*^$|]?=)\s*[\"']?([^\"'\]]*)[\"']?)?\s*\]", rest):
+        if name.lower() not in node.attrs:
+            return False
+        actual = node.get(name.lower())
+        if (op == "=" and actual != value or op == "~=" and value not in actual.split() or op == "*=" and value not in actual
+                or op == "^=" and not actual.startswith(value) or op == "$=" and not actual.endswith(value)
+                or op == "|=" and actual != value and not actual.startswith(value + "-")):
+            return False
+    return True
+
+
+def selector_styles_controls(selector: str, root: Node) -> bool:
+    """True when the selector matches at least one element and every element it matches is a control (hidden dialogs
+    and templates included). Pseudo-classes and pseudo-elements are dropped and a sibling combinator keeps only its
+    subject, so the test errs towards matching more elements."""
+    nodes = list(iter_nodes(root))
+    matched = False
+    for part in selector.rsplit("{", 1)[-1].split(","):
+        part = re.sub(r"::?[\w-]+(?:\([^)]*\))?", "", part.strip())
+        part = re.split(r"\s*[+~]\s*(?![^\[]*\])", part)[-1]
+        compounds = [c for c in re.split(r"\s*>\s*|\s+(?![^\[]*\])", part.strip()) if c]
+        if not compounds:
+            continue
+        subject, context = compounds[-1], compounds[:-1]
+        for node in nodes:
+            if not _compound_matches(node, subject):
+                continue
+            index, current = len(context) - 1, node.parent
+            while index >= 0 and current is not None:
+                if _compound_matches(current, context[index]):
+                    index -= 1
+                current = current.parent
+            if index >= 0:
+                continue
+            if not is_control(node):
+                return False
+            matched = True
+    return matched
+
+
+def local_links(text: str, html: bool = False) -> list[str]:
+    """Local link targets. In HTML only href and src attributes link; script and style bodies and comments are code, so
+    a `](` in a prototype script is not a Markdown link. In Markdown, code spans and fences are skipped."""
+    if html:
+        text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
+        text = re.sub(r"(<(script|style)\b[^>]*>).*?(</\2\s*>)", r"\1\3", text, flags=re.S | re.I)
+        found = HTML_LINK_RE.findall(text)
+    else:
+        text = re.sub(r"^(`{3,}|~{3,}).*?^\1", "", text, flags=re.S | re.M)
+        text = re.sub(r"`[^`\n]+`", "", text)
+        found = LINK_RE.findall(text) + HTML_LINK_RE.findall(text)
+    targets = found
     result = []
     for raw in targets:
         target = raw.strip()
@@ -536,10 +613,11 @@ def validate_light_html(path: Path, errors: list[str], min_px: float = 14.0) -> 
         if dark:
             opening = style.rfind("{", 0, match.start())
             selector = style[style.rfind("}", 0, opening) + 1:opening].split("@media")[-1] if opening >= 0 else ""
-            selector = selector.strip().casefold()
+            raw_selector = selector.strip()
+            selector = raw_selector.casefold()
             # Solid colour is allowed on elements smaller than a line of text (Luz-Design visual-design.html, 配色): marks, icons,
             # avatars, badges, chips, tags, logos, corner labels, step pills, coins, pseudo-element bars and controls.
-            small_control = any(token in selector for token in SMALL_ELEMENT_TOKENS)
+            small_control = any(token in selector for token in SMALL_ELEMENT_TOKENS) or selector_styles_controls(raw_selector, root)
             if not small_control:
                 errors.append(f"{path.name} contains a dark background color: {match.group(1).strip()}")
     body_rules = []
@@ -1688,6 +1766,17 @@ def validate_prototype(
     if not buttons:
         errors.append("interactive-prototype needs at least one button")
     for index, node in enumerate(buttons, 1):
+        control = node.get("data-control").strip()
+        if control:
+            # A dialog's own confirm, cancel, close and done buttons belong to the action that opened it
+            # (system-design.html 架构的交互字段): they carry data-control instead of an action ID of their own.
+            if control not in DIALOG_CONTROLS:
+                errors.append(f"interactive-prototype button {index} has data-control “{control}”; use one of "
+                              + ", ".join(DIALOG_CONTROLS))
+            if not any(a.tag == "dialog" or a.get("role").strip() in {"dialog", "alertdialog"} for a in ancestors(node)):
+                errors.append(f"interactive-prototype button {index} has data-control outside a dialog")
+            if not node.get("data-action-id").strip():
+                continue
         action_id = node.get("data-action-id").strip()
         if not action_id:
             errors.append(f"interactive-prototype button {index} is missing data-action-id")
@@ -1696,6 +1785,12 @@ def validate_prototype(
         page_id = node.get("data-page-id").strip()
         if not page_id or page_id not in approved_ids.get("data-page-id", set()):
             errors.append(f"interactive-prototype button {index} references an unapproved page")
+    if warnings is not None:
+        for node in iter_nodes(root):
+            if node.tag != "button" and node.get("role").strip() == "button" and not node.get("data-action-id").strip() \
+                    and not node.get("data-control").strip():
+                warnings.append(f"interactive-prototype <{node.tag} role=button> “{normalized_visible_text(node)[:20]}” has "
+                                "no data-action-id: use an approved action, or a <button data-control> inside its dialog")
     states = {node.get("data-state-kind").strip().casefold() for node in iter_nodes(root) if node.get("data-state-kind").strip()}
     for state in ("加载", "空", "错误", "成功", "禁用"):
         if state.casefold() not in states and state == "空":
@@ -2065,7 +2160,7 @@ def validate(
         except UnicodeDecodeError:
             errors.append(f"non-UTF-8 text file: {path.relative_to(session)}")
             continue
-        for target in local_links(text):
+        for target in local_links(text, html=path.suffix.lower() == ".html"):
             if not (path.parent / target).resolve().exists():
                 errors.append(f"broken local link in {path.relative_to(session)}: {target}")
     if strict:

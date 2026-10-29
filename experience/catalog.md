@@ -29,14 +29,17 @@
 - **驾驶舱按价值排序**：数据驾驶舱按价值排序：经营结果、增长、活跃在前，效率与风险其次，退款等负向数据和长期变化小的指标放最后（用户纠正）　确认 1 次，最近 2026-10-28
 - **默认头像**：无照片时用按用户标识固定的卡通动物，未登录或系统用户用线性图标；严禁首字母、姓氏等文字头像（用户纠正）　确认 1 次，最近 2026-10-28
 
-## 教训（13/120）
+## 教训（16/120）
 
 - **admin-prototype-page-structure**：后台原型按原型骨架的结构写：body 里第一个可见内容是唯一的 h1（品牌图案加系统名，文字直接写在 h1 内），h1 后紧跟以 h2 开头的 section；菜单放在这个 section 里的 nav 中，侧栏或顶栏用 CSS 布局，不要把 header、aside 放在 h1 之前；check_document 加 --allow interface 就允许应用外壳，不必改用 div 冒充导航；范围只有一个菜单页时不画单项侧栏，用 h2 页面名标明位置（会员管理列表页评测：旧版 check_document 在 --allow interface 下仍拦 nav，agent 只好用 div 加 role 绕开；已改为界面模式允许外壳）　确认 2 次，最近 2026-10-29
 - **arch-html-inline-style**：架构等审阅页不要写内联 style：校验器把多个内联样式拼接后按 font 声明检查，会把 margin、padding 误判为字号；数据字段名避开 更新时间、生成时间、SHA-256、示例数据 等被 check_document 拦截的元数据词（008 会话架构页首次校验失败）　确认 1 次，最近 2026-10-28
 - **disabled-variant-specificity**：置灰样式写在主按钮、危险按钮、文字按钮等变体规则之后并同时覆盖 :hover，否则只读或已注销时红色危险按钮仍像可点；浏览器验收要截图核对每个变体的禁用态，量浮层尺寸前等入场动画结束（001 会员管理列表页只读截图发现行内“注销”仍为红色，390 宽测量浮层时取到缩放动画中的尺寸）　确认 1 次，最近 2026-10-29
 - **icon-label-consistency**：图标目录的说明文字要与页面上同一图标旁的对象名一致或互相包含；确属不同对象就另画一个图标，例如项目问答用问号气泡，与对话分开（check_document --allow interface 把同一图形后面互不包含的文字判为一图多义）　确认 1 次，最近 2026-10-29
 - **luzcrawl-nngroup-rate-limit**：NN/g 连续采集 5–6 篇后返回 429，后续条目被跳过；每批 NN/g 不超过 4 篇并放在批次最前，被拦后停在该站不换入口（Luz-Crawl 任务 016 采集 NN/g 时触发限流（交互闭环调研））　确认 1 次，最近 2026-10-29
+- **prototype-acceptance-record**：原型审批记录的浏览器验收文件写进 browser_acceptance_path 与 browser_acceptance_sha256，MANIFEST 每个模式各有一个交付项（编号前缀 ARCH、SYS、VIS、PROTO），验证记录写本轮实际结果；自起字段名或漏交付项，严格模式会拦下（validate_session 按固定字段核对审批与交付清单）　确认 1 次，最近 2026-10-29
+- **prototype-non-action-controls**：确认框与弹层自己的确认、取消、关闭、完成键用 button 元素加 data-control（confirm、cancel、close、done），放在 dialog 元素或 role=dialog 容器里，属于打开它的动作、不另编动作号；不要改用 a role=button 绕开，没有动作编号的 role=button 会给警告。控件能否用实色按元素认定，类名随意（旧版校验只认选择器里的 button 字样，迫使对话框按键改成 a[role=button]；已改为按元素认定并加 data-control）　确认 2 次，最近 2026-10-29
 - **prototype-panel-and-icons**：原型配置面板若未写入架构，用单选与复选控件实现，避免无动作编号的按钮；check_document 把 svg 后第一段文字当图标含义，图标按钮要带可见文字，同一插画不在多处复用，头像用 img；全局加 [hidden]{display:none!important} 防止按钮样式覆盖隐藏（008 原型多轮校验与浏览器验收；001 会员管理列表页再次采用）　确认 2 次，最近 2026-10-29
+- **prototype-reuse-board-css**：原型复用视觉板样式时，原型自己的容器类名另加前缀，避免与视觉板演示块重名；视觉板的动效演示块定高并隐藏溢出，重名会把手机框裁掉，按钮点不到（浏览器验收时 61 个动作被遮挡，原因是 .stage 与动效演示块重名）　确认 1 次，最近 2026-10-29
 - **reuse-knowledge-only-sources**：experience.py reuse 遇到只有 Luz-Crawl 原始路径、没有会话快照的来源（如 SRC-078/079/106）会中断整批，复用前先确认 snapshot 带 session 字段，并分小批复用（008 会话复用时 KeyError session）　确认 1 次，最近 2026-10-28
 - **rule-card-size-budget**：规则卡的规则原文每张不超过 35 KB：规范页新增小节后先量 context.make_card 的第 3 部分，超了就把整层换成具体小节、把阶段专用的小节移到对应卡或拆卡（如 agent-ui 与 agent-runtime-ui、交互闭环卡 interaction），不用 max_chars 截断规则（2026-10-29 加入交互闭环与智能体运行时规则后 system-design、agent-ui 等卡超出 35 KB）　确认 1 次，最近 2026-10-29
 - **run-timing-said-once**：智能体对话页的总用时与已等时长只在任务进度头写一次，审批卡、项目页与工作台不重复同一时长；停止只放在输入区（发送键变停止），进度头不再放第二个停止（一页一个事实说一次、一个动作一个入口）　确认 1 次，最近 2026-10-29
@@ -45,14 +48,17 @@
 - **visual-board-type-floor**：视觉板与原型用同一套界面字号规则：正文、表格、控件不小于 14px，时间、角标、单位、计数等辅助文字可用 12–13px，但选择器或类名要标明（time、tag、meta、badge、unit、count 等）；智能体的步骤耗时、等待时长、阶段计时属于数据档，用 14 号等宽数字（旧版 validate_session 对 02-visual 一律按 14 像素、对 03-prototype 按 12 像素，视觉板与原型字号对不上；已统一）　确认 2 次，最近 2026-10-29
 - **规范页技术记号**：规范页正文用中文，99+、Esc、YYYY-MM-DD 等技术记号放进 code 或 kbd 元素；“不要字母”指的是不用文字头像，不是页面里禁止一切拉丁字母（用户澄清，validate_skill.py 已改为只放行 code 与 kbd）　确认 1 次，最近 2026-10-28
 
-## 有效信息（6/120）
+## 有效信息（9/120）
 
 - **agent-foundation-design-split**：智能体底座分工：Luz-System 的 agent-design.html 写界面契约（能力清单、追问、步骤卡、审批、七种运行状态与 data-state 原型、耗时、引用与没有找到、记忆查看与删除、错误呈现、运行事件表），规则卡 agent-ui 与 agent-runtime-ui；实现（接入层、护栏、意图路由、编排、工具契约、结构化输出、记忆、知识库、可观测、事件日志续传、队列、检查点）在 Luz-Dev references/agent-foundation.md，系统设计页架构清单有“智能体运行时与底座”一项（2026-10-29 智能体底座规格（Luz-System 设计层与 Luz-Dev 实现层分开写，不重复））　确认 1 次，最近 2026-10-29
 - **agent-research-sources**：智能体调研来源：Luz-Crawl 任务 017（WHATWG 服务器推送事件、MDN SSE 与 Retry-After、Anthropic 流式/错误/速率限制、Azure 队列削峰/重试/熔断、Stripe 幂等、Nginx 代理、NN/g 响应时间与进度指示、LangGraph 流式）与 018（Anthropic 智能体、工具、上下文工程、上下文检索、多智能体，Pydantic 与 Pydantic AI，OpenAI Agents SDK 护栏与追踪，LangGraph 记忆、持久化、中断，Mem0，pgvector，Qdrant 混合检索，OWASP 大模型十大风险，通义千问与 DeepSeek 函数调用）；新调研先复用这两个任务（2026-10-29 写 agent-design.html 依据表时逐篇核对原文）　确认 1 次，最近 2026-10-29
+- **agent-run-state-blocks**：智能体原型的七种运行状态：进度头、尾部卡片与输入区按钮各自放进同名 data-state 块，由脚本整体切换；历史阶段的步骤卡只写一份，用类名切换进行中、失败与完成（检查要求每种状态一块且执行中块内有计时与停止，重复整屏会让动作入口翻倍）　确认 1 次，最近 2026-10-29
 - **agent-timing-display**：智能体耗时分段显示：运行头部常驻总已用时、当前阶段与预计剩余（取同类阶段历史中位数，无历史不显示）；每阶段、每步显示耗时，运行中每秒更新，结束定格；排队与等待审批单独计时，不计入执行用时；1 秒内不显示进度，超过 1 秒给进行标记，超过 10 秒显示已用时、当前步骤与停止；等宽数字，写法 12 秒、1 分 05 秒、1 小时 02 分；界面本地计时，按事件时间恢复不从 0 重算（NN/g 响应时间三界限与进度指示；Ant Design X 思维链没有耗时属性需自己补；用户 2026-10-29 追问智能体对话耗时）　确认 1 次，最近 2026-10-29
 - **component-library-reference**：组件库参考清单在 references/ui-standards.html“参考组件库”；2026-10-28 已采集 Ant Design 字体与数据格式、Arco、TDesign 字体与表格、Semi、Element Plus、Carbon、Polaris、Atlassian 表格及 NN/g 数据表格、驾驶舱、筛选共 16 页（LuzCrawl 批次 batch-f38ef88f）（Luz-Crawl 调研 009）　确认 1 次，最近 2026-10-28
 - **manifest-strict-fields**：strict-production 要求 MANIFEST 状态 approved、各阶段 sha256、verification 全 pass、deliverables 的 id 以 ARCH/SYS/VIS/PROTO 等前缀开头且每个模式至少一项（008 发布时 strict 校验）　确认 1 次，最近 2026-10-28
 - **member-list-default-and-columns**：会员列表默认有效、按最近到店倒序（未到店排最后），即将到期取 15 天内；选定单一状态、单一门店或单一会员卡类型时隐藏对应列，由状态标签或筛选标签写一次；表头筛选与窄屏工具条是同一动作时用不同 data-arg 区分入口（001 会员管理列表页浏览器验收 58 项通过（1280–1920 无溢出、1440×900 首屏 12 行、390 宽可操作））　确认 1 次，最近 2026-10-29
+- **prototype-feedback-from-action-meta**：原型的确认与反馈直接取架构 action_meta：通用引擎按 confirm 文案弹居中确认、按 feedback 给进行中与轻反馈、有 target 就跳页，只给录音、智能体运行、分享、迭代等少数动作写专用行为（89 个动作逐个手写反馈容易漏，取同一份元数据可保证原型与架构一致）　确认 1 次，最近 2026-10-29
+- **script-bracket-paren-link**：会话与技能校验的本地链接检查在 HTML 里只认 href 与 src 属性，脚本、样式和注释不扫；Markdown 里代码段与代码块不扫，原型脚本可以照常写右方括号紧跟左圆括号（旧版把原型内联脚本里的 ]( 当成 Markdown 链接报断链，已修）　确认 2 次，最近 2026-10-29
 
 ## 功能
 

@@ -160,9 +160,19 @@ def prose_text(node) -> str:
     return re.sub(r"\s+", " ", "".join(parts)).strip()
 
 
-def local_targets(text: str) -> list[str]:
+def local_targets(text: str, html: bool = False) -> list[str]:
+    """Local link targets. In HTML only href and src attributes link; script and style bodies and comments are code, so
+    a `](` in a prototype script is not a Markdown link. In Markdown, code spans and fences are skipped."""
+    if html:
+        text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
+        text = re.sub(r"(<(script|style)\b[^>]*>).*?(</\2\s*>)", r"\1\3", text, flags=re.S | re.I)
+        found = HTML_LINK_RE.findall(text)
+    else:
+        text = re.sub(r"^(`{3,}|~{3,}).*?^\1", "", text, flags=re.S | re.M)
+        text = re.sub(r"`[^`\n]+`", "", text)
+        found = LINK_RE.findall(text) + HTML_LINK_RE.findall(text)
     targets = []
-    for raw in LINK_RE.findall(text) + HTML_LINK_RE.findall(text):
+    for raw in found:
         target = raw.strip()
         if not target or target.startswith(("<", "'")):
             continue
@@ -400,7 +410,7 @@ def main(argv: list[str] | None = None) -> int:
             continue
         if path.is_file() and path.suffix.lower() in {".md", ".html"}:
             text = path.read_text(encoding="utf-8")
-            for target in local_targets(text):
+            for target in local_targets(text, html=path.suffix.lower() == ".html"):
                 if not (path.parent / target).resolve().exists():
                     errors.append(f"broken local link in {path.relative_to(ROOT)}: {target}")
             if path.suffix.lower() == ".html" and "<!doctype html>" not in text.lower():

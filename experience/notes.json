@@ -280,12 +280,43 @@
       "last_confirmed": "2026-10-29"
     },
     {
+      "key": "prototype-acceptance-record",
+      "kind": "lesson",
+      "text": "原型审批记录的浏览器验收文件写进 browser_acceptance_path 与 browser_acceptance_sha256，MANIFEST 每个模式各有一个交付项（编号前缀 ARCH、SYS、VIS、PROTO），验证记录写本轮实际结果；自起字段名或漏交付项，严格模式会拦下",
+      "why": "validate_session 按固定字段核对审批与交付清单",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
+      "key": "prototype-non-action-controls",
+      "kind": "lesson",
+      "text": "确认框与弹层自己的确认、取消、关闭、完成键用 button 元素加 data-control（confirm、cancel、close、done），放在 dialog 元素或 role=dialog 容器里，属于打开它的动作、不另编动作号；不要改用 a role=button 绕开，没有动作编号的 role=button 会给警告。控件能否用实色按元素认定，类名随意",
+      "why": "旧版校验只认选择器里的 button 字样，迫使对话框按键改成 a[role=button]；已改为按元素认定并加 data-control",
+      "uses": 2,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29",
+      "previous": {
+        "text": "原型里不属于架构动作的控件（确认框的确认与取消、弹层的完成）用带 role=button 的链接，样式选择器写明 [role=button]；写成普通类名的实色链接会被判为大面积深色底",
+        "replaced_at": "2026-10-29"
+      }
+    },
+    {
       "key": "prototype-panel-and-icons",
       "kind": "lesson",
       "text": "原型配置面板若未写入架构，用单选与复选控件实现，避免无动作编号的按钮；check_document 把 svg 后第一段文字当图标含义，图标按钮要带可见文字，同一插画不在多处复用，头像用 img；全局加 [hidden]{display:none!important} 防止按钮样式覆盖隐藏",
       "why": "008 原型多轮校验与浏览器验收；001 会员管理列表页再次采用",
       "uses": 2,
       "first_seen": "2026-10-28",
+      "last_confirmed": "2026-10-29"
+    },
+    {
+      "key": "prototype-reuse-board-css",
+      "kind": "lesson",
+      "text": "原型复用视觉板样式时，原型自己的容器类名另加前缀，避免与视觉板演示块重名；视觉板的动效演示块定高并隐藏溢出，重名会把手机框裁掉，按钮点不到",
+      "why": "浏览器验收时 61 个动作被遮挡，原因是 .stage 与动效演示块重名",
+      "uses": 1,
+      "first_seen": "2026-10-29",
       "last_confirmed": "2026-10-29"
     },
     {
@@ -374,6 +405,15 @@
       "last_confirmed": "2026-10-29"
     },
     {
+      "key": "agent-run-state-blocks",
+      "kind": "fact",
+      "text": "智能体原型的七种运行状态：进度头、尾部卡片与输入区按钮各自放进同名 data-state 块，由脚本整体切换；历史阶段的步骤卡只写一份，用类名切换进行中、失败与完成",
+      "why": "检查要求每种状态一块且执行中块内有计时与停止，重复整屏会让动作入口翻倍",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "agent-timing-display",
       "kind": "fact",
       "text": "智能体耗时分段显示：运行头部常驻总已用时、当前阶段与预计剩余（取同类阶段历史中位数，无历史不显示）；每阶段、每步显示耗时，运行中每秒更新，结束定格；排队与等待审批单独计时，不计入执行用时；1 秒内不显示进度，超过 1 秒给进行标记，超过 10 秒显示已用时、当前步骤与停止；等宽数字，写法 12 秒、1 分 05 秒、1 小时 02 分；界面本地计时，按事件时间恢复不从 0 重算",
@@ -408,6 +448,28 @@
       "uses": 1,
       "first_seen": "2026-10-29",
       "last_confirmed": "2026-10-29"
+    },
+    {
+      "key": "prototype-feedback-from-action-meta",
+      "kind": "fact",
+      "text": "原型的确认与反馈直接取架构 action_meta：通用引擎按 confirm 文案弹居中确认、按 feedback 给进行中与轻反馈、有 target 就跳页，只给录音、智能体运行、分享、迭代等少数动作写专用行为",
+      "why": "89 个动作逐个手写反馈容易漏，取同一份元数据可保证原型与架构一致",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
+      "key": "script-bracket-paren-link",
+      "kind": "fact",
+      "text": "会话与技能校验的本地链接检查在 HTML 里只认 href 与 src 属性，脚本、样式和注释不扫；Markdown 里代码段与代码块不扫，原型脚本可以照常写右方括号紧跟左圆括号",
+      "why": "旧版把原型内联脚本里的 ]( 当成 Markdown 链接报断链，已修",
+      "uses": 2,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29",
+      "previous": {
+        "text": "原型脚本里不要写右方括号紧跟左圆括号的调用（例如按键名取函数后直接传参），先赋给变量再调用；会话校验会把它当成 Markdown 链接报断链",
+        "replaced_at": "2026-10-29"
+      }
     }
   ]
 }
