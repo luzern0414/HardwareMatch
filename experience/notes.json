@@ -369,6 +369,15 @@
       "last_confirmed": "2026-10-29"
     },
     {
+      "key": "photo-card-contrast",
+      "kind": "lesson",
+      "text": "照片主卡按 0.35–0.5 黑色遮罩压白字时，先量文字区域的亮度：明亮的环境照片在 0.5 遮罩下只有约 3.7:1，要选偏暗、低调的照片，或改成主色块加照片分栏让白字不压在照片上",
+      "why": "008 卡片方案预览实测，会议桌照片第 90 百分位亮度换算",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "prototype-acceptance-record",
       "kind": "lesson",
       "text": "原型审批记录的浏览器验收文件写进 browser_acceptance_path 与 browser_acceptance_sha256，MANIFEST 每个模式各有一个交付项（编号前缀 ARCH、SYS、VIS、PROTO），验证记录写本轮实际结果；自起字段名或漏交付项，严格模式会拦下",

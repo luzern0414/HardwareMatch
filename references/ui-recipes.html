@@ -52,7 +52,7 @@
 <tr><td>一大两小</td><td>大卡高度等于两张小卡加间距；营销区可错落，功能区边缘对齐</td><td><code>grid-template-areas:"big top" "big bottom"</code></td><td><code>MDN</code> <code>grid-template-areas</code>；瑞幸首页录屏</td></tr>
 <tr><td>出框元素</td><td>吉祥物或商品探出卡片上沿或角落，只在营销区</td><td>卡片 <code>position:relative;overflow:visible</code>，元素 <code>position:absolute</code> 加负的 <code>top</code> 或 <code>bottom</code>，卡片上方留出同样高度；元素用透明底图片</td><td>录屏与作品调研；视觉规范“图像生成”</td></tr>
 <tr><td>券面缺口</td><td>价值区与内容区之间虚线，上下两个半圆缺口</td><td>券 <code>position:relative</code>；<code>::before</code> 与 <code>::after</code> 画直径 16 的圆，颜色等于页面底色，压在虚线两端；不用渐变</td><td><code>MDN</code> <code>position</code>；组件库券面</td></tr>
-<tr><td>照片主卡</td><td>照片上压白字</td><td>照片上叠黑色半透明遮罩（透明度 0.35–0.5），白字放遮罩上；这是扁平规则允许的照片遮罩</td><td>视觉规范“扁平线性风格”；商用卡片调研</td></tr>
+<tr><td>照片主卡</td><td>照片上压白字，文字区对比度至少 4.5:1</td><td>选暗调或低调的照片，照片上叠黑色半透明遮罩（扁平规则允许的照片遮罩），在文字区按亮部（第 90 百分位亮度）量对比度：明亮照片 0.5 的遮罩只有约 3.7:1，要加到约 0.6；仍不够就改成照片与文字分栏</td><td>视觉规范“扁平线性风格”；商用卡片调研；会话实测</td></tr>
 <tr><td>叠卡</td><td>内容卡压在头部色块下沿</td><td>头部色块后面的卡片 <code>margin-top:-24px</code> 并加第 1 级层级</td><td>作品调研</td></tr>
 </tbody></table></div>
 <h3>四、列表与导航</h3>
