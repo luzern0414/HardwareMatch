@@ -56,7 +56,7 @@
 - **visual-board-type-floor**：视觉板与原型用同一套界面字号规则：正文、表格、控件不小于 14px，时间、角标、单位、计数等辅助文字可用 12–13px，但选择器或类名要标明（time、tag、meta、badge、unit、count 等）；智能体的步骤耗时、等待时长、阶段计时属于数据档，用 14 号等宽数字（旧版 validate_session 对 02-visual 一律按 14 像素、对 03-prototype 按 12 像素，视觉板与原型字号对不上；已统一）　确认 2 次，最近 2026-10-29
 - **规范页技术记号**：规范页正文用中文，99+、Esc、YYYY-MM-DD 等技术记号放进 code 或 kbd 元素；“不要字母”指的是不用文字头像，不是页面里禁止一切拉丁字母（用户澄清，validate_skill.py 已改为只放行 code 与 kbd）　确认 1 次，最近 2026-10-28
 
-## 有效信息（15/120）
+## 有效信息（16/120）
 
 - **agent-foundation-design-split**：智能体底座分工：Luz-System 的 agent-design.html 写界面契约（能力清单、追问、步骤卡、审批、七种运行状态与 data-state 原型、耗时、引用与没有找到、记忆查看与删除、错误呈现、运行事件表），规则卡 agent-ui 与 agent-runtime-ui；实现（接入层、护栏、意图路由、编排、工具契约、结构化输出、记忆、知识库、可观测、事件日志续传、队列、检查点）在 Luz-Dev references/agent-foundation.md，系统设计页架构清单有“智能体运行时与底座”一项（2026-10-29 智能体底座规格（Luz-System 设计层与 Luz-Dev 实现层分开写，不重复））　确认 1 次，最近 2026-10-29
 - **agent-research-sources**：智能体调研来源在 Luz-Crawl 任务 017（SSE、排队、重试、熔断、幂等、进度）、018（底座技术栈：工具、上下文、记忆、知识库、护栏、追踪、各家函数调用）与 023（ReAct、MCP 最新版工具与授权、轮次上限、Claude 定义工具、LangGraph 递归上限、OWASP 过度代理）；新调研先复用这三个任务（2026-10-29 补充智能体运行方案时新采任务 023，逐篇核对原文）　确认 2 次，最近 2026-10-29
@@ -72,6 +72,7 @@
 - **miniprogram-commercial-frame**：成熟商用小程序手机稿的框架：状态栏 24、导航栏 44 标题 16/600 居中并避让右上胶囊 87×32、分组单元格行高 52 起左右 16、底部操作栏一个主行动加至多一个次行动并避让安全区、标签栏 50 加安全区只在一级页；参照 TDesign 导航栏与单元格、Vant 底部操作栏、NutUI 单元格与微信胶囊按钮位置接口（Luz-Crawl 实测 TDesign、Vant、NutUI 与微信开放文档组件页）　确认 1 次，最近 2026-10-29
 - **prototype-feedback-from-action-meta**：原型的确认与反馈直接取架构 action_meta：通用引擎按 confirm 文案弹居中确认、按 feedback 给进行中与轻反馈、有 target 就跳页，只给录音、智能体运行、分享、迭代等少数动作写专用行为（89 个动作逐个手写反馈容易漏，取同一份元数据可保证原型与架构一致）　确认 1 次，最近 2026-10-29
 - **script-bracket-paren-link**：会话与技能校验的本地链接检查在 HTML 里只认 href 与 src 属性，脚本、样式和注释不扫；Markdown 里代码段与代码块不扫，原型脚本可以照常写右方括号紧跟左圆括号（旧版把原型内联脚本里的 ]( 当成 Markdown 链接报断链，已修）　确认 2 次，最近 2026-10-29
+- **ui-recording-frame-sheets**：分析用户的手机录屏：用 imageio_ffmpeg 自带的 ffmpeg 按每 2 秒一帧、带时间戳拼成 4×2 缩略图逐张看完整流程，关键页再按时间点抽原尺寸帧量字号（录屏宽 592 约等于 393 点）；录屏里出现的聊天列表等个人信息不记录（2026-10-29 用户提供咖啡与茶饮点单小程序录屏，用此方法提取了交易界面规则与紧凑字阶）　确认 1 次，最近 2026-10-29
 - **ui-reference-galleries**：商用移动界面参考以 Dribbble 搜索页最有效（voice-recorder-app、meeting-notes-app、mobile-dashboard、bento-mobile-app、ai-assistant-mobile-app，缩略图 400×300 可批量下载拼图对比）；站酷搜索多为作品封面信息少，优设小程序标签页多为课程广告（Luz-Crawl 批量 15 个入口、下载约 300 张图后按来源拼图核对）　确认 1 次，最近 2026-10-29
 
 ## 功能

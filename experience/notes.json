@@ -605,6 +605,15 @@
       }
     },
     {
+      "key": "ui-recording-frame-sheets",
+      "kind": "fact",
+      "text": "分析用户的手机录屏：用 imageio_ffmpeg 自带的 ffmpeg 按每 2 秒一帧、带时间戳拼成 4×2 缩略图逐张看完整流程，关键页再按时间点抽原尺寸帧量字号（录屏宽 592 约等于 393 点）；录屏里出现的聊天列表等个人信息不记录",
+      "why": "2026-10-29 用户提供咖啡与茶饮点单小程序录屏，用此方法提取了交易界面规则与紧凑字阶",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "ui-reference-galleries",
       "kind": "fact",
       "text": "商用移动界面参考以 Dribbble 搜索页最有效（voice-recorder-app、meeting-notes-app、mobile-dashboard、bento-mobile-app、ai-assistant-mobile-app，缩略图 400×300 可批量下载拼图对比）；站酷搜索多为作品封面信息少，优设小程序标签页多为课程广告",
