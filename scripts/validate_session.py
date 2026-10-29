@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import ipaddress
 import json
+import os
 import re
 import sys
 import urllib.error
@@ -956,7 +957,8 @@ def adopted_rules(brief_text: str) -> list[tuple[str, str]] | None:
 
 SEDIMENT_HEADING = "## 本次沉淀"
 # Module-level so tests can point it at a temporary store.
-NOTES_FILE = Path(__file__).resolve().parents[1] / "experience" / "notes.json"
+# LUZ_EXPERIENCE_STORE names another notes file for tests and rehearsals; the skill's own notes and catalog stay untouched.
+NOTES_FILE = Path(os.environ.get("LUZ_EXPERIENCE_STORE") or Path(__file__).resolve().parents[1] / "experience" / "notes.json")
 
 
 def table_rows(brief_text: str, heading: str) -> list[list[str]] | None:
@@ -979,6 +981,8 @@ def table_rows(brief_text: str, heading: str) -> list[list[str]] | None:
 
 def sediment_errors(work: Path, since: str) -> list[str]:
     """Every session leaves experience behind: BRIEF 本次沉淀 names notes written or confirmed on or after the session date."""
+    if os.environ.get("LUZ_EXPERIENCE_STORE"):
+        print(f"注意：LUZ_EXPERIENCE_STORE 已设置，本次沉淀按 {NOTES_FILE} 核对，经验不会进入技能（只用于测试和演练，正式交付不要设置）", file=sys.stderr)
     brief = work / "BRIEF.md"
     rows = table_rows(brief.read_text(encoding="utf-8"), SEDIMENT_HEADING) if brief.is_file() else None
     if rows is None:

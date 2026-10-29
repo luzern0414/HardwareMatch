@@ -32,7 +32,9 @@ EXP = SKILL_ROOT / "experience"
 SOURCES = EXP / "sources.json"
 PATTERNS = EXP / "patterns.json"
 CATALOG = EXP / "catalog.md"
-NOTES = EXP / "notes.json"
+# LUZ_EXPERIENCE_STORE names another notes file for tests and rehearsals; the skill's own notes and catalog stay untouched.
+NOTES = Path(os.environ.get("LUZ_EXPERIENCE_STORE") or EXP / "notes.json")
+STORE_OVERRIDDEN = NOTES != EXP / "notes.json"
 KINDS = ["功能", "交互流程", "组件", "色彩", "字阶", "前端规则", "设计理念", "调研经验"]
 CATEGORIES = ["页面结构", "交互流程", "组件状态", "前端规则"]
 STALE_DAYS = 180
@@ -594,6 +596,8 @@ def cmd_check(_args) -> int:
 
 
 def render() -> None:
+    if STORE_OVERRIDDEN:
+        return  # catalog.md describes the skill's own notes, never a test store
     sources = load(SOURCES, "sources")["sources"]
     patterns = load(PATTERNS, "patterns")["patterns"]
     notes = load_notes(NOTES)["notes"]
