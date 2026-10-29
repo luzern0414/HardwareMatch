@@ -86,7 +86,8 @@ class RuleCardTests(unittest.TestCase):
                             "check_interaction.py"),
             "agent-ui": ("能力清单", "运行状态", "耗时与进度", "错误、降级与恢复的呈现", "data-state"),
             "agent-runtime-ui": ("### 智能体设计规范 › 核心规则 › 运行时与可靠性", "`run.completed`", "`Last-Event-ID`",
-                                 "`Retry-After`", "agent-foundation.md", "### 智能体设计规范 › 核心规则 › 依据"),
+                                 "`Retry-After`", "agent-foundation.md", "### 智能体设计规范 › 核心规则 › 依据",
+                                 "运行方案：模型只做决策，程序控制运行", "单一结果", "权限控制", "工具参数错误的返回"),
             "admin-form": ("### 界面通用规范 › 核心规则 › 五、组件 › 操作反馈",),
         }
         for kind, phrases in expected.items():

@@ -229,7 +229,11 @@
         {"page": "agent-design.html", "title": "智能体设计规范", "path": ["工作流程"]},
         {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "一、设计架构", "设计理念"]},
         {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "一、设计架构", "形态与页面"]},
-        {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "二、功能架构"]},
+        {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "二、功能架构", "任务定义"]},
+        {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "二、功能架构", "能力清单"]},
+        {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "二、功能架构", "意图识别与追问"]},
+        {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "二、功能架构", "记忆"]},
+        {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "二、功能架构", "运行状态"]},
         {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "三、信息架构与导航"]},
         {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "四、页面与版式"]},
         {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "五、组件"]},
@@ -362,10 +366,14 @@
       ]
     },
     "agent-runtime-ui": {
-      "title": "智能体运行时与可靠性（界面契约）",
-      "summary": "必须用服务器推送事件：事件类型、断线续传与心跳、排队与并发、防重复提交、重试熔断降级、断点续跑与取消、上限、依据",
-      "keywords": ["智能体", "SSE", "流式", "事件", "排队", "重连", "重试", "熔断", "降级", "幂等", "超时", "耗时", "底座"],
+      "title": "智能体运行方案与运行时（模型决策、程序控制）",
+      "summary": "模型只做决策、程序控制运行：ReAct 循环与轮次上限、多轮对话、工具分级、权限控制、参数错误返回、MCP；必须用服务器推送事件：事件类型、断线续传与心跳、排队与并发、防重复提交、超时重试熔断降级、断点续跑与取消、上限、依据",
+      "keywords": ["智能体", "SSE", "流式", "事件", "排队", "重连", "重试", "熔断", "降级", "幂等", "超时", "耗时", "底座", "ReAct", "循环", "轮次", "死循环", "多轮", "工具", "工具分级", "权限", "MCP", "LangGraph", "参数错误"],
       "sections": [
+        {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "二、功能架构", "运行方案：模型只做决策，程序控制运行"]},
+        {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "二、功能架构", "工具分级"]},
+        {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "二、功能架构", "权限控制"]},
+        {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "二、功能架构", "工具参数错误的返回"]},
         {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "运行时与可靠性"]},
         {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "一、设计架构", "底座链路与界面"]},
         {"page": "agent-design.html", "title": "智能体设计规范", "path": ["核心规则", "二、功能架构", "运行状态"]},
@@ -376,14 +384,12 @@
         {"page": "agent-design.html", "title": "智能体设计规范", "path": ["输出契约"]},
         {"page": "agent-design.html", "title": "智能体设计规范", "path": ["质量门禁"]},
         {"page": "agent-design.html", "title": "智能体设计规范", "path": ["交接规则"]},
-        {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "二、功能架构", "功能闭环"]},
-        {"page": "ui-standards.html", "title": "界面通用规范", "path": ["核心规则", "五、组件", "操作反馈"]},
         {"page": "system-design.html", "title": "系统设计规范", "path": ["核心规则", "系统架构清单"]}
       ],
       "tools": [
         "把运行事件表（每种运行状态由哪些事件进入与离开、各事件携带什么）和错误文案表写进系统设计；事件名与字段以本卡为准，不另起名字",
         "后端实现（事件日志与 `Last-Event-ID` 续传、心跳、队列与并发上限、幂等键、重试与熔断、检查点、取消与回滚、网关关闭缓冲）交给 Luz-Dev：https://github.com/luzern0414/Luz-Dev/blob/master/references/agent-foundation.md",
-        "调研来源在 Luz-Crawl 任务 017（服务器推送事件、排队、重试、熔断、幂等、进度）与 018（智能体底座）；新调研先查这两个任务"
+        "调研来源在 Luz-Crawl 任务 017（服务器推送事件、排队、重试、熔断、幂等、进度）、018（智能体底座）与 023（ReAct、MCP 工具与授权、轮次上限、过度代理）；新调研先查这三个任务"
       ],
       "checks": [
         "原型七种运行状态齐全（`validate_session.py` 无 agent run states 警告），执行中有逐步计时与停止，失败有从失败处重试与请求编号",

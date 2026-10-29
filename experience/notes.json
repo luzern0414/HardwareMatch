@@ -16,10 +16,28 @@
       "last_confirmed": "2026-10-28"
     },
     {
+      "key": "agent-model-decides-program-runs",
+      "kind": "preference",
+      "text": "智能体开发：模型只做决策，程序控制运行；死循环最简单直接限制执行轮次，超过直接报错；工具分级：单一结果工具执行后不再传它的工具定义、权限禁止再调，多种结果工具写清边界；工具参数错误不只回错误信息，要回当前参数、错误原因和怎么改",
+      "why": "用户 2026-10-29 要求补充智能体系统方案（ReAct、死循环、多轮对话、工具调用、权限、MCP、LangGraph、接口超时）",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "agent-must-use-sse",
       "kind": "preference",
       "text": "智能体的回复、思考与工具进度、阶段与耗时、排队位置、审批请求、结果与错误一律用服务器推送事件（SSE）推送：统一事件名 run.queued、run.started、stage.*、step.*、message.delta、approval.*、run.completed、run.failed、run.cancelled、ping，各带 id、run_id、ts、elapsed_ms；Last-Event-ID 续传、retry 约 3 秒、结束后 204、15 秒心跳、代理关缓冲；首个事件 1 秒内；只认三个结束事件，连接关闭不算成功；不用轮询或整段返回，只有语音等双向实时才用 WebSocket 并写明理由",
       "why": "用户 2026-10-29 要求智能体必须使用 SSE；依据 WHATWG 服务器推送事件、MDN、Anthropic 流式与错误文档、Nginx 代理缓冲（Luz-Crawl 017）；规则在 agent-design.html 运行时与可靠性",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
+      "key": "agent-progress-above-answer",
+      "kind": "preference",
+      "text": "智能体的进度卡（状态、总用时、当前阶段、预计剩余与停止）跟在智能体当前回答的上方随回答前进，不吸顶在页面最上方",
+      "why": "用户 2026-10-29 要求进度不要放在最顶部，放在 agent 回答的上方",
       "uses": 1,
       "first_seen": "2026-10-29",
       "last_confirmed": "2026-10-29"
@@ -50,6 +68,15 @@
       "uses": 1,
       "first_seen": "2026-10-28",
       "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "demo-for-sales-final-only",
+      "kind": "preference",
+      "text": "给销售用的 Demo 生成不让销售查看或批准架构等中间产物，只交付最终可操作的前端页面；技能流程照样全部走完，用生成前的一次授权代替逐阶段批准",
+      "why": "用户原话：销售是看不懂架构的，直接生成最终的前端html即可，但是要按照skill的完整流程执行",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
     },
     {
       "key": "drop-empty-columns",
@@ -356,6 +383,15 @@
       "last_confirmed": "2026-10-29"
     },
     {
+      "key": "small-fill-selector-naming",
+      "kind": "lesson",
+      "text": "界面里的小块实色（进度条填充、阶段点、数字角标、播放键）在选择器里写明 -mark、-bar i、.badge 或 button，12 号辅助字的选择器带 caption、tag、time 等标记；否则检查器判为大面积深色或正文过小",
+      "why": "check_document 与 validate_session 按选择器里的约定标记识别小元素",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "system-design-table-cells",
       "kind": "lesson",
       "text": "系统设计页模块内容区按标签规则逐格检查：表头加 cell-label，单元格加 cell-value，长文本按分号拆成不超过 30 字的 line-value 行，避免 详情、原因、步骤、提示、流程、指南、备注、点击查看 等词，内容区外层用 module-content",
@@ -398,11 +434,15 @@
     {
       "key": "agent-research-sources",
       "kind": "fact",
-      "text": "智能体调研来源：Luz-Crawl 任务 017（WHATWG 服务器推送事件、MDN SSE 与 Retry-After、Anthropic 流式/错误/速率限制、Azure 队列削峰/重试/熔断、Stripe 幂等、Nginx 代理、NN/g 响应时间与进度指示、LangGraph 流式）与 018（Anthropic 智能体、工具、上下文工程、上下文检索、多智能体，Pydantic 与 Pydantic AI，OpenAI Agents SDK 护栏与追踪，LangGraph 记忆、持久化、中断，Mem0，pgvector，Qdrant 混合检索，OWASP 大模型十大风险，通义千问与 DeepSeek 函数调用）；新调研先复用这两个任务",
-      "why": "2026-10-29 写 agent-design.html 依据表时逐篇核对原文",
-      "uses": 1,
+      "text": "智能体调研来源在 Luz-Crawl 任务 017（SSE、排队、重试、熔断、幂等、进度）、018（底座技术栈：工具、上下文、记忆、知识库、护栏、追踪、各家函数调用）与 023（ReAct、MCP 最新版工具与授权、轮次上限、Claude 定义工具、LangGraph 递归上限、OWASP 过度代理）；新调研先复用这三个任务",
+      "why": "2026-10-29 补充智能体运行方案时新采任务 023，逐篇核对原文",
+      "uses": 2,
       "first_seen": "2026-10-29",
-      "last_confirmed": "2026-10-29"
+      "last_confirmed": "2026-10-29",
+      "previous": {
+        "text": "智能体调研来源：Luz-Crawl 任务 017（WHATWG 服务器推送事件、MDN SSE 与 Retry-After、Anthropic 流式/错误/速率限制、Azure 队列削峰/重试/熔断、Stripe 幂等、Nginx 代理、NN/g 响应时间与进度指示、LangGraph 流式）与 018（Anthropic 智能体、工具、上下文工程、上下文检索、多智能体，Pydantic 与 Pydantic AI，OpenAI Agents SDK 护栏与追踪，LangGraph 记忆、持久化、中断，Mem0，pgvector，Qdrant 混合检索，OWASP 大模型十大风险，通义千问与 DeepSeek 函数调用）；新调研先复用这两个任务",
+        "replaced_at": "2026-10-29"
+      }
     },
     {
       "key": "agent-run-state-blocks",
@@ -454,6 +494,15 @@
       "kind": "fact",
       "text": "会员列表默认有效、按最近到店倒序（未到店排最后），即将到期取 15 天内；选定单一状态、单一门店或单一会员卡类型时隐藏对应列，由状态标签或筛选标签写一次；表头筛选与窄屏工具条是同一动作时用不同 data-arg 区分入口",
       "why": "001 会员管理列表页浏览器验收 58 项通过（1280–1920 无溢出、1440×900 首屏 12 行、390 宽可操作）",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
+      "key": "miniprogram-commercial-frame",
+      "kind": "fact",
+      "text": "成熟商用小程序手机稿的框架：状态栏 24、导航栏 44 标题 16/600 居中并避让右上胶囊 87×32、分组单元格行高 52 起左右 16、底部操作栏一个主行动加至多一个次行动并避让安全区、标签栏 50 加安全区只在一级页；参照 TDesign 导航栏与单元格、Vant 底部操作栏、NutUI 单元格与微信胶囊按钮位置接口",
+      "why": "Luz-Crawl 实测 TDesign、Vant、NutUI 与微信开放文档组件页",
       "uses": 1,
       "first_seen": "2026-10-29",
       "last_confirmed": "2026-10-29"
