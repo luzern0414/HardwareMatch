@@ -154,6 +154,27 @@ def prepare_approved_system(root: Path, *, live: bool = True) -> Path:
     approve_artifact(session, "system_design", "01-system/04-system-design.html")
     return session
 
+def adopt_rules(session: Path, rule: str = "界面通用规范 › 核心规则 › 五、组件 › 分页与加载更多", how: str = "列表默认 20 条/页") -> None:
+    """Fill BRIEF 采用的规则 and 本次沉淀 the way an agent does after reading the rule card and writing a note."""
+    import validate_session
+    brief = session / "raw" / "BRIEF.md"
+    text = brief.read_text(encoding="utf-8")
+    head, tail = text.split("## 本次沉淀", 1)
+    head = head.rstrip("\n") + f"\n| {rule} | {how} |\n\n"
+    tail = tail.rstrip("\n") + "\n| test-session-note | lesson | 测试会话写入的经验 |\n"
+    brief.write_text(head + "## 本次沉淀" + tail, encoding="utf-8")
+    notes = session.parent / "notes.json"
+    today = date.today().isoformat()
+    notes.write_text(json.dumps({"schema_version": "1.0", "notes": [{"key": "test-session-note", "kind": "lesson", "text": "测试会话写入的经验", "uses": 1, "first_seen": today, "last_confirmed": today}]}, ensure_ascii=False), encoding="utf-8")
+    validate_session.NOTES_FILE = notes
+
+def prepare_prototype(root: Path) -> Path:
+    session = prepare_approved_system(root)
+    add_mode(root, session, "visual", skill_root=ROOT, allow_live_crawl_offline=True)
+    approve_artifact(session, "visual", "02-visual/visual-board.html")
+    add_mode(root, session, "prototype", skill_root=ROOT, allow_live_crawl_offline=True)
+    return session
+
 def minimal_rule_page() -> str:
     sections = []
     titles = ["适用范围", "工作流程", "核心规则", "平台矩阵", "案例样本", "输出契约", "质量门禁", "交接规则"]
@@ -164,6 +185,10 @@ def minimal_rule_page() -> str:
     return f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>视觉设计规范</title><link rel="stylesheet" href="guidelines.css"></head><body><main id="main" aria-label="视觉设计规范"><h1>视觉设计规范</h1>{"".join(sections)}</main></body></html>'
 
 class SessionFlowTests(unittest.TestCase):
+    def tearDown(self) -> None:
+        import validate_session
+        validate_session.NOTES_FILE = ROOT / "experience" / "notes.json"  # adopt_rules points it at a temporary store
+
     def test_minimal_system_session_is_valid_and_does_not_prebuild_downstream(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT) as temp:
             session = make_system(tool_root(temp))
@@ -196,6 +221,7 @@ class SessionFlowTests(unittest.TestCase):
             add_mode(root, session, "visual", skill_root=ROOT, allow_live_crawl_offline=True)
             approve_artifact(session, "visual", "02-visual/visual-board.html")
             add_mode(root, session, "prototype", skill_root=ROOT, allow_live_crawl_offline=True)
+            adopt_rules(session)
             final = publish(session, "prototype")
             self.assertEqual(final.name, session.name + ".html")
             self.assertEqual(sorted(p.name for p in session.iterdir()), sorted(["raw", final.name]))
@@ -204,6 +230,109 @@ class SessionFlowTests(unittest.TestCase):
             self.assertTrue(any("differs from its published hash" in e for e in validate(session, allow_live_crawl_offline=True)))
             (session / "notes.md").write_text("x", encoding="utf-8")
             self.assertTrue(any("may only contain" in e for e in validate(session, allow_live_crawl_offline=True)))
+
+    def test_sessions_and_modes_save_their_rule_cards(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+            root = tool_root(temp)
+            session = prepare_approved_system(root)
+            rules = session / "raw" / "00-rules"
+            self.assertEqual(sorted(p.name for p in rules.glob("*.md")), ["interaction.md", "system-design.md"])
+            add_mode(root, session, "visual", skill_root=ROOT, allow_live_crawl_offline=True)
+            self.assertEqual(sorted(p.name for p in rules.glob("*.md")), ["admin-list.md", "interaction.md", "miniprogram.md", "system-design.md"])
+            approve_artifact(session, "visual", "02-visual/visual-board.html")
+            add_mode(root, session, "prototype", skill_root=ROOT, allow_live_crawl_offline=True, cards=["admin-dashboard"])
+            self.assertEqual(sorted(p.name for p in rules.glob("*.md")),
+                             ["admin-dashboard.md", "admin-list.md", "interaction.md", "miniprogram.md", "prototype.md", "system-design.md"])
+            self.assertTrue((rules / "prototype.md").read_text(encoding="utf-8").startswith("<!-- rules-sha256: "))
+            # Named surface cards replace the visual defaults; the stage card always comes with its mode.
+            other = create_session(root, "官网", ["system"], skill_root=ROOT, session_kind="system", system_name="官网",
+                                   modules=["首页"], cards=["website"])
+            self.assertEqual(sorted(p.name for p in (other / "raw" / "00-rules").glob("*.md")), ["interaction.md", "system-design.md", "website.md"])
+            hardware = create_session(root, "门店硬件选型清单", ["hardware"], skill_root=ROOT)
+            self.assertTrue((hardware / "raw" / "00-rules" / "hardware.md").is_file())
+            with self.assertRaises(ValueError) as caught:
+                create_session(root, "未知卡", ["hardware"], skill_root=ROOT, cards=["poster"])
+            self.assertIn("unknown rule card", str(caught.exception))
+            self.assertFalse(any("未知卡" in p.name for p in root.iterdir()))
+
+    def test_agent_session_prototype_shows_the_seven_run_states(self) -> None:
+        # agent-design.html 运行状态: an agent session's prototype skeleton carries one data-state block per run state;
+        # removing them leaves a warning, never an error, so older sessions keep validating.
+        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+            root = tool_root(temp)
+            session = prepare_approved_system(root)
+            add_mode(root, session, "visual", skill_root=ROOT, allow_live_crawl_offline=True, cards=["agent-ui", "agent-runtime-ui"])
+            approve_artifact(session, "visual", "02-visual/visual-board.html")
+            add_mode(root, session, "prototype", skill_root=ROOT, allow_live_crawl_offline=True)
+            prototype = session / "raw" / "03-prototype" / "interactive-prototype.html"
+            text = prototype.read_text(encoding="utf-8")
+            for state in ("排队", "执行中", "等待审批", "失败可重试", "断线重连", "已停止", "完成"):
+                self.assertIn(f'data-state="{state}"', text)
+            self.assertNotIn("<!-- AGENT_PART -->", text)
+            warnings: list[str] = []
+            self.assertEqual(validate(session, allow_live_crawl_offline=True, warnings=warnings), [])
+            self.assertFalse(any("agent" in w for w in warnings), warnings)
+            stripped = re.sub(r'<section id="agent-run".*?</section>', "", text, flags=re.S)
+            prototype.write_text(stripped, encoding="utf-8")
+            warnings = []
+            validate(session, allow_live_crawl_offline=True, warnings=warnings)
+            self.assertTrue(any("does not demonstrate the run states" in w for w in warnings))
+        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+            root = tool_root(temp)
+            session = prepare_prototype(root)
+            text = (session / "raw" / "03-prototype" / "interactive-prototype.html").read_text(encoding="utf-8")
+            self.assertNotIn('data-state="排队"', text)  # not an agent session: no agent part
+            self.assertNotIn("AGENT_PART", text)  # and no leftover marker
+
+    def test_publish_needs_rule_card_adopted_rules_and_sediment(self) -> None:
+        from publish import publish
+        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+            root = tool_root(temp)
+            session = prepare_prototype(root)
+            brief = session / "raw" / "BRIEF.md"
+            with self.assertRaises(ValueError) as caught:
+                publish(session, "prototype")
+            self.assertIn("采用的规则", str(caught.exception))
+            self.assertFalse((session / f"{session.name}.html").exists())
+            text = brief.read_text(encoding="utf-8")
+            brief.write_text(text.replace("|---|---|\n\n## 本次沉淀", "|---|---|\n| 界面通用规范 › 核心规则 › 五、组件 › 筛选 | 外露 4 个筛选 |\n\n## 本次沉淀"), encoding="utf-8")
+            with self.assertRaises(ValueError) as caught:
+                publish(session, "prototype")
+            self.assertIn("本次沉淀", str(caught.exception))
+            brief.write_text(text, encoding="utf-8")
+            adopt_rules(session)
+            # A card cut from rule pages that have changed since is stale and blocks publishing.
+            card = session / "raw" / "00-rules" / "prototype.md"
+            original = card.read_text(encoding="utf-8")
+            first, rest = original.split("\n", 1)
+            card.write_text(first.replace(first[first.index(":") + 2:first.index(":") + 14], "000000000000") + "\n" + rest, encoding="utf-8")
+            with self.assertRaises(ValueError) as caught:
+                publish(session, "prototype")
+            self.assertIn("out of date", str(caught.exception))
+            card.write_text(original, encoding="utf-8")
+            final = publish(session, "prototype")
+            self.assertTrue(final.is_file())
+            errors = validate(session, allow_live_crawl_offline=True)
+            self.assertFalse(any("00-rules" in e or "采用的规则" in e or "本次沉淀" in e for e in errors), errors)
+            # A published session that loses its notes or cards is reported by validation.
+            for path in (session / "raw" / "00-rules").glob("*.md"):
+                path.unlink()
+            brief.write_text(text, encoding="utf-8")
+            errors = validate(session, allow_live_crawl_offline=True)
+            for marker in ("00-rules", "采用的规则 is empty", "本次沉淀 is empty"):
+                self.assertTrue(any(marker in e for e in errors), (marker, errors))
+
+    def test_sessions_created_before_rule_cards_are_exempt(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+            session = make_system(tool_root(temp))
+            for path in (session / "raw" / "00-rules").glob("*.md"):
+                path.unlink()
+            self.assertTrue(any("00-rules" in e for e in validate(session)))
+            manifest_path = session / "raw" / "99-delivery" / "MANIFEST.json"
+            manifest = read_json(manifest_path)
+            manifest["created_at"] = "2026-10-28T15:33:59+08:00"
+            write_json(manifest_path, manifest)
+            self.assertEqual(validate(session), [])
 
     def test_modified_architecture_hash_blocks_downstream(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT) as temp:

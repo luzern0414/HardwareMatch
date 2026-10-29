@@ -118,7 +118,7 @@ EVIDENCE_CATEGORIES = {
 BACKEND_CATEGORIES = {"业务规则", "法规", "接口", "后端", "business rules", "business rule", "regulation", "backend"}
 # Evidence reused from the skill's experience library (experience/sources.json) stays valid for this many days.
 REUSE_MAX_DAYS = 180
-SMALL_ELEMENT_TOKENS = (".mark", ".icon", ".avatar", ".badge", ".pill", ".status", ".chip", ".tag", ".logo", ".corner",
+SMALL_ELEMENT_TOKENS = (".brand-card", ".mark", ".icon", ".avatar", ".badge", ".pill", ".status", ".chip", ".tag", ".logo", ".corner",
                         ".coin", ".dot", ".kk", ".steps", ".copy i", ".check", ".box", "::before", "::after", "button", "input", "svg",
                         # data marks: checkbox fills, check marks, progress and ranking bar fills, heat-map cells
                         ".cbox", "-mark", "bar i", ".bar-fill", ".rb i", ".heat i", ".progress i")
@@ -931,6 +931,105 @@ def parse_brief_requirements(session: Path, errors: list[str]) -> list[dict[str,
     return requirements
 
 
+RULES_HEADING = "## 采用的规则"
+# Sessions created before rule cards existed (scripts/context.py, references/cards.json) keep validating as they did.
+RULE_CARDS_SINCE = date(2026, 10, 29)
+
+
+def adopted_rules(brief_text: str) -> list[tuple[str, str]] | None:
+    """Filled rows of the BRIEF table "采用的规则" (rule → how it was applied); None when the section is missing."""
+    if RULES_HEADING not in brief_text:
+        return None
+    section = brief_text.split(RULES_HEADING, 1)[1].split("\n## ", 1)[0]
+    section = re.sub(r"<!--.*?-->", "", section, flags=re.S)
+    lines = [line.strip() for line in section.splitlines() if line.strip().startswith("|")]
+    separator = re.compile(r"^\|(\s*:?-{2,}:?\s*\|)+\s*$")
+    rows = []
+    for i, line in enumerate(lines):
+        if separator.match(line) or (i + 1 < len(lines) and separator.match(lines[i + 1])):
+            continue  # the separator itself, or the header row right above it
+        cells = [c.strip() for c in line.strip("|").split("|")]
+        if len(cells) >= 2 and cells[0] and cells[1]:
+            rows.append((cells[0], cells[1]))
+    return rows
+
+
+SEDIMENT_HEADING = "## 本次沉淀"
+# Module-level so tests can point it at a temporary store.
+NOTES_FILE = Path(__file__).resolve().parents[1] / "experience" / "notes.json"
+
+
+def table_rows(brief_text: str, heading: str) -> list[list[str]] | None:
+    """Filled rows of the Markdown table under a BRIEF heading (header and separator skipped); None when the heading is missing."""
+    if heading not in brief_text:
+        return None
+    section = brief_text.split(heading, 1)[1].split("\n## ", 1)[0]
+    section = re.sub(r"<!--.*?-->", "", section, flags=re.S)
+    lines = [line.strip() for line in section.splitlines() if line.strip().startswith("|")]
+    separator = re.compile(r"^\|(\s*:?-{2,}:?\s*\|)+\s*$")
+    rows = []
+    for i, line in enumerate(lines):
+        if separator.match(line) or (i + 1 < len(lines) and separator.match(lines[i + 1])):
+            continue
+        cells = [c.strip() for c in line.strip("|").split("|")]
+        if any(cells):
+            rows.append(cells)
+    return rows
+
+
+def sediment_errors(work: Path, since: str) -> list[str]:
+    """Every session leaves experience behind: BRIEF 本次沉淀 names notes written or confirmed on or after the session date."""
+    brief = work / "BRIEF.md"
+    rows = table_rows(brief.read_text(encoding="utf-8"), SEDIMENT_HEADING) if brief.is_file() else None
+    if rows is None:
+        return ["BRIEF.md has no 本次沉淀 section: record at least one note with scripts/experience.py note and list its key"]
+    keys = [r[0].strip("` ") for r in rows if r and r[0].strip("` ")]
+    if not keys:
+        return ["BRIEF.md 本次沉淀 is empty: every call records or confirms at least one note (preference, lesson or fact) with scripts/experience.py note"]
+    try:
+        notes = {n["key"]: n for n in json.loads(NOTES_FILE.read_text(encoding="utf-8")).get("notes", [])}
+    except (OSError, ValueError):
+        notes = {}
+    errors = []
+    for key in keys:
+        note = notes.get(key)
+        if not note:
+            errors.append(f"本次沉淀 key '{key}' is not in experience/notes.json: write it with scripts/experience.py note --key {key} …")
+        elif since and str(note.get("last_confirmed", "")) < since:
+            errors.append(f"本次沉淀 key '{key}' was last confirmed {note.get('last_confirmed')}, before this session ({since}): write it again to confirm or update it")
+    return errors
+
+
+def rule_card_errors(work: Path, *, require_adopted: bool, check_current: bool) -> list[str]:
+    """Every session works from a rule card (scripts/context.py) and records which rules it applied."""
+    errors: list[str] = []
+    cards = sorted((work / "00-rules").glob("*.md"))
+    if not cards:
+        errors.append("missing raw/00-rules/ rule card: run `py -X utf8 scripts/context.py <kind> --session <会话>` and read it before producing")
+    elif check_current:
+        import context
+        for card in cards:
+            if card.stem in context.card_kinds() and not context.card_is_current(card):
+                errors.append(f"rule card raw/00-rules/{card.name} is out of date (the rule pages changed): regenerate with `py -X utf8 scripts/context.py {card.stem} --session <会话>` and re-check the work")
+    if require_adopted:
+        brief = work / "BRIEF.md"
+        rows = adopted_rules(brief.read_text(encoding="utf-8")) if brief.is_file() else None
+        if rows is None:
+            errors.append("BRIEF.md has no 采用的规则 section (rule → how it was applied)")
+        elif not rows:
+            errors.append("BRIEF.md 采用的规则 is empty: list the rule-card rules and preferences this work applies, one row each")
+    return errors
+
+
+def rule_cards_required(manifest: dict) -> bool:
+    """Rule cards apply to sessions created on or after RULE_CARDS_SINCE; an unreadable date counts as new."""
+    try:
+        created = datetime.fromisoformat(str(manifest.get("created_at", "")))
+    except ValueError:
+        return True
+    return created.date() >= RULE_CARDS_SINCE
+
+
 def split_ids(value: str) -> list[str]:
     return [item.strip() for item in re.split(r"[,，;；\s]+", value or "") if item.strip()]
 
@@ -1093,6 +1192,7 @@ def validate_architecture(
     errors: list[str],
     *,
     approved: bool = False,
+    warnings: list[str] | None = None,
 ) -> dict[str, set[str]]:
     empty = {attr: set() for attr in DATA_ID_PATTERNS}
     path = session / ARCHITECTURE_PATH
@@ -1186,6 +1286,15 @@ def validate_architecture(
     for module in modules:
         if not any(module in (node.get("data-module"), node.get("data-state-subject")) or module in node.get("data-state-subject") for node in state_nodes):
             errors.append(f"system-architecture needs an interface state for module {module}")
+    # Interaction logic (ui-standards.html 页面交互契约, 功能闭环, 操作反馈; system-design.html 架构的交互字段): an
+    # architecture written to the contract fails on gaps; older ones only collect warnings.
+    from check_interaction import architecture_interaction_findings
+    design_file = system_design_file(session)
+    design_root = parse_html(design_file, []) if design_file is not None else None
+    interaction_errors, interaction_warnings = architecture_interaction_findings(root, design_root)
+    errors.extend(interaction_errors)
+    if warnings is not None:
+        warnings.extend(interaction_warnings)
     return ids
 
 
@@ -1414,9 +1523,12 @@ SKIP_TABLE_RE = re.compile(r"skeleton|loading|export|modal|dialog|detail|popover
 SHELL_CLASS_RE = re.compile(r"(?:^|[-_\s])(?:header|topbar|top-bar|navbar|nav-bar|appbar|app-bar|masthead|sidebar|side-bar|"
                             r"site-head|site-header|admin|console)(?:$|[-_\s])", re.I)
 PHONE_CLASS_RE = re.compile(r"(?:^|[-_\s])(?:mp|phone|mobile|miniprogram|mini-program|wx|device|screen-phone)(?:$|[-_\s])", re.I)
-BRAND_CLASS_RE = re.compile(r"logo|brand", re.I)
+# A brand card (one solid theme-colour card per screen, Luz-Design visual-design.html 配色) is not a header brand mark.
+BRAND_CLASS_RE = re.compile(r"logo|brand(?!-card)", re.I)
 ICON_DRAWING_RE = re.compile(r"<(?:path|rect|circle|line|polyline|polygon|ellipse)\b", re.I)
 DEFAULT_PAGE_SIZE = 20
+# Rule cards that make a session an agent session (references/cards.json); its prototype must show the agent run states.
+AGENT_CARD_KINDS = ("agent-ui", "agent-runtime-ui")
 
 
 def tab_icon_errors(root: Node, label: str) -> list[str]:
@@ -1563,9 +1675,17 @@ def validate_prototype(
         errors.append("interactive-prototype needs a linear SVG icon")
     ui_errors, ui_warnings = prototype_ui_findings(root)
     errors.extend(ui_errors)
+    # One visible entry per action (ui-standards.html 一个动作一个按钮) and, for an agent, the seven run states
+    # (agent-design.html 运行状态); an agent session is one that works from the agent rule cards.
+    from check_interaction import prototype_agent_state_findings, prototype_interaction_findings
+    interaction_errors, interaction_warnings = prototype_interaction_findings(root)
+    errors.extend(interaction_errors)
     if warnings is not None:
         warnings.extend(ui_warnings)
         warnings.extend(prototype_list_brand_findings(root))
+        warnings.extend(interaction_warnings)
+        agent_cards = any((session / "00-rules" / f"{kind}.md").is_file() for kind in AGENT_CARD_KINDS)
+        warnings.extend(prototype_agent_state_findings(root, expected=agent_cards))
 
 def validate(
     session: Path,
@@ -1647,6 +1767,13 @@ def validate(
             datetime.fromisoformat(str(manifest.get("created_at", "")))
         except ValueError:
             errors.append("MANIFEST.json created_at must be ISO-8601")
+        # Work starts from the rule card (raw/00-rules/); a delivered session names the rules it applied and the
+        # experience it left behind (BRIEF 采用的规则, 本次沉淀).
+        if rule_cards_required(manifest):
+            delivered = final_html(folder).is_file()
+            errors.extend(rule_card_errors(session, require_adopted=delivered or strict, check_current=strict))
+            if delivered or strict:
+                errors.extend(sediment_errors(session, str(manifest.get("created_at", ""))[:10]))
         requested_modules = manifest.get("requested_modules", [])
         if not isinstance(requested_modules, list) or len(requested_modules) != len(set(requested_modules)) or not all(isinstance(item, str) and item.strip() for item in requested_modules):
             errors.append("MANIFEST.json requested_modules must be a unique string list")
@@ -1834,7 +1961,8 @@ def validate(
                 requirements = parse_brief_requirements(session, errors)
             if not research:
                 research = parse_research(session / "01-system" / "02-research.md")
-            approved_ids = validate_architecture(session, system_name, selected, requirements, research, errors, approved=architecture_approved)
+            approved_ids = validate_architecture(session, system_name, selected, requirements, research, errors,
+                                                 approved=architecture_approved, warnings=warnings)
         if design_path is not None:
             if not architecture_approved:
                 errors.append("system-design HTML exists before architecture approval")

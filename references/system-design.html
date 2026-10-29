@@ -26,7 +26,7 @@
 <li>开始调研前先读经验库目录并检索：可复用的来源直接复制进本会话，已有的功能、组件、配色与规则作为起点；只为经验库缺口执行新的浏览器调研。</li>
 <li>按已批准范围执行强制浏览器调研，并在内部研究记录中保存可复核快照、任务编号、哈希、证据类别和禁止照搬项。</li>
 <li>只设计批准模块：信息架构、页面框架、导航、行动、权限、状态、文案、日志和恢复。</li>
-<li>先写出完整系统架构，覆盖角色权限、边界、功能、页面、导航、组件动作、实体、流程异常、接口事件、状态机、追溯和验收；等待人工架构批准。</li>
+<li>先写出完整系统架构，按本页“系统架构清单”覆盖角色权限、边界、功能、页面、导航、组件动作、实体、流程异常、接口事件、状态机、追溯和验收，有智能体时加上运行时与底座；同时写出每个页面的交互契约、每个对象的生命周期、每个状态的进出事件、每条流程的成功终点（“架构的交互字段”）；等待人工架构批准。</li>
 <li>架构批准后才写系统设计网页文件，并按本页“系统设计网页文件的版式”与视觉设计规范自检；系统设计批准后才允许增加视觉模式。</li>
 <li>交付后把本会话的新来源、功能、交互流程、组件、配色、前端规则与调研经验沉淀进经验库，供下一个项目复用。</li>
 </ol>
@@ -59,12 +59,45 @@
 <tr><td><a href="ui-standards.html">界面通用规范</a></td><td>七层通用标准与分端差异总表</td></tr>
 <tr><td><a href="admin-design.html">网页管理后台设计规范</a></td><td>菜单与驾驶舱、表格、表单、内容维护闭环、操作成本、宽度适配</td></tr>
 <tr><td><a href="miniprogram-design.html">小程序设计规范</a></td><td>首页与入口、底部标签、页面栈与返回、可配置模块、合规</td></tr>
-<tr><td><a href="agent-design.html">智能体设计规范</a></td><td>任务定义与工具分级、审批与接管、消息与工具调用、运行状态</td></tr>
+<tr><td><a href="agent-design.html">智能体设计规范</a></td><td>任务定义与工具分级、能力清单、追问、记忆与引用、审批与接管、消息与工具调用、七种运行状态与耗时、运行时与可靠性（服务器推送事件、排队、防错防失败）</td></tr>
 <tr><td><a href="website-design.html">网站设计规范</a></td><td>页面类型与转化、顶部导航与页脚、断点、区块组件、搜索与性能</td></tr>
 <tr><td><a href="function-list-design.html">系统功能列表规范</a></td><td>交付网页里的功能列表</td></tr>
 <tr><td><a href="hardware-design.html">硬件设计规范</a></td><td>业务逻辑到设备映射、接口与协议、连接图、型号价格与渠道、现场条件、硬件经验库</td></tr>
 <tr><td><a href="https://github.com/luzern0414/Luz-Design/blob/master/references/visual-design.html">视觉设计规范</a>（视觉技能）</td><td>配色、字体字号、图标、圆角阴影、动效、间距与文字纪律</td></tr>
 </tbody></table></div>
+<h3>系统架构清单</h3>
+<p>系统架构逐项写出下表；缺一项不能提交架构批准。</p>
+<div class="table-wrap"><table><thead><tr><th>项目</th><th>写什么</th><th>依据</th></tr></thead><tbody>
+<tr><td>范围与角色权限</td><td>已批准的模块与边界；每个角色能看、能做的页面与动作</td><td>界面通用规范“权限与角色”</td></tr>
+<tr><td>功能</td><td>编号、类别（核心、信息、营销、辅助）、来源（用户要求或调研推断）与需求编号</td><td>界面通用规范“入口与内容分层”</td></tr>
+<tr><td>页面与导航</td><td>页面、路由、导航树，每个页面的交互契约</td><td>界面通用规范“页面交互契约”</td></tr>
+<tr><td>组件与动作</td><td>组件、动作、反馈、确认与撤销；一个动作一个按钮</td><td>界面通用规范“一个动作一个按钮”“操作反馈”</td></tr>
+<tr><td>实体与生命周期</td><td>每个对象的新建、查看、编辑、删除或归档、状态变更</td><td>界面通用规范“功能闭环”</td></tr>
+<tr><td>流程与异常</td><td>主流程、成功终点、每种失败的恢复入口</td><td>界面通用规范“功能闭环”</td></tr>
+<tr><td>状态机</td><td>状态、进入与离开事件、终态</td><td>界面通用规范“状态体系”</td></tr>
+<tr><td>接口与事件</td><td>前端需要的接口意图与事件；后端实现交给开发技能</td><td><a href="handoff.md">开发交接契约</a></td></tr>
+<tr><td>智能体运行时与底座</td><td>有智能体时必写：事件流用服务器推送事件（<code>SSE</code>），事件类型与七种运行状态的对应；排队与三级并发上限、幂等键、超时与重试、熔断与降级、检查点与断点续跑、取消与回滚、每轮上限；底座各层（接入、输入护栏、意图识别与路由、编排、工具层、结构化输出、记忆、知识库、输出护栏、可观测与评测）各由哪个界面元素呈现</td><td><a href="agent-design.html">智能体设计规范</a>“运行时与可靠性”“底座链路与界面”；实现见开发技能的<a href="https://github.com/luzern0414/Luz-Dev/blob/master/references/agent-foundation.md">智能体底座</a></td></tr>
+<tr><td>追溯与验收</td><td>需求 → 功能 → 调研；每个模块的验收信号</td><td>本页“工作流程”</td></tr>
+</tbody></table></div>
+<h3>架构的交互字段</h3>
+<p>架构网页用下表的属性写交互契约，检查脚本 <code>check_interaction.py</code>（由 <code>validate_session.py</code> 调用，也可单独运行）按表核对；规则本身见<a href="ui-standards.html">界面通用规范</a>“页面交互契约”“功能闭环”“操作反馈”。</p>
+<div class="table-wrap"><table><thead><tr><th>位置</th><th>属性</th><th>写法</th><th>检查</th></tr></thead><tbody>
+<tr><td>页面</td><td><code>data-entry</code></td><td>导航、动作或页面编号，或关键词（标签栏、登录、外部、通知、全局），逗号分隔</td><td>编号必须存在，导航编号必须指向本页</td></tr>
+<tr><td>页面</td><td><code>data-goal</code></td><td>一句话</td><td>写了契约后必填</td></tr>
+<tr><td>页面</td><td><code>data-primary-action</code></td><td>一个动作编号；只读页写“无”</td><td>只能一个，必须是本页动作</td></tr>
+<tr><td>页面</td><td><code>data-secondary-actions</code></td><td>动作编号列表</td><td>必须是本页动作，不与主操作重复</td></tr>
+<tr><td>页面</td><td><code>data-exit</code></td><td><code>返回:来源;完成:P-012</code>；一级页 <code>切换:标签栏</code>；外部只读页 <code>终点:客户关闭页面</code></td><td>页面编号必须存在</td></tr>
+<tr><td>页面</td><td><code>data-states</code></td><td><code>加载:…;空:…;错误:…;成功:…;禁用:…</code>，不适用写“不适用（理由）”</td><td>五类齐全；列表页的“空”要有下一步</td></tr>
+<tr><td>动作</td><td><code>data-target-page-id</code>、<code>data-navigation-id</code></td><td>目标页；与导航是同一元素时写导航编号</td><td>同页两个入口指向同一目标即报错</td></tr>
+<tr><td>动作</td><td><code>data-feedback</code></td><td><code>进行中:…;成功:…;失败:…</code>，成功写去向，失败写恢复入口</td><td>写了就必须三段齐全；没写给警告</td></tr>
+<tr><td>动作</td><td><code>data-confirm</code>、<code>data-undo</code></td><td>确认的对象与后果，或撤销方式</td><td>破坏性动作两者都没有给警告</td></tr>
+<tr><td>导航</td><td><code>data-from</code></td><td>来源页编号，或标签栏、全局、外部</td><td>同一来源到同一目标两条导航即报错</td></tr>
+<tr><td>状态</td><td><code>data-values</code>、<code>data-initial</code>、<code>data-terminal</code>、<code>data-transitions</code>、<code>data-page-ids</code></td><td><code>加载&gt;有数据@返回数据;网络错误&gt;加载@重试</code></td><td>非初始值要有进入事件，非终态要有离开事件</td></tr>
+<tr><td>实体</td><td><code>data-lifecycle</code></td><td><code>新建:A-101;查看:A-103;编辑:不提供（理由）;删除:A-130;状态:A-116</code></td><td>查看、编辑、删除必填（动作编号或带理由的不提供）</td></tr>
+<tr><td>流程</td><td><code>data-success</code></td><td>成功终点页面或状态</td><td>页面编号必须存在；没写给警告</td></tr>
+<tr><td>组件</td><td><code>data-display</code></td><td>只读展示的用途</td><td>无动作又没标展示给警告</td></tr>
+</tbody></table></div>
+<p>严重程度：任一页面写了 <code>data-entry</code>、<code>data-exit</code> 或 <code>data-primary-action</code>，就按契约检查整份架构，缺项、孤岛页与重复入口报错；没写的旧架构只给警告。原型里同一动作编号在同一页可见两次报错，列表行、带参数的标签与开关、<code>data-state-kind</code> 与 <code>data-scenario</code> 场景、智能体运行状态块除外；智能体原型缺少七种运行状态给警告。架构模板已按本表写好示例。</p>
 <h3>原型配置面板</h3>
 <p>可操作原型旁边放配置面板，用来切换演示数据与场景，让评审者看到每个页面的所有状态。</p>
 <ul>
@@ -93,7 +126,7 @@
 <div class="table-wrap"><table><thead><tr><th>端</th><th>系统设计文件必须写出</th></tr></thead><tbody>
 <tr><td>网页管理后台</td><td>菜单树与分组、每页页面类型、列表列定义、表单字段与校验、确认等级、驾驶舱指标、内容维护表</td></tr>
 <tr><td>小程序</td><td>底部标签、每个标签的模块与类别、页面栈与返回目标、内容来源表、授权与合规页</td></tr>
-<tr><td>智能体</td><td>任务目标、工具与影响分级、审批点、状态与恢复、会话与任务列表结构</td></tr>
+<tr><td>智能体</td><td>任务目标、能力清单、工具与影响分级、审批点、七种运行状态与运行事件表、耗时分段、错误文案表、记忆与引用、会话与任务列表结构</td></tr>
 <tr><td>网站</td><td>站点地图、每页主行动、区块结构、内容来源、页面标题与描述</td></tr>
 <tr><td>硬件</td><td>系统方案故事板、设备与承接环节、链路介质与协议、接入方式、断网兜底、现场条件、价格或渠道</td></tr>
 </tbody></table></div>
@@ -158,6 +191,8 @@
 <li>同一对象、动作或状态出现两个名称：退回设计。</li>
 <li>视觉模式在系统设计批准前启动、任意已批准文件被改动或实时调研校验失败：失败。</li>
 <li>权限、危险操作、日志、失败状态或恢复入口缺失：退回设计，不从实现阶段补写。</li>
+<li>架构提交批准前，<code>check_interaction.py</code>（由 <code>validate_session.py</code> 调用）有错误：不能提交；每个页面要有进入方式、目标、主操作、离开方式与五类状态，每个状态有进出事件，每个对象有生命周期或不提供的理由，每条流程有成功终点与失败恢复。</li>
+<li>有智能体的系统，架构没有写智能体运行时与底座（服务器推送事件与事件类型、排队与并发上限、幂等键、重试与熔断、检查点、取消与回滚、上限）：退回设计。</li>
 <li>原型配置面板没有按标签分类，或场景只有“成功、失败”两种：退回设计。</li>
 <li>网页在 390 像素宽的手机上出现横向滚动、小程序框高度随内容伸长、后台表格无法操作：失败。</li>
 <li>同一页面同一目的地有两个入口、同一营销活动占两个位置、一张卡片或一个页面里同一信息出现两次、核心功能可以被隐藏或排在营销之后：退回设计。</li>

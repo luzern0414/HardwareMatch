@@ -114,6 +114,19 @@ class TextSizeTests(unittest.TestCase):
             self.assertEqual(tab_icon_errors(root, path.name), [])
 
 
+    def test_prototype_template_with_the_agent_part_has_no_findings(self) -> None:
+        from new_session import insert_agent_part
+        from validate_session import validate_light_html
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "interactive-prototype.html"
+            text = insert_agent_part(fill_icon_slots(read_template(ROOT, "interactive-prototype.html"), "订单助手"), ROOT)
+            path.write_text(text.replace("{{ACTION_ID}}", "A-001").replace("{{PAGE_ID}}", "P-001"), encoding="utf-8")
+            errors: list[str] = []
+            root = validate_light_html(path, errors, min_px=12.0)
+            self.assertEqual(errors, [])
+            self.assertEqual(prototype_ui_findings(root), ([], []))
+            self.assertEqual(prototype_list_brand_findings(root), [])
+
 def list_findings(body: str) -> list[str]:
     with tempfile.TemporaryDirectory() as temp:
         path = Path(temp) / "interactive-prototype.html"
@@ -148,6 +161,20 @@ class PaginationAndBrandTests(unittest.TestCase):
         opted_out = '<table class="list" data-pagination="none">' + rows(*[(f"档位{i}", str(i)) for i in range(12)]) + "</table>"
         self.assertEqual(list_findings(opted_out), [])
         self.assertEqual(list_findings('<div class="modal"><table class="list">' + rows(("甲", "1")) + "</table></div>"), [])
+
+    def test_brand_card_is_solid_but_not_a_header_brand_mark(self) -> None:
+        # Luz-Design visual-design.html 配色: one solid theme-colour brand card per screen is allowed; it is not the
+        # graphic brand mark of an admin or website header.
+        from validate_session import validate_light_html
+        card = '<div class="brand-card"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16"/></svg>本月营收</div>'
+        warnings = list_findings('<header class="topbar"><span>门店后台</span></header>' + card)
+        self.assertTrue(any("without a graphic brand mark" in w for w in warnings))
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "interactive-prototype.html"
+            path.write_text(PAGE.format(css=".brand-card{background:#3A48B0;color:#fff}", body=card), encoding="utf-8")
+            errors: list[str] = []
+            validate_light_html(path, errors, min_px=12.0)
+            self.assertFalse(any("dark background" in e for e in errors), errors)
 
     def test_pagination_defaulting_to_20_passes(self) -> None:
         body = '<table class="list"><tbody id="rows"></tbody></table>' + PAGER.format(options=SIZES.format(a="", b=" selected"))

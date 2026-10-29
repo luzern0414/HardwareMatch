@@ -66,6 +66,11 @@ REQUIRED = [
     "experience/hardware/catalog.json",
     "experience/hardware/suppliers.json",
     "examples/unmanned-gym.plan.json",
+    "scripts/context.py",
+    "scripts/test_context.py",
+    "references/cards.json",
+    "scripts/check_interaction.py",
+    "scripts/test_check_interaction.py",
 ]
 RULE_PAGES = [
     ("ui-standards.html", "ui", "界面通用规范"),
@@ -327,8 +332,31 @@ def main(argv: list[str] | None = None) -> int:
         for expected in [f"references/{f}" for f, _, _ in RULE_PAGES]:
             if expected not in text:
                 errors.append(f"SKILL.md missing route: {expected}")
+        # The invocation protocol is the first section and starts from the rule card (scripts/context.py).
+        sections = re.findall(r"(?m)^## (.+)$", normalized)
+        if not sections or not sections[0].startswith("调用协议"):
+            errors.append("SKILL.md must open with the section 调用协议 (invocation protocol) before any other section")
+        protocol_text = normalized.split("\n## ", 2)[1] if "\n## " in normalized else ""
+        if "scripts/context.py" not in protocol_text:
+            errors.append("SKILL.md 调用协议 must start from scripts/context.py (the rule card)")
+        # Agents choose skills from the parsed frontmatter; an unquoted ": " inside the description breaks it silently.
+        try:
+            import yaml
+            front = yaml.safe_load(normalized.split("---", 2)[1])
+            if not isinstance(front, dict) or not isinstance(front.get("description"), str):
+                errors.append("SKILL.md frontmatter does not parse to a name and a description string")
+        except ImportError:
+            if re.search(r"(?m)^description: [^\n]*: ", normalized):
+                errors.append("SKILL.md description contains ': ' which breaks YAML; use a dash instead")
+        except Exception as exc:
+            errors.append(f"SKILL.md frontmatter is not valid YAML: {exc}")
+        description = re.search(r"(?m)^description: (.+)$", normalized)
+        if not description or "context.py" not in description.group(1):
+            errors.append("SKILL.md description must tell agents to start with scripts/context.py")
+        if len(description.group(1) if description else "") > 1024:
+            errors.append("SKILL.md description exceeds 1024 characters")
 
-    json_files = ["references/handoff.schema.json", "examples/unmanned-gym.plan.json"]
+    json_files = ["references/handoff.schema.json", "examples/unmanned-gym.plan.json", "references/cards.json"]
     for rel in json_files:
         path = ROOT / rel
         if path.is_file():
@@ -339,6 +367,12 @@ def main(argv: list[str] | None = None) -> int:
 
     for file_name, prefix, title in RULE_PAGES:
         validate_rule_page(ROOT / "references" / file_name, prefix, 0, title, errors)
+    # Every rule card resolves to existing rule-page sections, so renaming a heading cannot silently empty a card.
+    import context
+    errors.extend(f"rule card: {e}" for e in context.check_cards())
+    head = (ROOT / "references" / "templates.txt").read_text(encoding="utf-8").splitlines()[:4]
+    if not any("context.py" in line for line in head):
+        errors.append("references/templates.txt must say at the top that templates are skeletons and point to scripts/context.py")
 
     guidelines_css = ROOT / "references/guidelines.css"
     if guidelines_css.is_file():

@@ -1,4 +1,6 @@
 # Luz System 会话模板
+# 模板只是骨架，不是规范。动手前先运行 py -X utf8 scripts/context.py <任务类型>，读完规则卡（用户偏好、教训、规范原文、工具、检查）再填模板；
+# 模板与规则卡冲突时按规则卡改模板内容。new_session.py 与 add_mode.py 会把规则卡存进 raw/00-rules/，发布前 BRIEF 必须填写“采用的规则”与“本次沉淀”。
 # 每个模板以 “=== template: 名称 ===” 开始、以 “=== end ===” 结束；scripts/new_session.py 的 read_template(名称) 按名称读取。
 # 修改模板时只改块内内容，不改标记行。
 
@@ -59,6 +61,20 @@
 
 | ID | Decision needed | Affected modes | Status |
 |---|---|---|---|
+
+## 采用的规则
+
+<!-- 读完 raw/00-rules/ 里的规则卡后逐条填写：规范页 › 小节（或偏好 key）→ 本次怎么落实。发布前至少一行，publish.py 会检查。 -->
+
+| 规则（规范页 › 小节 或 偏好 key） | 本次怎么落实 |
+|---|---|
+
+## 本次沉淀
+
+<!-- 结束前用 scripts/experience.py note 写入或确认经验（同 key 再写即确认），每条一行：用户新偏好、规则纠正、有效的设计做法、调研来源与范围、生成参数。至少一行；publish.py 会核对 key 存在于 experience/notes.json 且确认日期不早于本会话创建日。硬件的产品、价格、匹配与渠道另用 hw_experience.py add 写入。 -->
+
+| 经验 key | 类型 | 一句话 |
+|---|---|---|
 === end ===
 
 # 01-system/02-research.md：调研记录格式与最低门槛
@@ -184,14 +200,14 @@ Minimum gate: at least 12 unique URLs across 5 registrable domains, with at leas
 <h1>{{SYSTEM_NAME}}</h1>
 <section id="scope"><h2>范围与角色权限</h2><div class="grid"><div class="node" data-role-id="R-001">角色</div></div></section>
 <section id="functions"><h2>模块与功能</h2><div class="node" data-function-id="F-001" data-module="{{MODULE}}" data-source="用户要求" data-req-ids="REQ-001">功能</div></section>
-<section id="pages"><h2>页面与路由</h2><div class="node" data-page-id="P-001" data-route="/home" data-function-ids="F-001">页面</div></section>
-<section id="navigation"><h2>导航树</h2><div class="node" data-navigation-id="N-001" data-page-id="P-001">导航</div></section>
-<section id="components"><h2>组件与动作</h2><div class="node" data-component-id="C-001" data-page-id="P-001">组件</div><button type="button" data-action-id="A-001" data-page-id="P-001" data-component-id="C-001" data-function-ids="F-001">动作</button></section>
-<section id="flows"><h2>交互流程与异常</h2><div class="node" data-flow-id="FL-001" data-exception="界面呈现失败原因并提供恢复入口">主流程</div></section>
-<section id="states"><h2>界面状态</h2><div class="grid"><div class="node" data-state-id="S-001" data-module="{{MODULE}}" data-state-subject="{{MODULE}}">加载、空、错误、成功、禁用</div></div></section>
-<section id="data"><h2>页面数据</h2><div class="node" data-entity-id="D-001" data-module="{{MODULE}}">页面展示的数据字段</div></section>
+<section id="pages"><h2>页面与路由</h2><div class="node" data-page-id="P-001" data-route="/home" data-function-ids="F-001" data-entry="N-001" data-goal="用户在本页完成的一件事" data-primary-action="A-001" data-secondary-actions="" data-exit="返回:来源;完成:P-001" data-states="加载:骨架与真实内容同形;空:写对象并给一个行动 A-001;错误:原因与重试，保留输入;成功:结果与去向;禁用:按钮置灰并写原因">页面</div></section>
+<section id="navigation"><h2>导航树</h2><div class="node" data-navigation-id="N-001" data-page-id="P-001" data-from="标签栏">导航</div></section>
+<section id="components"><h2>组件与动作</h2><div class="node" data-component-id="C-001" data-page-id="P-001">组件</div><button type="button" data-action-id="A-001" data-page-id="P-001" data-component-id="C-001" data-function-ids="F-001" data-feedback="进行中:按钮加载并忽略重复点击;成功:轻提示，留在 P-001;失败:原位写原因与重试">动作</button></section>
+<section id="flows"><h2>交互流程与异常</h2><div class="node" data-flow-id="FL-001" data-exception="界面呈现失败原因并提供恢复入口" data-success="P-001">主流程</div></section>
+<section id="states"><h2>界面状态</h2><div class="grid"><div class="node" data-state-id="S-001" data-module="{{MODULE}}" data-state-subject="{{MODULE}}" data-values="加载,空,错误,成功" data-initial="加载" data-terminal="成功" data-transitions="加载>成功@数据返回;加载>空@没有数据;加载>错误@请求失败;错误>加载@重试;空>成功@新建完成">加载、空、错误、成功、禁用</div></div></section>
+<section id="data"><h2>页面数据</h2><div class="node" data-entity-id="D-001" data-module="{{MODULE}}" data-lifecycle="新建:A-001;查看:P-001;编辑:不提供（示例：由系统生成）;删除:不提供（示例：随上级对象删除）;状态:S-001">页面展示的数据字段</div></section>
 <section id="trace"><h2>追溯矩阵</h2><table><thead><tr><th>需求</th><th>功能</th><th>调研</th></tr></thead><tbody><tr><td>REQ-001</td><td>F-001</td><td>REF-001</td></tr></tbody></table></section>
-<section id="acceptance"><h2>验收标准</h2><ul><li>主流程、异常恢复与界面状态均可在原型中操作验证。</li></ul></section>
+<section id="acceptance"><h2>验收标准</h2><ul><li>主流程、异常恢复与界面状态均可在原型中操作验证。</li><li>每个操作按“触发、反馈、结果、返回”走一遍，任何一步断开即不通过。</li></ul></section>
 </main>
 </body>
 </html>
@@ -342,9 +358,9 @@ main{width:min(1120px,calc(100% - 40px));margin:0 auto;padding:48px 0 72px}h1{ma
 <div class="pagination" data-page-size="20" aria-label="分页">
 <span class="pg-total">共 <span id="pg-total">0</span> 条</span>
 <select id="pg-size" aria-label="每页条数"><option value="10">10 条/页</option><option value="20" selected>20 条/页</option><option value="50">50 条/页</option><option value="100">100 条/页</option></select>
-<button type="button" id="pg-prev" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" aria-label="上一页">‹</button>
+<button type="button" id="pg-prev" data-arg="上一页" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" aria-label="上一页">‹</button>
 <span class="pg-pages" id="pg-pages"></span>
-<button type="button" id="pg-next" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" aria-label="下一页">›</button>
+<button type="button" id="pg-next" data-arg="下一页" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" aria-label="下一页">›</button>
 <label class="pg-jump" id="pg-jump">跳至<input type="number" min="1" id="pg-jump-input" aria-label="页码">页</label>
 </div>
 </div>
@@ -355,6 +371,7 @@ main{width:min(1120px,calc(100% - 40px));margin:0 auto;padding:48px 0 72px}h1{ma
 <button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" data-state-kind="成功">成功</button>
 <button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}" data-state-kind="禁用" disabled>禁用</button>
 </section>
+<!-- AGENT_PART -->
 </main>
 <script>
 // List pagination (admin-design.html 分页): default 20, 10/20/50/100 条/页, page and page_size kept in the address,
@@ -439,6 +456,100 @@ main{width:min(1120px,calc(100% - 40px));margin:0 auto;padding:48px 0 72px}h1{ma
 === end ===
 
 # 99-delivery/APPROVALS.json：人工批准账本
+=== template: agent-run-states.html ===
+<!-- 智能体会话的原型骨架：七种运行状态各一块，用 data-state 标记；内容按 agent-design.html“运行状态”“耗时与进度”“错误、降级与恢复的呈现”改写。new_session.py 在会话带 agent-ui 或 agent-runtime-ui 规则卡时插入到原型的 AGENT_PART 位置。 -->
+<section id="agent-run" data-surface="agent" data-agent-run data-page-id="{{PAGE_ID}}" data-fixture-id="DEMO-AGENT-001">
+<style>
+.run-list{display:grid;gap:12px}.run{padding:16px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.run h3{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;font-size:16px;line-height:24px;font-weight:600}
+.run p{margin:0 0 8px;font-size:16px;line-height:24px}.run .sub{color:var(--muted);font-size:14px;line-height:22px}
+.run-time{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 8px;color:var(--muted);font-size:14px;line-height:22px}
+.run-time b,.step-time{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.run-steps{margin:0 0 8px;padding:0;list-style:none;font-size:14px;line-height:22px}
+.run-steps li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line)}
+.run-steps li:last-child{border-bottom:0}.run-steps .now{font-weight:600}.run-steps .bad{color:#a8071a}
+.run-actions{display:flex;flex-wrap:wrap;gap:8px}.run-actions .ghost{border:1px solid var(--line);background:#fff;color:var(--ink)}
+.run-approval{border-color:#ffd591;background:#fff7e6}.run-failed{border-color:#ffccc7;background:#fff1f0}
+.run-tag{display:inline-block;padding:0 8px;border-radius:99px;background:var(--soft);color:var(--accent);font-size:14px;line-height:22px;font-weight:600}
+.run-pending{margin:0 0 8px;padding:8px 12px;border:1px dashed var(--line);border-radius:12px;font-size:14px;line-height:22px}
+</style>
+<h2>任务运行</h2>
+<div class="run-list">
+<article class="run" data-state="排队">
+<h3><span class="run-tag">排队中</span>第 3 位 · 预计 40 秒后开始</h3>
+<div class="run-time"><span>已排队 <b data-elapsed="12" data-ticking>12 秒</b></span><span>排队时间不计入执行用时</span></div>
+<div class="run-actions"><button type="button" class="ghost" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">取消排队</button></div>
+</article>
+<article class="run" data-state="执行中">
+<h3><span class="run-tag">执行中</span>第 2/3 阶段 · 汇总本周订单</h3>
+<div class="run-time"><span>总用时 <b data-elapsed="72" data-ticking>1 分 12 秒</b></span><span>本阶段 <b data-elapsed="9" data-ticking>9 秒</b></span><span>预计剩余 约 40 秒</span></div>
+<ol class="run-steps">
+<li><span>查询本周订单 · 共 128 笔</span><span class="step-time" data-elapsed="2">2 秒</span></li>
+<li><span>按门店分组 · 6 家门店</span><span class="step-time" data-elapsed="1">1 秒</span></li>
+<li class="now"><span>生成汇总 · 正在写第 2 段</span><span class="step-time" data-elapsed="6" data-ticking>已用 6 秒</span></li>
+</ol>
+<p>本周共 128 笔订单，较上周增加 12%；退款 3 笔……</p>
+<div class="run-pending">当前回复完成后处理：再加上退款金额</div>
+<div class="run-actions"><button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">停止</button><button type="button" class="ghost" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">停止并发送</button></div>
+</article>
+<article class="run run-approval" data-state="等待审批">
+<h3><span class="run-tag">等待审批</span>为订单 2026-1028-001 退款 ¥88.00</h3>
+<p>退回原支付账户，不可撤销；30 分钟内未处理将自动取消并通知。</p>
+<div class="run-time"><span>已等 <b data-elapsed="185" data-ticking>3 分 05 秒</b></span><span>等待审批单独计时，不计入执行用时</span></div>
+<div class="run-actions"><button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">批准</button><button type="button" class="ghost" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">修改</button><button type="button" class="ghost" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">拒绝</button><button type="button" class="ghost" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">我来处理</button></div>
+</article>
+<article class="run run-failed" data-state="失败可重试">
+<h3><span class="run-tag">未完成</span>第 3 步“生成汇总”失败</h3>
+<p>模型服务繁忙，已自动重试 3 次仍未成功；前 2 步的结果已保留，没有写入任何数据。</p>
+<ol class="run-steps">
+<li><span>查询本周订单 · 共 128 笔</span><span class="step-time" data-elapsed="2">2 秒</span></li>
+<li><span>按门店分组 · 6 家门店</span><span class="step-time" data-elapsed="1">1 秒</span></li>
+<li class="bad"><span>生成汇总 · 失败（重试 3 次）</span><span class="step-time" data-elapsed="8">8 秒</span></li>
+</ol>
+<div class="run-time"><span>请求编号 <b>req-7f3a91c2</b></span></div>
+<div class="run-actions"><button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">从失败处重试</button><button type="button" class="ghost" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">复制请求编号</button></div>
+</article>
+<article class="run" data-state="断线重连">
+<h3><span class="run-tag">重新连接中</span>连接已断开，第 2 次重连</h3>
+<p>任务在服务端继续执行；连上后从第 3 步接着显示，已完成的步骤不会重做。</p>
+<div class="run-time"><span>总用时 <b data-elapsed="95" data-ticking>1 分 35 秒</b></span><span>下次重连 3 秒后</span></div>
+<div class="run-actions"><button type="button" class="ghost" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">立即重连</button></div>
+</article>
+<article class="run" data-state="已停止">
+<h3><span class="run-tag">已停止</span>在第 3 步停止</h3>
+<p>已完成 2 步，结果保留；第 3 步未提交的修改已撤回。</p>
+<div class="run-time"><span>总用时 <b data-elapsed="41">41 秒</b></span></div>
+<div class="run-actions"><button type="button" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">从停止处继续</button></div>
+</article>
+<article class="run" data-state="完成">
+<h3><span class="run-tag">完成</span>本周订单汇总</h3>
+<p>本周共 128 笔订单，较上周增加 12%；退款 3 笔，合计 ¥264.00。做过的修改：退款 1 笔（已审批）。</p>
+<div class="run-time"><span>执行 <b data-elapsed="125">2 分 05 秒</b></span><span>排队 <b data-elapsed="12">12 秒</b></span><span>等待审批 <b data-elapsed="185">3 分 05 秒</b></span></div>
+<div class="run-actions"><button type="button" class="ghost" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">复制结果</button><button type="button" class="ghost" data-action-id="{{ACTION_ID}}" data-page-id="{{PAGE_ID}}">重新生成</button></div>
+</article>
+</div>
+<script>
+// Running timers tick once a second from data-elapsed (seconds); frozen states have no data-ticking (agent-design.html 耗时与进度).
+(function () {
+  function label(s) {
+    if (s < 60) { return s + " 秒"; }
+    if (s < 3600) { return Math.floor(s / 60) + " 分 " + String(s % 60).padStart(2, "0") + " 秒"; }
+    return Math.floor(s / 3600) + " 小时 " + String(Math.floor(s % 3600 / 60)).padStart(2, "0") + " 分";
+  }
+  var ticking = document.querySelectorAll("#agent-run [data-ticking]");
+  setInterval(function () {
+    ticking.forEach(function (node) {
+      var s = Number(node.getAttribute("data-elapsed")) + 1;
+      node.setAttribute("data-elapsed", s);
+      node.textContent = (node.textContent.indexOf("已用") === 0 ? "已用 " : "") + label(s);
+    });
+  }, 1000);
+})();
+</script>
+</section>
+=== end ===
+
+
 === template: approvals.json ===
 {
   "schema_version": "2.0",

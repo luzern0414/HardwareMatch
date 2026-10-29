@@ -1,4 +1,6 @@
-"""校验 raw/04-hardware/plan.json → 生成 raw/04-hardware/hardware-plan.html → 用 Luz-Design 文档检查脚本验收；
+"""先读规则卡：py -X utf8 scripts/context.py hardware --session "<会话目录>"（规则、偏好、教训、工具与检查；本脚本只是骨架）
+
+校验 raw/04-hardware/plan.json → 生成 raw/04-hardware/hardware-plan.html → 用 Luz-Design 文档检查脚本验收；
 交付时用 publish.py <会话> hardware 发布为会话唯一的最终 HTML。
 
 用法：
@@ -26,6 +28,11 @@ def main() -> int:
         print(__doc__)
         return 2
     session = Path(sys.argv[1]).resolve()
+    # The hardware rule card decides the plan; this builder only renders and checks it.
+    card = session / "raw" / "00-rules" / "hardware.md"
+    print(f"rule card for this plan: py -X utf8 scripts/context.py hardware --session \"{session}\"  (read it before writing plan.json)", file=sys.stderr)
+    if not card.is_file():
+        print("  WARN  raw/00-rules/hardware.md is missing: run the command above; publish.py refuses a session without it", file=sys.stderr)
     raw = session / "raw" / "04-hardware"
     plan = pl.load(raw / "plan.json")
     errors, warnings = pl.validate(plan)

@@ -16,6 +16,24 @@
       "last_confirmed": "2026-10-28"
     },
     {
+      "key": "agent-must-use-sse",
+      "kind": "preference",
+      "text": "智能体的回复、思考与工具进度、阶段与耗时、排队位置、审批请求、结果与错误一律用服务器推送事件（SSE）推送：统一事件名 run.queued、run.started、stage.*、step.*、message.delta、approval.*、run.completed、run.failed、run.cancelled、ping，各带 id、run_id、ts、elapsed_ms；Last-Event-ID 续传、retry 约 3 秒、结束后 204、15 秒心跳、代理关缓冲；首个事件 1 秒内；只认三个结束事件，连接关闭不算成功；不用轮询或整段返回，只有语音等双向实时才用 WebSocket 并写明理由",
+      "why": "用户 2026-10-29 要求智能体必须使用 SSE；依据 WHATWG 服务器推送事件、MDN、Anthropic 流式与错误文档、Nginx 代理缓冲（Luz-Crawl 017）；规则在 agent-design.html 运行时与可靠性",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
+      "key": "agent-queue-and-failure",
+      "kind": "preference",
+      "text": "智能体排队与防失败：全局、每用户、每会话三级并发上限，每会话同时一个运行；队列满返回 429 带 Retry-After，界面显示第几位、预计开始并可取消；发送带 request_id 幂等，按钮变停止，运行中再发进待发送队列；只对 429、529、5xx、断网重试，指数退避加抖动最多 3 次，无幂等键的写操作不自动重试；熔断时告知预计恢复时间；检查点断点续跑，失败保留部分结果并从失败处重试，取消回滚未提交写入；每轮用量、工具次数、步骤与时长有上限；错误写影响、下一步与请求编号",
+      "why": "用户 2026-10-29 规格；依据 Azure 队列削峰、重试与熔断模式，Stripe 幂等请求，Anthropic 速率限制与错误（Luz-Crawl 017）",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "dashboard-computed-metrics",
       "kind": "preference",
       "text": "驾驶舱先分运营型与分析型，指标给计算后的变化、比率、排名与异常，长期为 0 的指标合并为一行状态，数据少于 3 个点不画折线、1 类不画环图，卡片时间范围服从页面",
@@ -59,6 +77,15 @@
       "uses": 1,
       "first_seen": "2026-10-28",
       "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "interaction-closure",
+      "kind": "preference",
+      "text": "每个操作走完入口 → 反馈 → 结果 → 返回：每页写进入方式、目标、一个主操作、离开方式与加载、空、错误、成功、禁用五类状态；同一页面同一动作只一个入口（列表行除外），文字相同即同一动作，同一目的地一个入口；对象有查看、编辑、删除或归档、状态变更或写明不提供的理由；状态无死状态，流程有成功终点与失败恢复，审批后有去向；异步操作有进行中、成功、失败与重试、空四种结果，按钮有可用、禁用写原因、加载中三态；破坏性操作先确认；原型逐个操作走一遍",
+      "why": "用户 2026-10-29：system 要规范好交互逻辑，每个页面的功能与按钮不重复，功能完整逻辑闭环且有完整的状态与反馈；规则在 ui-standards.html 功能闭环、页面交互契约、操作反馈，check_interaction.py 检查",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
     },
     {
       "key": "list-pagination-default-20",
@@ -153,11 +180,15 @@
     {
       "key": "扁平线性风格",
       "kind": "preference",
-      "text": "界面用扁平线性风格：纯色或白底线稿，不用立体、渐变、纹理与发光",
-      "why": "用户多次纠正",
-      "uses": 1,
+      "text": "界面扁平为主：纯色面与统一线宽的线条，立体感靠五级层级阴影、1 像素发丝线与按钮底边；图标线宽 2、图标块可双色，插画多层扁平，每屏至多一张品牌主卡；不用立体图标、渐变、纹理、玻璃、发光与彩色投影",
+      "why": "用户多次纠正；2026-10-29 要求补立体感（与 Luz-Design visual-design.html 层级与立体感一致）",
+      "uses": 2,
       "first_seen": "2026-10-28",
-      "last_confirmed": "2026-10-28"
+      "last_confirmed": "2026-10-29",
+      "previous": {
+        "text": "界面用扁平线性风格：纯色或白底线稿，不用立体、渐变、纹理与发光",
+        "replaced_at": "2026-10-29"
+      }
     },
     {
       "key": "表格居中",
@@ -209,6 +240,15 @@
       "last_confirmed": "2026-10-28"
     },
     {
+      "key": "luzcrawl-nngroup-rate-limit",
+      "kind": "lesson",
+      "text": "NN/g 连续采集 5–6 篇后返回 429，后续条目被跳过；每批 NN/g 不超过 4 篇并放在批次最前，被拦后停在该站不换入口",
+      "why": "Luz-Crawl 任务 016 采集 NN/g 时触发限流（交互闭环调研）",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "prototype-panel-and-icons",
       "kind": "lesson",
       "text": "原型配置面板若未写入架构，用单选与复选控件实现，避免无动作编号的按钮；check_document 把 svg 后第一段文字当图标含义，图标按钮要带可见文字，同一插画不在多处复用，头像用 img；全局加 [hidden]{display:none!important} 防止按钮样式覆盖隐藏",
@@ -227,6 +267,24 @@
       "last_confirmed": "2026-10-28"
     },
     {
+      "key": "rule-card-size-budget",
+      "kind": "lesson",
+      "text": "规则卡的规则原文每张不超过 35 KB：规范页新增小节后先量 context.make_card 的第 3 部分，超了就把整层换成具体小节、把阶段专用的小节移到对应卡或拆卡（如 agent-ui 与 agent-runtime-ui、交互闭环卡 interaction），不用 max_chars 截断规则",
+      "why": "2026-10-29 加入交互闭环与智能体运行时规则后 system-design、agent-ui 等卡超出 35 KB",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
+      "key": "session-revision-archive",
+      "kind": "lesson",
+      "text": "已批准会话要修订架构时，把下游系统设计、视觉板、原型与发布页打包为 raw/99-delivery/revision-N.zip（不留散落 HTML，否则校验器会按页面规则扫描），MANIFEST 模式退回 system、各阶段 sha 置空并保留全部阶段键，再逐级重新审批",
+      "why": "008 会话架构修订 2",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
       "key": "system-design-table-cells",
       "kind": "lesson",
       "text": "系统设计页模块内容区按标签规则逐格检查：表头加 cell-label，单元格加 cell-value，长文本按分号拆成不超过 30 字的 line-value 行，避免 详情、原因、步骤、提示、流程、指南、备注、点击查看 等词，内容区外层用 module-content",
@@ -243,6 +301,33 @@
       "uses": 1,
       "first_seen": "2026-10-28",
       "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "agent-foundation-design-split",
+      "kind": "fact",
+      "text": "智能体底座分工：Luz-System 的 agent-design.html 写界面契约（能力清单、追问、步骤卡、审批、七种运行状态与 data-state 原型、耗时、引用与没有找到、记忆查看与删除、错误呈现、运行事件表），规则卡 agent-ui 与 agent-runtime-ui；实现（接入层、护栏、意图路由、编排、工具契约、结构化输出、记忆、知识库、可观测、事件日志续传、队列、检查点）在 Luz-Dev references/agent-foundation.md，系统设计页架构清单有“智能体运行时与底座”一项",
+      "why": "2026-10-29 智能体底座规格（Luz-System 设计层与 Luz-Dev 实现层分开写，不重复）",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
+      "key": "agent-research-sources",
+      "kind": "fact",
+      "text": "智能体调研来源：Luz-Crawl 任务 017（WHATWG 服务器推送事件、MDN SSE 与 Retry-After、Anthropic 流式/错误/速率限制、Azure 队列削峰/重试/熔断、Stripe 幂等、Nginx 代理、NN/g 响应时间与进度指示、LangGraph 流式）与 018（Anthropic 智能体、工具、上下文工程、上下文检索、多智能体，Pydantic 与 Pydantic AI，OpenAI Agents SDK 护栏与追踪，LangGraph 记忆、持久化、中断，Mem0，pgvector，Qdrant 混合检索，OWASP 大模型十大风险，通义千问与 DeepSeek 函数调用）；新调研先复用这两个任务",
+      "why": "2026-10-29 写 agent-design.html 依据表时逐篇核对原文",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
+    },
+    {
+      "key": "agent-timing-display",
+      "kind": "fact",
+      "text": "智能体耗时分段显示：运行头部常驻总已用时、当前阶段与预计剩余（取同类阶段历史中位数，无历史不显示）；每阶段、每步显示耗时，运行中每秒更新，结束定格；排队与等待审批单独计时，不计入执行用时；1 秒内不显示进度，超过 1 秒给进行标记，超过 10 秒显示已用时、当前步骤与停止；等宽数字，写法 12 秒、1 分 05 秒、1 小时 02 分；界面本地计时，按事件时间恢复不从 0 重算",
+      "why": "NN/g 响应时间三界限与进度指示；Ant Design X 思维链没有耗时属性需自己补；用户 2026-10-29 追问智能体对话耗时",
+      "uses": 1,
+      "first_seen": "2026-10-29",
+      "last_confirmed": "2026-10-29"
     },
     {
       "key": "component-library-reference",

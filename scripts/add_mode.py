@@ -11,7 +11,7 @@ import time
 from pathlib import Path
 from typing import Callable
 
-from new_session import MODE_NAMES, OUTPUT_ROOT, SESSION_RE, SKILL_ROOT, init_mode
+from new_session import MODE_NAMES, OUTPUT_ROOT, SESSION_RE, SKILL_ROOT, init_mode, print_card_hint, rule_card_kinds, save_rule_cards
 
 LOCK_TIMEOUT_SECONDS = 5.0
 
@@ -51,9 +51,11 @@ def checked_session(root: Path, session: Path) -> Path:
     return candidate
 
 
-def add_mode(root: Path, session: Path, mode: str, *, standalone_poster: bool = False, skill_root: Path = SKILL_ROOT, source_checker: Callable[[str], int] | None = None, allow_live_crawl_offline: bool = False) -> dict:
+def add_mode(root: Path, session: Path, mode: str, *, standalone_poster: bool = False, skill_root: Path = SKILL_ROOT, source_checker: Callable[[str], int] | None = None, allow_live_crawl_offline: bool = False, cards: list[str] | None = None) -> dict:
     if mode not in {"visual", "prototype", "document"}:
         raise ValueError("add_mode supports visual, prototype, or document; system scope is created only by the intake workflow")
+    # Visual adds the surface cards (--card admin-list, miniprogram, website, agent-ui …; default admin-list and miniprogram).
+    kinds = rule_card_kinds([mode], cards)
     session = checked_session(root, session)
     work = session / "raw"
     manifest_path = work / "99-delivery" / "MANIFEST.json"
@@ -108,6 +110,8 @@ def add_mode(root: Path, session: Path, mode: str, *, standalone_poster: bool = 
         if errors:
             raise PermissionError("prototype gate failed: " + "; ".join(errors))
 
+    # The rule cards for this stage, cut from the rule pages: read them before producing (scripts/context.py).
+    save_rule_cards(work, kinds)
     if mode in modes:
         return manifest
 
@@ -138,14 +142,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("mode", choices=["visual", "prototype", "document"])
     parser.add_argument("--standalone-poster", action="store_true")
     parser.add_argument("--root", help="Session root override, primarily for tests")
+    parser.add_argument("--card", action="append", help="Rule card for the surfaces in scope (repeatable): admin-list, admin-dashboard, admin-form, miniprogram, agent-ui, agent-runtime-ui, website, function-list, interaction; visual defaults to admin-list and miniprogram")
     args = parser.parse_args(argv)
     root = Path(args.root).resolve() if args.root else OUTPUT_ROOT
     try:
-        manifest = add_mode(root, Path(args.session), args.mode, standalone_poster=args.standalone_poster)
+        manifest = add_mode(root, Path(args.session), args.mode, standalone_poster=args.standalone_poster, cards=args.card)
     except Exception as exc:
         print(f"FAIL: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
     print("PASS: active modes: " + ", ".join(manifest.get("modes", [])))
+    print_card_hint(Path(args.session).resolve())
     return 0
 
 

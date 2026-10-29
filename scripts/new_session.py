@@ -34,6 +34,13 @@ HW_REQUIREMENTS = """# 硬件需求
 """
 POSTER_TASK_RE = re.compile(r"海报|poster", re.I)
 SESSION_KINDS = ("general", "system")
+# Rule cards written into raw/00-rules/ when a mode starts (scripts/context.py; references/cards.json).
+# A stage card always comes with its mode; visual mode adds the surface cards named with --card, else these two.
+MODE_CARDS = {"system": "system-design", "prototype": "prototype", "hardware": "hardware"}
+# The closed-loop interaction rules (ui-standards.html 页面交互契约, 功能闭环, 操作反馈) come with the stages that write
+# the architecture and build the prototype.
+MODE_EXTRA_CARDS = {"system": ("interaction",), "prototype": ("interaction",)}
+DEFAULT_SURFACE_CARDS = ("admin-list", "miniprogram")
 
 # Tab icon and brand mark (Luz-Design references/visual-design.html 网页图标与品牌标识; ui-standards.html 页头):
 # one flat line pictogram of the system's subject, primary-colour strokes on a rounded square in the theme's lightest
@@ -167,6 +174,19 @@ def read_template(skill_root: Path, name: str) -> str:
     return body + "\n"
 
 
+AGENT_PART_MARK = "<!-- AGENT_PART -->"
+AGENT_CARD_KINDS = ("agent-ui", "agent-runtime-ui")
+
+
+def insert_agent_part(prototype: str, skill_root: Path = SKILL_ROOT) -> str:
+    """Put the agent run-state skeleton (templates.txt agent-run-states.html: 排队, 执行中, 等待审批, 失败可重试, 断线重连,
+    已停止, 完成) where the prototype template marks it; agent-design.html 运行状态 decides what each state shows."""
+    if AGENT_PART_MARK not in prototype:
+        return prototype
+    part = read_template(skill_root, "agent-run-states.html").strip()
+    return prototype.replace(AGENT_PART_MARK, part, 1)
+
+
 def write_if_missing(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     if not path.exists():
@@ -247,6 +267,11 @@ def init_mode(skill_root: Path, session: Path, mode: str, *, system_name: str | 
             raise PermissionError("prototype mode requires approved page and action IDs")
         architecture_hash = hashlib.sha256(architecture.read_bytes()).hexdigest()
         prototype = read_template(skill_root, "interactive-prototype.html")
+        # An agent session (it works from the agent rule cards) gets the seven run states in its skeleton.
+        if any((session / "00-rules" / f"{kind}.md").is_file() for kind in AGENT_CARD_KINDS):
+            prototype = insert_agent_part(prototype, skill_root)
+        else:
+            prototype = "\n".join(line for line in prototype.split("\n") if line.strip() != AGENT_PART_MARK)
         manifest = json.loads((session / "99-delivery" / "MANIFEST.json").read_text(encoding="utf-8"))
         prototype = (fill_icon_slots(prototype, session_subject(session))
             .replace("{{SYSTEM_NAME}}", html.escape(str(manifest.get("system_name", "交互原型"))))
@@ -263,6 +288,38 @@ def init_mode(skill_root: Path, session: Path, mode: str, *, system_name: str | 
         write_if_missing(base / "plan.json", json.dumps({"title": title, "zones": [], "devices": [], "links": []}, ensure_ascii=False, indent=2) + "\n")
     else:
         raise ValueError(f"unknown mode: {mode}")
+
+
+def rule_card_kinds(modes: list[str], cards: list[str] | None = None) -> list[str]:
+    """The rule cards a session needs for these modes plus any named with --card; unknown kinds are refused."""
+    import context
+    kinds = [MODE_CARDS[mode] for mode in modes if mode in MODE_CARDS]
+    kinds.extend(extra for mode in modes for extra in MODE_EXTRA_CARDS.get(mode, ()))
+    if "visual" in modes and not cards:
+        kinds.extend(DEFAULT_SURFACE_CARDS)
+    kinds.extend(cards or [])
+    unknown = sorted(set(kinds) - set(context.card_kinds()))
+    if unknown:
+        raise ValueError(f"unknown rule card: {', '.join(unknown)}; see py -X utf8 scripts/context.py list")
+    return list(dict.fromkeys(kinds))
+
+
+def save_rule_cards(work: Path, kinds: list[str]) -> list[Path]:
+    """Save each card not yet in raw/00-rules/; an existing card is kept so its date and hash still show staleness."""
+    import context
+    saved = []
+    for kind in kinds:
+        if not (work / "00-rules" / f"{kind}.md").is_file():
+            saved.append(context.save_card(work, kind))
+    return saved
+
+
+def print_card_hint(folder: Path) -> None:
+    cards = sorted((folder / "raw" / "00-rules").glob("*.md"))
+    if cards:
+        print("NEXT: read the rule card(s) before producing anything, then fill BRIEF 采用的规则 and 本次沉淀:", file=sys.stderr)
+        for card in cards:
+            print(f"  {card}", file=sys.stderr)
 
 
 def render_brief(skill_root: Path, title: str, session_kind: str) -> str:
@@ -301,9 +358,11 @@ def create_session(
     session_kind: str = "general",
     system_name: str | None = None,
     modules: list[str] | None = None,
+    cards: list[str] | None = None,
 ) -> Path:
     requested_modules = list(dict.fromkeys(modules or []))
     validate_creation(modes, session_kind, system_name, requested_modules)
+    kinds = rule_card_kinds(modes, cards)
     root = root.resolve()
     root.mkdir(parents=True, exist_ok=True)
     clean = clean_title(title)
@@ -368,6 +427,8 @@ def create_session(
                 system_name=system_name if mode == "system" else None,
                 modules=requested_modules if mode == "system" else None,
             )
+        # The rules, preferences, lessons, tools and checks for this task, cut from the rule pages (read before producing).
+        save_rule_cards(work, kinds)
     except Exception:
         shutil.rmtree(folder, ignore_errors=True)
         raise
@@ -398,6 +459,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--system-name", help="Required in system mode; provide the exact system name supplied by the user")
     parser.add_argument("--modules", help="Comma-separated exact module names supplied by the user")
     parser.add_argument("--root", help="Output root override, primarily for tests")
+    parser.add_argument("--card", action="append", help="Extra rule card for this task (repeatable): system-design, function-list, admin-list, admin-dashboard, admin-form, miniprogram, agent-ui, agent-runtime-ui, website, prototype, hardware, interaction; each mode adds its own card (system and prototype also add interaction)")
     args = parser.parse_args(argv)
     root = Path(args.root).resolve() if args.root else OUTPUT_ROOT
     kind = args.session_kind
@@ -411,11 +473,13 @@ def main(argv: list[str] | None = None) -> int:
             session_kind=kind,
             system_name=args.system_name,
             modules=parse_csv(args.modules),
+            cards=args.card,
         )
     except Exception as exc:
         print(f"FAIL: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
     print(str(folder))
+    print_card_hint(folder)
     return 0
 
 
