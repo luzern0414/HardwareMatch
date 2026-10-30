@@ -65,6 +65,33 @@
       "last_confirmed": "2026-10-29"
     },
     {
+      "key": "b2b-purchase-content-scan",
+      "kind": "preference",
+      "text": "B2B获客列表中的长采购内容按原始分隔符拆成最多三条浅色列点，桌面与移动端复用，完整标题保留在提示中。",
+      "why": "长采购标的需要先扫读再查看原文，列点能降低表格阅读密度。",
+      "uses": 1,
+      "first_seen": "2026-10-30",
+      "last_confirmed": "2026-10-30"
+    },
+    {
+      "key": "b2b-status-light-ui",
+      "kind": "preference",
+      "text": "企业获客后台保持浅色石墨基调，状态变化用低饱和语义浅底与左侧状态轨表达，避免大面积彩色块。",
+      "why": "用户要求高级、浅色调，并明确搜索状态变化和卡片背景随状态变化。",
+      "uses": 1,
+      "first_seen": "2026-10-30",
+      "last_confirmed": "2026-10-30"
+    },
+    {
+      "key": "b2b-status-text-and-surface",
+      "kind": "preference",
+      "text": "B2B智能体状态颜色集中在文字标签底色与整张卡片浅背景，卡片外框保持中性细线；展开步骤必须显示并实时更新每一步的文字状态。",
+      "why": "彩色边框会让浅色后台显得嘈杂，步骤状态需要直接可读并随事件变化。",
+      "uses": 1,
+      "first_seen": "2026-10-30",
+      "last_confirmed": "2026-10-30"
+    },
+    {
       "key": "b2b-tool-graphite",
       "kind": "preference",
       "text": "面向企业用户的工具类后台（数据、获客、采购等）：默认头像可统一用圆形发丝边框里的线性人像图标，不用卡通动物（仍禁止首字母等文字头像，见 ui-standards.html 头像）；视觉稿给 2–3 个配色方向用真实数据画同一组页面让用户选；研究报告等表格产物在智能体对话区按全宽展开，对话文字仍为 760",
@@ -397,6 +424,15 @@
       "uses": 1,
       "first_seen": "2026-10-28",
       "last_confirmed": "2026-10-28"
+    },
+    {
+      "key": "b2b-date-column-width",
+      "kind": "lesson",
+      "text": "日期类短值若跨年显示完整 YYYY-MM-DD，表格列宽需在左右 16px 内边距之外保留足够文本空间，避免省略号截断。",
+      "why": "智能体研究报告的日期列在跨年数据下被遮挡。",
+      "uses": 1,
+      "first_seen": "2026-10-30",
+      "last_confirmed": "2026-10-30"
     },
     {
       "key": "disabled-variant-specificity",
